@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,8 +10,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
-public class MenuPage {
+public class MenuPage extends Application {
     /**
      * Botões Menu Principal
      **/
@@ -19,7 +21,7 @@ public class MenuPage {
     private Button covidTestSceneButton;
     private Button logoutButton;
     private Scene addContactScene;
-    private Scene covidTestePage = MainMenu.covidTestPage;
+    //private Scene covidTestePage = MainMenu.covidTestPage;
 
     /**
      * Labels Menu Principal
@@ -30,63 +32,80 @@ public class MenuPage {
 
     private Scene mainScene;
 
-    public Scene sceneView() {
-        this.addContactScene = new Scene(new AddCloseContact().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+    private Stage menuPageWindow;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.menuPageWindow = primaryStage;
+
+        //this.addContactScene = new Scene(new AddCloseContact().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
         //Stage newStage = MainMenu.getStage();
         /* Labels Menu Principal */
 
         // Título do menu principal
-        titleLabel = new Label();
-        titleLabel.setText("MENU");
-        titleLabel.setFont(new Font(30));
+        this.titleLabel = new Label();
+        this.titleLabel.setText("MENU");
+        this.titleLabel.setFont(new Font(30));
 
         // Mensagem de boas vindas
-        welcomeMsgLabel = new Label();
-        welcomeMsgLabel.setText("Bem vindo ao Away From Me Covid!");
-        welcomeMsgLabel.setFont(new Font(20));
+        this.welcomeMsgLabel = new Label();
+        this.welcomeMsgLabel.setText("Bem vindo ao Away From Me Covid!");
+        this.welcomeMsgLabel.setFont(new Font(20));
 
         /* Botões */
 
         // Botão de acesso à scene de adicionar contatos próximos
-        addContactSceneButton = new Button("Adicionar contato(s) próximo(s)");
+        this.addContactSceneButton = new Button("Adicionar contato(s) próximo(s)");
 
-        addContactSceneButton.setOnAction(event -> {
-            MainMenu.getStage().hide();
-            MainMenu.setScene(addContactScene);
-            MainMenu.getStage().show();
+        this.addContactSceneButton.setOnAction(event -> {
+            AddCloseContact addCloseContact = new AddCloseContact();
+            try {
+                addCloseContact.start(this.menuPageWindow);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //MainMenu.setScene(addContactScene);
         });
 
         // Botão de acesso à scene do teste de covid-19
-        covidTestSceneButton = new Button("Teste Covid-19");
+        this.covidTestSceneButton = new Button("Teste Covid-19");
 
-        covidTestSceneButton.setOnAction(event -> {
-            MainMenu.getStage().hide();
-            MainMenu.getStage().setScene(this.covidTestePage);
-            MainMenu.getStage().show();
+        this.covidTestSceneButton.setOnAction(event -> {
+            CovidTest covidTest = new CovidTest();
+            try {
+                covidTest.start(this.menuPageWindow);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //MainMenu.getStage().setScene(this.covidTestePage);
         });
 
         // Botão Logout
-        logoutButton = new Button("Logout");
-        logoutButton.setOnAction(event -> MainMenu.getStage().setScene(MainMenu.getScene()));
+        this.logoutButton = new Button("Logout");
+        this.logoutButton.setOnAction(e -> {
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.start(this.menuPageWindow);
+            //MainMenu.getStage().setScene(MainMenu.getScene());
+        });
 
         /* Containers Menu Principal */
 
         // Container do Título
         VBox titleBoxContainer = new VBox(10);
         titleBoxContainer.setAlignment(Pos.CENTER);
-        titleBoxContainer.getChildren().addAll(titleLabel, welcomeMsgLabel);
+        titleBoxContainer.getChildren().addAll(this.titleLabel, this.welcomeMsgLabel);
 
         // Container dos botões centrais
         VBox mainMenuButtons = new VBox(50);
         mainMenuButtons.setAlignment(Pos.CENTER);
-        mainMenuButtons.getChildren().addAll(addContactSceneButton, covidTestSceneButton, titleBoxContainer);
+        mainMenuButtons.getChildren().addAll(this.addContactSceneButton, this.covidTestSceneButton, titleBoxContainer);
 
         // Container do botão logout
         HBox bottonMenuButtons = new HBox(20);
         bottonMenuButtons.setAlignment(Pos.BOTTOM_RIGHT);
         bottonMenuButtons.setPadding(new Insets(30, 30, 30, 30));
-        bottonMenuButtons.getChildren().add(logoutButton);
+        bottonMenuButtons.getChildren().add(this.logoutButton);
 
 
         // Border Pane Layout/**
@@ -97,7 +116,7 @@ public class MenuPage {
 
         this.mainScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
-        return this.mainScene;
+        this.menuPageWindow.setScene(this.mainScene);
+        this.menuPageWindow.show();
     }
-
 }

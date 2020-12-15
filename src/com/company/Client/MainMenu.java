@@ -1,7 +1,6 @@
 package com.company.Client;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainMenu extends Application {
@@ -23,15 +21,15 @@ public class MainMenu extends Application {
     private static final int NOTIFICATION_HEIGHT = 100;
 
     /* Stage */
-    private static Stage window;
+    private static Stage mainMenuWindow;
 
     /* Scenes */
     private static Scene mainMenuScene;
     private Scene registerMenuScene;
 
     /* Todas as outras scenes */
-    public static Scene menuPage = new MenuPage().sceneView();
-    public static Scene covidTestPage = new CovidTest().sceneView();
+    //public static Scene menuPage = new MenuPage().sceneView();
+    //public static Scene covidTestPage = new CovidTest().sceneView();
 
 
     /**
@@ -56,7 +54,7 @@ public class MainMenu extends Application {
     TextField inputPassword;
 
     public static Stage getStage() {
-        return window;
+        return mainMenuWindow;
     }
 
     public static int getSceneWidth() {
@@ -81,23 +79,34 @@ public class MainMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        window = primaryStage;
+        mainMenuWindow = primaryStage;
 
         /**
          * Scene MenuPage
          **/
         //this.menuPage = new Scene(new MenuPage().sceneView(), SCENE_WIDTH, SCENE_HEIGHT);
-        this.registerMenuScene = new Scene(new RegisterPage().sceneView(), SCENE_WIDTH, SCENE_HEIGHT);
+        //this.registerMenuScene = new Scene(new RegisterPage().sceneView(), SCENE_WIDTH, SCENE_HEIGHT);
 
         /* Botões */
         this.registerAccount = new Button("Criar uma conta");
-        this.registerAccount.setOnAction(e -> window.setScene(this.registerMenuScene));
+        this.registerAccount.setOnAction(e -> {
+            RegisterPage registerPage = new RegisterPage();
+            try {
+                registerPage.start(mainMenuWindow);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            //mainMenuWindow.setScene(this.registerMenuScene);
+        });
 
         this.loginAccount = new Button("LogIn");
         this.loginAccount.setOnAction(e -> {
-            window.hide();
-            window.setScene(this.menuPage);
-            window.show();
+            MenuPage menuPage = new MenuPage();
+            try {
+                menuPage.start(mainMenuWindow);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         /* Labels Menu Principal */
@@ -147,8 +156,8 @@ public class MainMenu extends Application {
 
         // Scene Menu Principal
         mainMenuScene = new Scene(borderPanelayout, SCENE_WIDTH, SCENE_HEIGHT);
-        window.setScene(mainMenuScene);
-        window.setTitle("Away From Me Covid");
-        window.show();
+        mainMenuWindow.setScene(mainMenuScene);
+        mainMenuWindow.setTitle("Away From Me Covid");
+        mainMenuWindow.show();
     }
 }

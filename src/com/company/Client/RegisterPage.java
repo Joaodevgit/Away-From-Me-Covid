@@ -1,7 +1,9 @@
 package com.company.Client;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -12,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class RegisterPage {
+public class RegisterPage extends Application {
 
     private Label titleContent;
     private Label textUsername;
@@ -23,7 +25,14 @@ public class RegisterPage {
     private Button register;
     private Button backMenu;
 
-    public BorderPane sceneView() {
+    private Scene registerPageScene;
+
+    private Stage registerPageWindow;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        registerPageWindow = primaryStage;
 
         //Titulo da Scene
         this.titleContent = new Label();
@@ -45,7 +54,9 @@ public class RegisterPage {
         //Botões
         this.register = new Button("Criar Conta");
         Stage mainMenuPage = MainMenu.getStage();
-        this.register.setOnAction(e -> mainMenuPage.setScene(MainMenu.getScene()));
+        this.register.setOnAction(e -> {
+            mainMenuPage.setScene(MainMenu.getScene());
+        });
 
         this.backMenu = new Button("Voltar");
         this.backMenu.setOnAction(e -> mainMenuPage.setScene(MainMenu.getScene()));
@@ -92,7 +103,11 @@ public class RegisterPage {
         borderPanelayout.setCenter(mainMenuButtons);
         borderPanelayout.setBottom(containerButton);
 
-        return borderPanelayout;
-    }
 
+
+        this.registerPageScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+
+        registerPageWindow.setScene(registerPageScene);
+        registerPageWindow.show();
+    }
 }

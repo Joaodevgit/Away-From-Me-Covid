@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,17 +12,21 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import sun.applet.Main;
 
-public class CovidTest {
+public class CovidTest extends Application {
 
     private Label sceneLabel;
     private Label descLabel;
     private Label testResultLabel;
     private Button covidTestButton;
     private Button returnMenuButton;
-    private Scene menuPage = MainMenu.menuPage;
+    //private Scene menuPage = MainMenu.menuPage;
     private Scene covidTestScene;
 
-    public Scene sceneView() {
+    private Stage covidTestWindow;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.covidTestWindow = primaryStage;
         //this.menuPage = new Scene(new MenuPage().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
         // Título da Scene
@@ -46,9 +51,15 @@ public class CovidTest {
         this.returnMenuButton = new Button("Regressar ao menu principal");
 
         this.returnMenuButton.setOnAction(e -> {
-            MainMenu.getStage().hide();
-            MainMenu.getStage().setScene(menuPage);
-            MainMenu.getStage().show();
+            MenuPage menuPage = new MenuPage();
+            try {
+                menuPage.start(this.covidTestWindow);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+//            MainMenu.getStage().hide();
+//            //MainMenu.getStage().setScene(menuPage);
+//            MainMenu.getStage().show();
         });
 
         VBox titlesContainer = new VBox(20);
@@ -66,6 +77,8 @@ public class CovidTest {
 
         this.covidTestScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
-        return this.covidTestScene;
+        this.covidTestWindow.setScene(this.covidTestScene);
+        this.covidTestWindow.show();
+
     }
 }

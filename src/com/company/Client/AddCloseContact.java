@@ -1,7 +1,9 @@
 package com.company.Client;
 
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,57 +13,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class AddCloseContact {
+public class AddCloseContact extends Application {
 
     private Label sceneLabel;
     private Label titleLabel;
     private Label descLabel;
     private Label idContact;
     private TextField idContactInput;
-    private Button addContactButton;
-    private Button returnMenuButton;
+    protected Button addContactButton;
+    protected Button returnMenuButton;
 
-    public Label getDescLabel() {
-        return descLabel;
-    }
+    private Scene addCloseContactScene;
 
-    public void setDescLabel(Label descLabel) {
-        this.descLabel = descLabel;
-    }
+    private Stage addCloseContactWindow;
 
-    public Label getIdContact() {
-        return idContact;
-    }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-    public void setIdContact(Label idContact) {
-        this.idContact = idContact;
-    }
-
-    public TextField getIdContactInput() {
-        return idContactInput;
-    }
-
-    public void setIdContactInput(TextField idContactInput) {
-        this.idContactInput = idContactInput;
-    }
-
-    public Button getAddContactButton() {
-        return addContactButton;
-    }
-
-    public void setAddContactButton(Button addContactButton) {
-        this.addContactButton = addContactButton;
-    }
-
-    public Button getReturnMenuButton() {
-        return returnMenuButton;
-    }
-
-    public void setReturnMenuButton(Button returnMenuButton) {
-        this.returnMenuButton = returnMenuButton;
-    }
-
-    public BorderPane sceneView() {
+        this.addCloseContactWindow = primaryStage;
 
         // Título da Scene
         this.sceneLabel = new Label();
@@ -93,8 +62,16 @@ public class AddCloseContact {
 
         // Botão "Regressar ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
-        Stage newStage = MainMenu.getStage();
-        this.returnMenuButton.setOnAction(e -> newStage.setScene(MainMenu.getScene()));
+        //Stage newStage = MainMenu.getStage();
+        this.returnMenuButton.setOnAction(e -> {
+            MenuPage menuPage = new MenuPage();
+            try {
+                menuPage.start(addCloseContactWindow);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            //newStage.setScene(MainMenu.getScene());
+        });
 
 
         VBox titlesContainer = new VBox(10);
@@ -103,7 +80,7 @@ public class AddCloseContact {
 
         HBox inputContainer = new HBox(10);
         inputContainer.setAlignment(Pos.CENTER);
-        inputContainer.setPadding(new Insets(0,40,40,40));
+        inputContainer.setPadding(new Insets(0, 40, 40, 40));
         inputContainer.getChildren().addAll(this.idContact, this.idContactInput);
 
         VBox contentContainer = new VBox(10);
@@ -114,6 +91,9 @@ public class AddCloseContact {
         borderPanelayout.setCenter(contentContainer);
         borderPanelayout.setTop(titlesContainer);
 
-        return borderPanelayout;
+        this.addCloseContactScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+
+        this.addCloseContactWindow.setScene(this.addCloseContactScene);
+        this.addCloseContactWindow.show();
     }
 }
