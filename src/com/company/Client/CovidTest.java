@@ -2,12 +2,14 @@ package com.company.Client;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import sun.applet.Main;
 
 public class CovidTest {
 
@@ -16,33 +18,11 @@ public class CovidTest {
     private Label testResultLabel;
     private Button covidTestButton;
     private Button returnMenuButton;
+    private Scene menuPage = MainMenu.menuPage;
+    private Scene covidTestScene;
 
-
-    public Label getTestResultLabel() {
-        return testResultLabel;
-    }
-
-    public void setTestResultLabel(Label testResultLabel) {
-        this.testResultLabel = testResultLabel;
-    }
-
-    public Button getCovidTestButton() {
-        return covidTestButton;
-    }
-
-    public void setCovidTestButton(Button covidTestButton) {
-        this.covidTestButton = covidTestButton;
-    }
-
-    public Button getReturnMenuButton() {
-        return returnMenuButton;
-    }
-
-    public void setReturnMenuButton(Button returnMenuButton) {
-        this.returnMenuButton = returnMenuButton;
-    }
-
-    public BorderPane sceneView() {
+    public Scene sceneView() {
+        //this.menuPage = new Scene(new MenuPage().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
         // Título da Scene
         this.sceneLabel = new Label();
@@ -64,8 +44,12 @@ public class CovidTest {
 
         // Botão "Regressar ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
-        Stage newStage = MainMenu.getStage();
-        this.returnMenuButton.setOnAction(e -> newStage.setScene(MainMenu.getScene()));
+
+        this.returnMenuButton.setOnAction(e -> {
+            MainMenu.getStage().hide();
+            MainMenu.getStage().setScene(menuPage);
+            MainMenu.getStage().show();
+        });
 
         VBox titlesContainer = new VBox(20);
         titlesContainer.setAlignment(Pos.CENTER);
@@ -73,13 +57,15 @@ public class CovidTest {
 
         VBox contentContainer = new VBox(20);
         contentContainer.setAlignment(Pos.CENTER);
-        contentContainer.setPadding(new Insets(0,40,40,40));
+        contentContainer.setPadding(new Insets(0, 40, 40, 40));
         contentContainer.getChildren().addAll(this.covidTestButton, this.testResultLabel, this.returnMenuButton);
 
         BorderPane borderPanelayout = new BorderPane();
         borderPanelayout.setCenter(contentContainer);
         borderPanelayout.setTop(titlesContainer);
 
-        return borderPanelayout;
+        this.covidTestScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+
+        return this.covidTestScene;
     }
 }
