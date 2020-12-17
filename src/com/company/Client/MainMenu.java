@@ -11,6 +11,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class MainMenu extends Application {
 
@@ -96,16 +105,55 @@ public class MainMenu extends Application {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            //mainMenuWindow.setScene(this.registerMenuScene);
         });
 
         this.loginAccount = new Button("LogIn");
         this.loginAccount.setOnAction(e -> {
-            MenuPage menuPage = new MenuPage();
-            try {
-                menuPage.start(mainMenuWindow);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            File file = new File("src/com/company/Data/exemplo.json");
+
+            if (file.exists()) {
+                // Caso que o ficheiro existe
+                try {
+                    JSONParser jsonParser = new JSONParser();
+                    JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                    JSONArray listUsers = (JSONArray) obj.get("Registo");
+
+                    boolean found = false;
+                    JSONObject user = null;
+
+                    String contentUsername = this.inputUsername.getText();
+                    String contentPassword = this.inputPassword.getText();
+
+                    for (int i = 0; !found && i < listUsers.size(); i++) {
+                        user = (JSONObject) listUsers.get(i);
+
+                        if (contentUsername.equals(user.get("name")) && contentPassword.equals(user.get("password")))
+                            found = true;
+                    }
+
+                    if (found) {
+                        MenuPage menuPage = new MenuPage();
+
+                        try {
+                            menuPage.start(mainMenuWindow);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("Não encontrei");
+                    }
+
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else {
+                // Caso que o ficheiro não existe
+                System.out.println("O Ficheiro não existe");
             }
         });
 

@@ -13,6 +13,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class RegisterPage extends Application {
 
@@ -29,9 +38,10 @@ public class RegisterPage extends Application {
 
     private Stage registerPageWindow;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    private ArrayList<String> listContyName;
 
+    @Override
+    public void start(Stage primaryStage) {
         registerPageWindow = primaryStage;
 
         //Titulo da Scene
@@ -51,11 +61,51 @@ public class RegisterPage extends Application {
         this.inputUsername = new TextField();
         this.inputPass = new TextField();
 
+        File file = new File("src/com/company/Data/exemplo.json");
+
+        JSONParser jsonParser = new JSONParser();
+
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONArray listCounty = (JSONArray) obj.get("Concelhos");
+
+            listContyName = new ArrayList<>();
+            JSONObject county = null;
+
+            for (int i = 0; i < listCounty.size(); i++) {
+                county = (JSONObject) listCounty.get(i);
+
+                listContyName.add(county.get("name").toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         //Botões
         this.register = new Button("Criar Conta");
         Stage mainMenuPage = MainMenu.getStage();
         this.register.setOnAction(e -> {
-            mainMenuPage.setScene(MainMenu.getScene());
+            String contentUsername = this.inputUsername.getText();
+            String contentPassword = this.inputPass.getText();
+            String contentCounty = this.comboBox.getValue();
+
+            boolean conditionRegist = false;
+
+            if (contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
+                conditionRegist = true;
+            }
+
+            if (conditionRegist) {
+                System.out.println("RESPEITO !");
+            } else {
+                System.out.println("Tenho que te ensinar tudo agora...");
+            }
+
+            //mainMenuPage.setScene(MainMenu.getScene());
         });
 
         this.backMenu = new Button("Voltar");
@@ -77,11 +127,7 @@ public class RegisterPage extends Application {
 
         this.comboBox = new ComboBox<>();
         this.comboBox.setValue("Escolha o seu concelho");
-        this.comboBox.getItems().addAll(
-                "Good Will Hunting",
-                "St. Vincent",
-                "Blackhat"
-        );
+        this.comboBox.getItems().addAll(listContyName);
 
         //this.comboBox.setPromptText("Escolha o seu concelho");
 
@@ -102,7 +148,6 @@ public class RegisterPage extends Application {
         borderPanelayout.setTop(titleContainer);
         borderPanelayout.setCenter(mainMenuButtons);
         borderPanelayout.setBottom(containerButton);
-
 
 
         this.registerPageScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
