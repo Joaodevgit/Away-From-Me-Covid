@@ -13,6 +13,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class AddCloseContact extends Application {
 
     private Label sceneLabel;
@@ -53,12 +61,34 @@ public class AddCloseContact extends Application {
         this.idContact.setText("ID Contacto: ");
         this.idContact.setFont(new Font(15));
 
+        // Botão Adicionar Contacto
+        this.addContactButton = new Button("Adicionar");
 
         // Input ID Contacto
         this.idContactInput = new TextField();
 
-        // Botão Adicionar Contacto
-        this.addContactButton = new Button("Adicionar");
+        this.addContactButton.setOnAction(e -> {
+            try {
+                Socket socket = new Socket("Asus", 2048);
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                out.println(this.idContactInput.getText());
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String closeContact;
+                if ((closeContact = in.readLine()) != null) {
+                    AlertUserBox.display("Contatos Próximos",closeContact);
+                }
+                this.idContactInput.clear();
+
+                socket.close();
+            } catch (UnknownHostException ex) {
+                System.out.println("Unknown Host.");
+                System.exit(1);
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+        });
+
 
         // Botão "Regressar ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
