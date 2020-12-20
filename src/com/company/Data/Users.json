@@ -1,0 +1,37 @@
+{
+  "Registo": [
+    {
+      "password": "qweqwe",
+      "isInfected": false,
+      "name": "Paulo",
+      "county": "Felgueiras",
+      "id": 0
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": false,
+      "name": "JT",
+      "county": "Lousada",
+      "id": 1
+    },
+    {
+      "password": "awdawd",
+      "isInfected": false,
+      "name": "Mari",
+      "county": "Felgueiras",
+      "id": 2
+    }
+  ],
+  "Concelhos": [
+    {
+      "ip": "10.10.10.1",
+      "name": "Felgueiras",
+      "infectedTot": -1
+    },
+    {
+      "ip": "10.10.10.2",
+      "name": "Lousada",
+      "infectedTot": 10
+    }
+  ]
+}

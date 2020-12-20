@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -61,7 +62,7 @@ public class RegisterPage extends Application {
         this.inputUsername = new TextField();
         this.inputPass = new TextField();
 
-        File file = new File("src/com/company/Data/exemplo.json");
+        File file = new File("src/com/company/Data/Users.json");
 
         JSONParser jsonParser = new JSONParser();
 
@@ -101,11 +102,66 @@ public class RegisterPage extends Application {
 
             if (conditionRegist) {
                 System.out.println("RESPEITO !");
+
+                this.inputUsername.setText("");
+                this.inputPass.setText("");
+
+                try {
+                    JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                    JSONArray registerlist = (JSONArray) obj.get("Registo");
+
+                    boolean isExist = false;
+
+                    for (int i = 0; !isExist && i < registerlist.size(); i++) {
+                        JSONObject register = (JSONObject) registerlist.get(i);
+
+                        if (register.get("name").equals(contentUsername) &&
+                                register.get("password").equals(contentPassword))
+                            isExist = true;
+                    }
+
+                    if (!isExist) {
+                        JSONObject newRegister = new JSONObject();
+
+                        System.out.println("TAM: " + registerlist.size());
+
+                        newRegister.put("id", registerlist.size());
+                        newRegister.put("name", contentUsername);
+                        newRegister.put("password", contentPassword);
+                        newRegister.put("county", contentCounty);
+                        newRegister.put("isInfected", false);
+
+                        registerlist.add(newRegister);
+
+                        JSONArray county = (JSONArray) obj.get("Concelhos");
+
+                        JSONObject obgWrite = new JSONObject();
+
+                        obgWrite.put("Registo", registerlist);
+                        obgWrite.put("Concelhos", county);
+
+                        FileWriter fileWriter = new FileWriter(file.getPath());
+
+                        fileWriter.write(obgWrite.toJSONString());
+
+                        fileWriter.close();
+
+                        mainMenuPage.setScene(MainMenu.getScene());
+                    } else {
+                        System.out.println("Conta já existente");
+                    }
+
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
             } else {
                 System.out.println("Tenho que te ensinar tudo agora...");
             }
 
-            //mainMenuPage.setScene(MainMenu.getScene());
         });
 
         this.backMenu = new Button("Voltar");

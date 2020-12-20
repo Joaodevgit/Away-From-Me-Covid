@@ -109,7 +109,7 @@ public class MainMenu extends Application {
 
         this.loginAccount = new Button("LogIn");
         this.loginAccount.setOnAction(e -> {
-            File file = new File("src/com/company/Data/exemplo.json");
+            File file = new File("src/com/company/Data/Users.json");
 
             if (file.exists()) {
                 // Caso que o ficheiro existe
@@ -133,6 +133,9 @@ public class MainMenu extends Application {
                     }
 
                     if (found) {
+                        this.inputUsername.setText("");
+                        this.textPassword.setText("");
+
                         MenuPage menuPage = new MenuPage();
 
                         try {
@@ -141,7 +144,7 @@ public class MainMenu extends Application {
                             ex.printStackTrace();
                         }
                     } else {
-                        System.out.println("Não encontrei");
+                        System.out.println("Utilizador não existente");
                     }
 
                 } catch (ParseException parseException) {
