@@ -35,6 +35,9 @@ public class AddCloseContact extends Application {
 
     private Stage addCloseContactWindow;
 
+    BufferedReader in;
+    PrintWriter out;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -70,15 +73,15 @@ public class AddCloseContact extends Application {
         this.addContactButton.setOnAction(e -> {
             try {
                 Socket socket = new Socket("Asus", 2048);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                out.println(this.idContactInput.getText());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                this.out = new PrintWriter(socket.getOutputStream(), true);
+                //this.out.println("BOTÃO ADIÇÃO CONTATO");
+                this.out.println(this.idContactInput.getText());
+                this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String closeContact;
                 if ((closeContact = in.readLine()) != null) {
-                    AlertUserBox.display("Contatos Próximos",closeContact);
+                    AlertUserBox.display("Contatos Próximos", closeContact);
                 }
                 this.idContactInput.clear();
-
                 socket.close();
             } catch (UnknownHostException ex) {
                 System.out.println("Unknown Host.");
