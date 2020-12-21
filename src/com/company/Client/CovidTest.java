@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import com.company.CentralNode;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,7 +11,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sun.applet.Main;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class CovidTest extends Application {
 
@@ -19,15 +26,15 @@ public class CovidTest extends Application {
     private Label testResultLabel;
     private Button covidTestButton;
     private Button returnMenuButton;
-    //private Scene menuPage = MainMenu.menuPage;
     private Scene covidTestScene;
 
     private Stage covidTestWindow;
+    private BufferedReader in;
+    private PrintWriter out;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.covidTestWindow = primaryStage;
-        //this.menuPage = new Scene(new MenuPage().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
         // Título da Scene
         this.sceneLabel = new Label();
@@ -45,8 +52,21 @@ public class CovidTest extends Application {
         this.testResultLabel.setFont(new Font(15));
 
         // Botão "Fazer Teste"
-        covidTestButton = new Button("Fazer Teste");
-
+        this.covidTestButton = new Button("Fazer Teste");
+        Socket socket = new Socket("Asus", 2048);
+        this.covidTestButton.setOnAction(e -> {
+            try {
+                out = new PrintWriter(socket.getOutputStream(), true);
+                out.println("BOTÃO COVID");
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String serverMsg;
+                if (((serverMsg = in.readLine()) != null)) {
+                    AlertUserBox.display("Resultado Teste Covid", serverMsg);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         // Botão "Regressar ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
 
@@ -57,9 +77,6 @@ public class CovidTest extends Application {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-//            MainMenu.getStage().hide();
-//            //MainMenu.getStage().setScene(menuPage);
-//            MainMenu.getStage().show();
         });
 
         VBox titlesContainer = new VBox(20);

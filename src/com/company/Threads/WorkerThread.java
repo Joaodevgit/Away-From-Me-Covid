@@ -1,4 +1,6 @@
-package com.company.Server;
+package com.company.Threads;
+
+import com.company.Client.CentralNodesInstructions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,7 @@ public class WorkerThread extends Thread {
     ArrayList<WorkerThread> clients;
     PrintWriter out;
     BufferedReader in;
+    CentralNodesInstructions centralNodesInstructions;
 
 
     public WorkerThread(Socket clientSocket, ArrayList<WorkerThread> clients) throws IOException {
@@ -23,19 +26,19 @@ public class WorkerThread extends Thread {
         this.clients = clients;
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        this.centralNodesInstructions = new CentralNodesInstructions();
     }
 
 
     public void run() {
         try {
             String inputLine;
-            if ((inputLine = in.readLine()) != null) {
-                //sendMessageToAllClients(inputLine, clientSocket);
+            while ((inputLine = in.readLine()) != null) {
                 System.out.println("Client " + clientSocket.getRemoteSocketAddress().toString() + " Response: " + inputLine);
-                out.println("Contacto" + inputLine + " adicionado com sucesso!");
-//                if (inputLine.equals("Bye"))
-//                    break;
-
+                System.out.println("Resposta do nó central" + this.centralNodesInstructions.setInstruction(clientSocket, inputLine));
+                out.println(this.centralNodesInstructions.setInstruction(clientSocket, inputLine));
+                if (inputLine.equals("Bye"))
+                    break;
             }
             out.close();
             in.close();
