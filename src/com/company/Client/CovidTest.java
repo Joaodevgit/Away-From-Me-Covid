@@ -12,12 +12,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 
 public class CovidTest extends Application {
 
@@ -92,7 +94,7 @@ public class CovidTest extends Application {
         borderPanelayout.setCenter(contentContainer);
         borderPanelayout.setTop(titlesContainer);
 
-        this.covidTestScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+        this.covidTestScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 
         this.covidTestWindow.setScene(this.covidTestScene);
         this.covidTestWindow.show();

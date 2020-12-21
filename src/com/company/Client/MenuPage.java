@@ -84,8 +84,8 @@ public class MenuPage extends Application {
         // Botão Logout
         this.logoutButton = new Button("Logout");
         this.logoutButton.setOnAction(e -> {
-            MainMenu mainMenu = new MainMenu();
-            mainMenu.start(this.menuPageWindow);
+            LoginMenu loginMenu = new LoginMenu();
+            loginMenu.start(this.menuPageWindow);
             //MainMenu.getStage().setScene(MainMenu.getScene());
         });
 
@@ -114,7 +114,7 @@ public class MenuPage extends Application {
         borderPanelayout.setBottom(bottonMenuButtons);
         borderPanelayout.setTop(titleBoxContainer);
 
-        this.mainScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+        this.mainScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 
         this.menuPageWindow.setScene(this.mainScene);
         this.menuPageWindow.show();
