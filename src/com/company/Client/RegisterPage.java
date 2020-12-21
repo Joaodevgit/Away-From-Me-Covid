@@ -88,7 +88,7 @@ public class RegisterPage extends Application {
 
         //Botões
         this.register = new Button("Criar Conta");
-        Stage mainMenuPage = MainMenu.getStage();
+        Stage mainMenuPage = LoginMenu.getStage();
         this.register.setOnAction(e -> {
             String contentUsername = this.inputUsername.getText();
             String contentPassword = this.inputPass.getText();
@@ -116,8 +116,7 @@ public class RegisterPage extends Application {
                     for (int i = 0; !isExist && i < registerlist.size(); i++) {
                         JSONObject register = (JSONObject) registerlist.get(i);
 
-                        if (register.get("name").equals(contentUsername) &&
-                                register.get("password").equals(contentPassword))
+                        if (register.get("name").equals(contentUsername))
                             isExist = true;
                     }
 
@@ -147,9 +146,9 @@ public class RegisterPage extends Application {
 
                         fileWriter.close();
 
-                        mainMenuPage.setScene(MainMenu.getScene());
+                        mainMenuPage.setScene(LoginMenu.getScene());
                     } else {
-                        System.out.println("Conta já existente");
+                        AlertUserBox.display("Registo", "Conta já existente");
                     }
 
                 } catch (IOException ioException) {
@@ -159,13 +158,13 @@ public class RegisterPage extends Application {
                 }
 
             } else {
-                System.out.println("Tenho que te ensinar tudo agora...");
+                AlertUserBox.display("Registo", "Não respeita as condições para se registar");
             }
 
         });
 
         this.backMenu = new Button("Voltar");
-        this.backMenu.setOnAction(e -> mainMenuPage.setScene(MainMenu.getScene()));
+        this.backMenu.setOnAction(e -> mainMenuPage.setScene(LoginMenu.getScene()));
 
         //Container do titulo
         VBox titleContainer = new VBox(10);
@@ -206,7 +205,7 @@ public class RegisterPage extends Application {
         borderPanelayout.setBottom(containerButton);
 
 
-        this.registerPageScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+        this.registerPageScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 
         registerPageWindow.setScene(registerPageScene);
         registerPageWindow.show();

@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sun.applet.Main;
 
 public class CovidTest extends Application {
 
@@ -75,7 +74,7 @@ public class CovidTest extends Application {
         borderPanelayout.setCenter(contentContainer);
         borderPanelayout.setTop(titlesContainer);
 
-        this.covidTestScene = new Scene(borderPanelayout, MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
+        this.covidTestScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 
         this.covidTestWindow.setScene(this.covidTestScene);
         this.covidTestWindow.show();

@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MainMenu extends Application {
+public class LoginMenu extends Application {
 
     /* Variáveis Constantes */
     private static final int SCENE_WIDTH = 500;
@@ -144,7 +144,8 @@ public class MainMenu extends Application {
                             ex.printStackTrace();
                         }
                     } else {
-                        System.out.println("Utilizador não existente");
+                        System.out.println();
+                        AlertUserBox.display("LogIn", "Utilizador não existente");
                     }
 
                 } catch (ParseException parseException) {
