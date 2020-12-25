@@ -1,6 +1,8 @@
 package com.company.Server;
 
+import com.company.Models.Client;
 import com.company.Threads.WorkerThread;
+import com.google.gson.Gson;
 
 import java.net.*;
 import java.io.*;
@@ -8,7 +10,8 @@ import java.util.ArrayList;
 
 public class Server {
 
-    private static ArrayList<WorkerThread> clients = new ArrayList<>();
+    private static ArrayList<WorkerThread> clientsConnected = new ArrayList<>();
+    protected static ArrayList<Client> clientsList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
 
@@ -26,9 +29,11 @@ public class Server {
         while (listening) {
             System.out.println("[SERVER] Waiting for a new client connection...");
             Socket client = serverSocket.accept();
-            System.out.println("[SERVER] Client "+ client.getRemoteSocketAddress().toString() + " has connected!");
-            WorkerThread clientThread = new WorkerThread(client,clients);
-            clients.add(clientThread);
+            System.out.println("[SERVER] Client " + client.getRemoteSocketAddress().toString() + " has connected!");
+
+            WorkerThread clientThread = new WorkerThread(client, clientsList);
+            clientsConnected.add(clientThread);
+            //clientsList.add(clientSend);
             clientThread.start();
         }
 

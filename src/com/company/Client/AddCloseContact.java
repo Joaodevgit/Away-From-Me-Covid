@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import com.company.Models.Client;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,12 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,9 +36,16 @@ public class AddCloseContact extends Application {
     private Stage addCloseContactWindow;
     private ArrayList<String> listUserName;
     private ComboBox<String> comboBox;
+    private Socket socket;
 
     BufferedReader in;
     PrintWriter out;
+    private Client client;
+
+    public AddCloseContact(Socket socket, Client client) {
+        this.socket = socket;
+        this.client = client;
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -94,7 +100,7 @@ public class AddCloseContact extends Application {
 
         // Input ID Contacto
         this.idContactInput = new Label();
-        Socket socket = new Socket("Asus", 2048);
+        //Socket socket = new Socket("Asus", 2048);
         this.addContactButton.setOnAction(e -> {
             try {
                 if (this.idContactInput.getText() != "") {
@@ -106,7 +112,7 @@ public class AddCloseContact extends Application {
                     if ((closeContact = in.readLine()) != null) {
                         AlertUserBox.display("Contatos Próximos", closeContact);
                     }
-                }else{
+                } else {
                     AlertUserBox.display("Contatos Próximos", "Adicione um contato primeiro!");
                 }
             } catch (UnknownHostException ex) {
@@ -149,7 +155,12 @@ public class AddCloseContact extends Application {
         this.returnMenuButton = new Button("Regressar ao menu principal");
         //Stage newStage = MainMenu.getStage();
         this.returnMenuButton.setOnAction(e -> {
-            MenuPage menuPage = new MenuPage();
+            MenuPage menuPage = null;
+            try {
+                menuPage = new MenuPage(socket, this.client);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             try {
                 menuPage.start(addCloseContactWindow);
             } catch (Exception ex) {

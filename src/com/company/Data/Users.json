@@ -13,13 +13,6 @@
       "name": "JT",
       "county": "Lousada",
       "id": 1
-    },
-    {
-      "password": "awdawd",
-      "isInfected": false,
-      "name": "Mari",
-      "county": "Felgueiras",
-      "id": 2
     }
   ],
   "Concelhos": [

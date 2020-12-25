@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import com.company.Models.Client;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,10 +17,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 
 public class LoginMenu extends Application {
 
@@ -136,7 +135,14 @@ public class LoginMenu extends Application {
                         this.inputUsername.setText("");
                         this.textPassword.setText("");
 
-                        MenuPage menuPage = new MenuPage();
+                        Socket socket = new Socket("localhost", 2048);
+
+                        Client client = new Client(((Long) user.get("id")).intValue(),
+                                user.get("name").toString(),
+                                Boolean.parseBoolean(user.get("isInfected").toString()),
+                                user.get("county").toString());
+
+                        MenuPage menuPage = new MenuPage(socket, client);
 
                         try {
                             menuPage.start(mainMenuWindow);

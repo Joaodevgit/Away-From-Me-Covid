@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import com.company.Models.Client;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class MenuPage extends Application {
     /**
@@ -33,6 +37,14 @@ public class MenuPage extends Application {
     private Scene mainScene;
 
     private Stage menuPageWindow;
+    private Socket socket;
+    private Client client;
+
+    public MenuPage(Socket socket, Client name) throws IOException {
+        this.socket = socket;
+        this.client = name;
+        System.out.println(this.client);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -59,7 +71,7 @@ public class MenuPage extends Application {
         this.addContactSceneButton = new Button("Adicionar contato(s) próximo(s)");
 
         this.addContactSceneButton.setOnAction(event -> {
-            AddCloseContact addCloseContact = new AddCloseContact();
+            AddCloseContact addCloseContact = new AddCloseContact(this.socket, this.client);
             try {
                 addCloseContact.start(this.menuPageWindow);
             } catch (Exception e) {
@@ -72,7 +84,8 @@ public class MenuPage extends Application {
         this.covidTestSceneButton = new Button("Teste Covid-19");
 
         this.covidTestSceneButton.setOnAction(event -> {
-            CovidTest covidTest = new CovidTest();
+            CovidTest covidTest = new CovidTest(socket, this.client);
+
             try {
                 covidTest.start(this.menuPageWindow);
             } catch (Exception e) {

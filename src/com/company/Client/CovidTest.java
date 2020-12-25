@@ -1,6 +1,6 @@
 package com.company.Client;
 
-import com.company.CentralNode;
+import com.company.Models.Client;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,6 +33,13 @@ public class CovidTest extends Application {
     private Stage covidTestWindow;
     private BufferedReader in;
     private PrintWriter out;
+    private Socket socket;
+    private Client client;
+
+    public CovidTest(Socket socket, Client client) {
+        this.socket = socket;
+        this.client = client;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -55,12 +62,14 @@ public class CovidTest extends Application {
 
         // Botão "Fazer Teste"
         this.covidTestButton = new Button("Fazer Teste");
-        Socket socket = new Socket("Asus", 2048);
+
         this.covidTestButton.setOnAction(e -> {
             try {
                 out = new PrintWriter(socket.getOutputStream(), true);
-                out.println("BOTÃO COVID");
+                this.client.setCommand("BOTÃO COVID");
+                out.println(this.client.toString());
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
                 String serverMsg;
                 if ((serverMsg = in.readLine()) != null) {
                     AlertUserBox.display("Resultado Teste Covid", serverMsg);
@@ -79,7 +88,12 @@ public class CovidTest extends Application {
         this.returnMenuButton = new Button("Regressar ao menu principal");
 
         this.returnMenuButton.setOnAction(e -> {
-            MenuPage menuPage = new MenuPage();
+            MenuPage menuPage = null;
+            try {
+                menuPage = new MenuPage(socket, client);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             try {
                 menuPage.start(this.covidTestWindow);
             } catch (Exception ex) {
