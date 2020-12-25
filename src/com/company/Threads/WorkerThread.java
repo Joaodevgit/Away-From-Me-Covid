@@ -34,8 +34,8 @@ public class WorkerThread extends Thread {
         try {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Client " + clientSocket.getRemoteSocketAddress().toString() + " Response: " + inputLine);
-                System.out.println("Resposta do nó central" + this.centralNodesInstructions.setInstruction(clientSocket, inputLine));
+                System.out.println("Resposta do cliente " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
+                System.out.println("Resposta do nó central: " + this.centralNodesInstructions.setInstruction(clientSocket, inputLine));
                 out.println(this.centralNodesInstructions.setInstruction(clientSocket, inputLine));
                 if (inputLine.equals("Bye"))
                     break;

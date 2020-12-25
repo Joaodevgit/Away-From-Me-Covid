@@ -42,7 +42,7 @@ public class AddCloseContact extends Application {
     PrintWriter out;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
 
         this.addCloseContactWindow = primaryStage;
 
@@ -94,31 +94,27 @@ public class AddCloseContact extends Application {
 
         // Input ID Contacto
         this.idContactInput = new Label();
-
+        Socket socket = new Socket("Asus", 2048);
         this.addContactButton.setOnAction(e -> {
             try {
-                Socket socket = new Socket("Asus", 2048);
-                this.out = new PrintWriter(socket.getOutputStream(), true);
-                //this.out.println("BOTÃO ADIÇÃO CONTATO");
-                this.out.println(this.idContactInput.getText());
-                this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String closeContact;
+                if (this.idContactInput.getText() != "") {
+                    this.out = new PrintWriter(socket.getOutputStream(), true);
+                    this.out.println(this.idContactInput.getText());
+                    this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    String closeContact;
 
-                if ((closeContact = in.readLine()) != null) {
-                    AlertUserBox.display("Contatos Próximos", closeContact);
+                    if ((closeContact = in.readLine()) != null) {
+                        AlertUserBox.display("Contatos Próximos", closeContact);
+                    }
+                }else{
+                    AlertUserBox.display("Contatos Próximos", "Adicione um contato primeiro!");
                 }
-
-//
-//                this.idContactInput.clear();
-
-                socket.close();
             } catch (UnknownHostException ex) {
                 System.out.println("Unknown Host.");
                 System.exit(1);
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
-
         });
 
         this.contact = new Label();

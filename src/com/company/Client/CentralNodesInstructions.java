@@ -13,13 +13,29 @@ public class CentralNodesInstructions {
 
     public String setInstruction(Socket clientSocket, String serverMsg) {
         String msg = serverMsg;
-        switch (msg) {
-            case "BOTÃO COVID":
-                msg = centralNode.testCovid(clientSocket);
-                break;
-//            case "BOTÃO ADIÇÃO CONTATO":
-//                msg = centralNode.addCloseContacts(clientSocket);
+//        if (Integer.parseInt(msg.split(";")[0]) > 47 && Integer.parseInt(msg.split(";")[0]) < 58) {
+//            msg = centralNode.addCloseContact(clientSocket, msg);
+        if (isNumeric(msg.split(";")[0])) {
+            msg = centralNode.addCloseContact(clientSocket, msg);
+        } else {
+            switch (msg) {
+                case "BOTÃO COVID":
+                    msg = centralNode.testCovid(clientSocket);
+                    break;
+            }
         }
         return msg;
+    }
+
+    private boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }

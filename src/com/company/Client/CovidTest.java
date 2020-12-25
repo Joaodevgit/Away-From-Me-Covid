@@ -62,11 +62,17 @@ public class CovidTest extends Application {
                 out.println("BOTÃO COVID");
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String serverMsg;
-                if (((serverMsg = in.readLine()) != null)) {
+                if ((serverMsg = in.readLine()) != null) {
                     AlertUserBox.display("Resultado Teste Covid", serverMsg);
+                    if (serverMsg.contains("positivo")) {
+                        this.covidTestButton.setDisable(true);
+                    }
                 }
+            } catch (UnknownHostException ex) {
+                System.out.println("Unknown Host.");
+                System.exit(1);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         });
         // Botão "Regressar ao Menu Principal
