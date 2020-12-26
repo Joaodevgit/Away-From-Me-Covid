@@ -13,7 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MenuPage extends Application {
@@ -38,6 +41,8 @@ public class MenuPage extends Application {
 
     private Stage menuPageWindow;
     private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
     private Client client;
 
     public MenuPage(Socket socket, Client name) throws IOException {
@@ -47,8 +52,32 @@ public class MenuPage extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.menuPageWindow = primaryStage;
+
+        // Method called when the user presses "X" on window
+        this.menuPageWindow.setOnCloseRequest(e -> {
+            e.consume();
+
+            try {
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                this.client.setCommand("LOGOUT");
+                out.println(this.client.toString());
+
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                String serverMsg;
+                if ((serverMsg = in.readLine()) != null) {
+                    AlertUserBox.display("Recomendação", serverMsg);
+                }
+
+                menuPageWindow.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        });
 
         //this.addContactScene = new Scene(new AddCloseContact().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
 
@@ -70,15 +99,19 @@ public class MenuPage extends Application {
         // Botão de acesso à scene de adicionar contatos próximos
         this.addContactSceneButton = new Button("Adicionar contato(s) próximo(s)");
 
-        this.addContactSceneButton.setOnAction(event -> {
-            AddCloseContact addCloseContact = new AddCloseContact(this.socket, this.client);
-            try {
-                addCloseContact.start(this.menuPageWindow);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //MainMenu.setScene(addContactScene);
-        });
+        if (!this.client.isInfected()) {
+            this.addContactSceneButton.setDisable(true);
+        } else {
+            this.addContactSceneButton.setOnAction(event -> {
+                AddCloseContact addCloseContact = new AddCloseContact(this.socket, this.client);
+                try {
+                    addCloseContact.start(this.menuPageWindow);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //MainMenu.setScene(addContactScene);
+            });
+        }
 
         // Botão de acesso à scene do teste de covid-19
         this.covidTestSceneButton = new Button("Teste Covid-19");

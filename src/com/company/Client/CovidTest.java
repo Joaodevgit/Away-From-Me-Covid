@@ -42,7 +42,7 @@ public class CovidTest extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.covidTestWindow = primaryStage;
 
         // Título da Scene
@@ -63,27 +63,33 @@ public class CovidTest extends Application {
         // Botão "Fazer Teste"
         this.covidTestButton = new Button("Fazer Teste");
 
-        this.covidTestButton.setOnAction(e -> {
-            try {
-                out = new PrintWriter(socket.getOutputStream(), true);
-                this.client.setCommand("BOTÃO COVID");
-                out.println(this.client.toString());
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        if (!this.client.isInfected()) {
+            this.covidTestButton.setOnAction(e -> {
+                try {
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    this.client.setCommand("BOTÃO COVID");
+                    out.println(this.client.toString());
+                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                String serverMsg;
-                if ((serverMsg = in.readLine()) != null) {
-                    AlertUserBox.display("Resultado Teste Covid", serverMsg);
-                    if (serverMsg.contains("positivo")) {
-                        this.covidTestButton.setDisable(true);
+                    String serverMsg;
+                    if ((serverMsg = in.readLine()) != null) {
+                        AlertUserBox.display("Resultado Teste Covid", serverMsg);
+                        if (serverMsg.contains("positivo")) {
+                            this.covidTestButton.setDisable(true);
+                            this.client.setInfected(true);
+                        }
                     }
+                } catch (UnknownHostException ex) {
+                    System.out.println("Unknown Host.");
+                    System.exit(1);
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
                 }
-            } catch (UnknownHostException ex) {
-                System.out.println("Unknown Host.");
-                System.exit(1);
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        });
+            });
+        } else {
+            this.covidTestButton.setDisable(true);
+        }
+
         // Botão "Regressar ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
 

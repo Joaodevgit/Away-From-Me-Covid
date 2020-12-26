@@ -2,7 +2,7 @@
   "Registo": [
     {
       "password": "qweqwe",
-      "isInfected": false,
+      "isInfected": true,
       "name": "Paulo",
       "county": "Felgueiras",
       "id": 0

@@ -48,7 +48,7 @@ public class AddCloseContact extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
 
         this.addCloseContactWindow = primaryStage;
 

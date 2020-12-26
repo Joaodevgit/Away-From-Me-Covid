@@ -3,9 +3,6 @@ package com.company.Server;
 import com.company.Models.Client;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class CentralNodesInstructions {
@@ -32,6 +29,10 @@ public class CentralNodesInstructions {
         switch (client.getCommand()) {
             case "BOTÃO COVID":
                 msg = centralNode.testCovid(clientSocket);
+                break;
+
+            case "LOGOUT":
+                msg = this.centralNode.saveUserInfo(clientSocket,client);
                 break;
         }
 //        }
