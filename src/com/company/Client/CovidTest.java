@@ -45,6 +45,30 @@ public class CovidTest extends Application {
     public void start(Stage primaryStage) {
         this.covidTestWindow = primaryStage;
 
+        // Method called when the user presses "X" on window
+        this.covidTestWindow.setOnCloseRequest(e -> {
+            e.consume();
+
+            try {
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                this.client.setCommand("LOGOUT");
+                out.println(this.client.toString());
+
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                String serverMsg;
+                if ((serverMsg = in.readLine()) != null) {
+                    AlertUserBox.display("Recomendação", serverMsg);
+                }
+
+                covidTestWindow.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        });
+
         // Título da Scene
         this.sceneLabel = new Label();
         this.sceneLabel.setText("TESTE COVID-19");

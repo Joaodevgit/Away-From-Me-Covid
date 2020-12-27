@@ -7,6 +7,7 @@ public class Client {
     private boolean isInfected;
     private String county;
     private String command;
+    private String listContact;
 
     public Client(int id, String name, boolean isInfected, String county) {
         this.id = id;
@@ -14,6 +15,7 @@ public class Client {
         this.isInfected = isInfected;
         this.county = county;
         this.command = "";
+        this.listContact = "";
     }
 
     public int getId() {
@@ -56,6 +58,14 @@ public class Client {
         this.command = command;
     }
 
+    public String getListContact() {
+        return listContact;
+    }
+
+    public void setListContact(String listContact) {
+        this.listContact = listContact;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -64,6 +74,7 @@ public class Client {
                 ", isInfected=" + isInfected +
                 ", county='" + county + '\'' +
                 ", command='" + command + '\'' +
+                ", listContact='" + listContact + '\'' +
                 '}';
     }
 }

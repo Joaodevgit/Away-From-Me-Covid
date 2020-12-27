@@ -1,5 +1,6 @@
 package com.company.Client;
 
+import com.company.Models.Client;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,10 +19,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class RegisterPage extends Application {
@@ -44,6 +43,15 @@ public class RegisterPage extends Application {
     @Override
     public void start(Stage primaryStage) {
         registerPageWindow = primaryStage;
+
+        // Method called when the user presses "X" on window
+        this.registerPageWindow.setOnCloseRequest(e -> {
+            e.consume();
+
+            AlertUserBox.display("Recomendação", "Siga as recomendações da DGS e fique em casa !");
+
+            registerPageWindow.close();
+        });
 
         //Titulo da Scene
         this.titleContent = new Label();

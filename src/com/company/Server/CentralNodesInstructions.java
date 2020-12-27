@@ -4,6 +4,7 @@ import com.company.Models.Client;
 import com.google.gson.Gson;
 
 import java.net.Socket;
+import java.util.regex.Pattern;
 
 public class CentralNodesInstructions {
 
@@ -12,42 +13,28 @@ public class CentralNodesInstructions {
     public String setInstruction(Socket clientSocket, String serverMsg) {
         String msg = null;
 
-        System.out.println("Server message: " + serverMsg);
-
-//            System.out.println(contentMessage);
         Gson gson = new Gson();
         Client client = gson.fromJson(serverMsg, Client.class);
 
-        System.out.println("Cheguei: " + client.toString());
-
-
-//        if (Integer.parseInt(msg.split(";")[0]) > 47 && Integer.parseInt(msg.split(";")[0]) < 58) {
-//            msg = centralNode.addCloseContact(clientSocket, msg);
-//        if (isNumeric(msg.split(";")[0])) {
-//            msg = centralNode.addCloseContact(clientSocket, msg);
-//        } else {
         switch (client.getCommand()) {
+            case "LOGOUT":
+                msg = this.centralNode.saveUserInfo(clientSocket, client);
+                break;
+
             case "BOTÃO COVID":
                 msg = centralNode.testCovid(clientSocket);
                 break;
 
-            case "LOGOUT":
-                msg = this.centralNode.saveUserInfo(clientSocket,client);
+            case "ADICIONAR CONTACTOS":
+                if (Pattern.matches("^[0-9]+(;[0-9]+)*$", client.getListContact())) {
+                    msg = centralNode.addCloseContact(clientSocket, client.getListContact());
+                } else {
+                    msg = "Introdução de Id's inválida";
+                }
                 break;
         }
-//        }
+
         return msg;
     }
 
-    private boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-        try {
-            Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
 }

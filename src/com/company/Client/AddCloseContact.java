@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,12 +30,12 @@ public class AddCloseContact extends Application {
     private Label titleLabel;
     private Label descLabel;
     private Label contact;
-    private Label idContactInput;
+    private TextField idContactInput;
     protected Button addContactButton;
     protected Button returnMenuButton;
     private Scene addCloseContactScene;
     private Stage addCloseContactWindow;
-    private ArrayList<String> listUserName;
+    private ArrayList<String> listUserId;
     private ComboBox<String> comboBox;
     private Socket socket;
 
@@ -52,6 +53,30 @@ public class AddCloseContact extends Application {
 
         this.addCloseContactWindow = primaryStage;
 
+        // Method called when the user presses "X" on window
+        this.addCloseContactWindow.setOnCloseRequest(e -> {
+            e.consume();
+
+            try {
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                this.client.setCommand("LOGOUT");
+                out.println(this.client.toString());
+
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                String serverMsg;
+                if ((serverMsg = in.readLine()) != null) {
+                    AlertUserBox.display("Recomendação", serverMsg);
+                }
+
+                addCloseContactWindow.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        });
+
         File file = new File("src/com/company/Data/Users.json");
 
         JSONParser jsonParser = new JSONParser();
@@ -61,17 +86,17 @@ public class AddCloseContact extends Application {
 
             JSONArray listCounty = (JSONArray) obj.get("Registo");
 
-            this.listUserName = new ArrayList<>();
+            this.listUserId = new ArrayList<>();
             JSONObject county;
-            int idPerson;
-            String namePerson;
+            String idPerson;
 
             for (int i = 0; i < listCounty.size(); i++) {
                 county = (JSONObject) listCounty.get(i);
 
-                namePerson = county.get("name").toString();
-
-                listUserName.add(namePerson);
+                if (!(((Long) county.get("id")).intValue() == (this.client.getId()))) {
+                    idPerson = county.get("id").toString();
+                    listUserId.add(idPerson);
+                }
             }
 
         } catch (IOException e) {
@@ -92,20 +117,24 @@ public class AddCloseContact extends Application {
 
         // Resumo
         this.descLabel = new Label();
-        this.descLabel.setText("Se pretender adicionar vários contatos, separe os id's por virgulas.");
+        this.descLabel.setText("Se pretender adicionar vários contatos, separe os id's por \";\".");
         this.descLabel.setFont(new Font(17));
 
         // Botão Adicionar Contacto
         this.addContactButton = new Button("Adicionar");
 
         // Input ID Contacto
-        this.idContactInput = new Label();
+        this.idContactInput = new TextField();
         //Socket socket = new Socket("Asus", 2048);
         this.addContactButton.setOnAction(e -> {
             try {
                 if (this.idContactInput.getText() != "") {
+
+                    this.client.setCommand("ADICIONAR CONTACTOS");
+                    this.client.setListContact(this.idContactInput.getText());
+
                     this.out = new PrintWriter(socket.getOutputStream(), true);
-                    this.out.println(this.idContactInput.getText());
+                    this.out.println(this.client.toString());
                     this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String closeContact;
 
@@ -129,15 +158,15 @@ public class AddCloseContact extends Application {
         // ComboBox de Pessoas registado
         this.comboBox = new ComboBox<>();
         this.comboBox.setValue("Escolha as pessoas");
-        this.comboBox.getItems().addAll(listUserName);
+        this.comboBox.getItems().addAll(listUserId);
 
         // Click on a item from combobox
         this.comboBox.setOnAction(e -> {
             System.out.println("User selected: " + comboBox.getValue());
 
-            System.out.println(this.comboBox.getSelectionModel().getSelectedIndex());
+            System.out.println(this.comboBox.getSelectionModel().getSelectedItem());
 
-            String idPerson = String.valueOf(this.comboBox.getSelectionModel().getSelectedIndex());
+            String idPerson = String.valueOf(this.comboBox.getSelectionModel().getSelectedItem());
 
             String content = this.idContactInput.getText();
 
