@@ -142,10 +142,21 @@ public class LoginMenu extends Application {
                                 Boolean.parseBoolean(user.get("isInfected").toString()),
                                 user.get("county").toString());
 
+                        client.setCommand("LOGIN");
+
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        out.println(client.toString());
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        String startThreadNotification;
+
                         MenuPage menuPage = new MenuPage(socket, client);
 
                         try {
                             menuPage.start(mainMenuWindow);
+
+                            if ((startThreadNotification = in.readLine()) != null) {
+                                AlertUserBox.display("Bem vindo", startThreadNotification);
+                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

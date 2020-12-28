@@ -1,17 +1,14 @@
 package com.company.Server;
 
 import com.company.Models.Client;
-import com.company.Threads.WorkerThread;
-import com.google.gson.Gson;
 
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
 
 public class Server {
 
-    private static ArrayList<WorkerThread> clientsConnected = new ArrayList<>();
-    protected static ArrayList<Client> clientsList = new ArrayList<>();
+    private static SynchronizedArrayList<WorkerThread> clientsConnected = new SynchronizedArrayList<>();
+    protected static SynchronizedArrayList<Client> clientsList = new SynchronizedArrayList<>();
 
     public static void main(String[] args) throws IOException {
 
@@ -31,7 +28,7 @@ public class Server {
             Socket client = serverSocket.accept();
             System.out.println("[SERVER] Client " + client.getRemoteSocketAddress().toString() + " has connected!");
 
-            WorkerThread clientThread = new WorkerThread(client, clientsList);
+            WorkerThread clientThread = new WorkerThread(client, clientsConnected,clientsList);
             clientsConnected.add(clientThread);
             //clientsList.add(clientSend);
             clientThread.start();
