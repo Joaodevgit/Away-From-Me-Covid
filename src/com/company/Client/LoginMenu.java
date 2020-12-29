@@ -2,6 +2,7 @@ package com.company.Client;
 
 import com.company.Models.Client;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class LoginMenu extends Application {
 
@@ -149,14 +151,23 @@ public class LoginMenu extends Application {
                         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         String startThreadNotification;
 
+                        Platform.runLater(() -> {
+                            try {
+                                new MsgReceiverThread(socket).start();
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
+                        });
+
                         MenuPage menuPage = new MenuPage(socket, client);
 
                         try {
-                            menuPage.start(mainMenuWindow);
-
                             if ((startThreadNotification = in.readLine()) != null) {
+                                //AlertUserBox.window = mainMenuWindow;
                                 AlertUserBox.display("Bem vindo", startThreadNotification);
                             }
+
+                            menuPage.start(mainMenuWindow);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

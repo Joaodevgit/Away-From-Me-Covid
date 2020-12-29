@@ -43,9 +43,11 @@ public class CentralNodeInstructions {
     //TODO: Acabar o método e testar
     public void sendToAll(String clientCommand, SynchronizedArrayList<WorkerThread> clientsConnected, SynchronizedArrayList<Client> listClient) {
         clientCommand.split(";");
+        int i = 0;
 
         for (WorkerThread aClient : clientsConnected.get()) {
-            aClient.out.println("NOTIFY ALL");
+            aClient.out.println("NOTIFY ALL " + listClient.get().get(i).getName());
+            i++;
         }
     }
 

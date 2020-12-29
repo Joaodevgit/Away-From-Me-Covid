@@ -1,6 +1,7 @@
 package com.company.Server;
 
 import com.company.Models.Client;
+import com.google.gson.Gson;
 
 import java.net.*;
 import java.io.*;
@@ -28,9 +29,10 @@ public class Server {
             Socket client = serverSocket.accept();
             System.out.println("[SERVER] Client " + client.getRemoteSocketAddress().toString() + " has connected!");
 
-            WorkerThread clientThread = new WorkerThread(client, clientsConnected,clientsList);
+            WorkerThread clientThread = new WorkerThread(client, clientsConnected);
+
             clientsConnected.add(clientThread);
-            //clientsList.add(clientSend);
+            //clientsList.add(clientModel);
             clientThread.start();
         }
 

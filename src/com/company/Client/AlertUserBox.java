@@ -12,38 +12,41 @@ import javafx.stage.Stage;
 public class AlertUserBox {
 
     public static void display(String title, String message) {
-        Stage window = new Stage();
+        Platform.runLater(() -> {
+            Stage window = new Stage();
 
-        // Bloqueio de interações com outras janelas
-        // até esta janela ter sido fechada
-        //window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle(title);
-        window.setWidth(400);
-        window.setHeight(150);
+            // Bloqueio de interações com outras janelas
+            // até esta janela ter sido fechada
+            //window.initModality(Modality.APPLICATION_MODAL);
+            window.setTitle(title);
+            window.setWidth(400);
+            window.setHeight(150);
 
-        Label label = new Label();
-        label.setText(message);
+            Label label = new Label();
+            label.setText(message);
 
-        Button closeButton = new Button("Fechar");
-        closeButton.setOnAction(e -> window.close());
+            Button closeButton = new Button("Fechar");
+            closeButton.setOnAction(e -> window.close());
 
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, closeButton);
-        layout.setAlignment(Pos.CENTER);
+            VBox layout = new VBox(10);
+            layout.getChildren().addAll(label, closeButton);
+            layout.setAlignment(Pos.CENTER);
 
 
-        Scene scene = new Scene(layout);
-        window.setScene(scene);
-        window.show();
-        Thread newThread = new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            Scene scene = new Scene(layout);
+            window.setScene(scene);
+            window.show();
 
-            Platform.runLater(() -> window.close());
+            Thread newThread = new Thread(() -> {
+                try {
+                    Thread.sleep(20000);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+
+                Platform.runLater(() -> window.close());
+            });
+            newThread.start();
         });
-        newThread.start();
     }
 }

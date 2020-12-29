@@ -135,12 +135,13 @@ public class AddCloseContact extends Application {
 
                     this.out = new PrintWriter(socket.getOutputStream(), true);
                     this.out.println(this.client.toString());
-                    this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                    this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String closeContact;
 
-                    if ((closeContact = in.readLine()) != null) {
-                        AlertUserBox.display("Contatos Próximos", closeContact);
-                    }
+//                    if ((closeContact = in.readLine()) != null) {
+//                        //AlertUserBox.window = addCloseContactWindow;
+//                        AlertUserBox.display("Contatos Próximos", closeContact);
+//                    }
                 } else {
                     AlertUserBox.display("Contatos Próximos", "Adicione um contato primeiro!");
                 }
