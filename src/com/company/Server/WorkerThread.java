@@ -42,7 +42,7 @@ public class WorkerThread extends Thread {
 
                 // Verifica se vai notificar a todos os clientes ou executa certos comandos devido a ação do botão
                 if (!client.getListContact().equals("")) {
-                    this.centralNodeInstructions.sendToAll(client.getListContact(), this.clientsConnected);
+                    this.centralNodeInstructions.sendToAll(client, this.clientsConnected);
                 } else {
                     System.out.println("Resposta do nó central: " + this.centralNodeInstructions.setInstruction(clientSocket, client));
                     out.println(this.centralNodeInstructions.setInstruction(clientSocket, client));

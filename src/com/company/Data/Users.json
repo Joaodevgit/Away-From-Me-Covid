@@ -11,10 +11,18 @@
     {
       "password": "qweqwe",
       "isInfected": false,
-      "isNotified": true,
+      "isNotified": false,
       "name": "JT",
       "county": "Lousada",
       "id": 1
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": false,
+      "isNotified": true,
+      "name": "Mario",
+      "county": "Felgueiras",
+      "id": 2
     }
   ],
   "Concelhos": [

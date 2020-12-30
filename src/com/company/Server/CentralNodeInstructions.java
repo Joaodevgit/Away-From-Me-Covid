@@ -39,36 +39,44 @@ public class CentralNodeInstructions {
     }
 
     //TODO: Acabar o método e testar
-    public synchronized void sendToAll(String clientCommand, SynchronizedArrayList<WorkerThread> clientsConnected) {
-        String[] listContact = clientCommand.split(";");
+    public synchronized void sendToAll(Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
+        String[] listContact = client.getListContact().split(";");
+        int idConvInt = Integer.parseInt(listContact[0]);
         boolean found = false;
 
-        for (WorkerThread aClient : clientsConnected.get()) {
+        for (int i = 0; !found && i < clientsConnected.get().size(); i++) {
+            if (idConvInt == clientsConnected.get().get(i).client.getId()) {
+                found = true;
+                clientsConnected.get().get(i).out.println("Todos os contactos foram alertados com sucesso!");
+            }
+        }
 
-            for (int i = 0; i < listContact.length; i++) {
+        for (int i = 1; i < listContact.length; i++) {
+            found = false;
 
-                System.out.println("Posição " + i + ": " + clientsConnected.get().get(i).client.getId());
+            idConvInt = Integer.parseInt(listContact[i]);
 
-                if (listContact[i].equals(clientsConnected.get().get(i).client.getId())) {
+            System.out.println("ID CONTACT: " + idConvInt);
+
+            for (int j = 0; !found && j < clientsConnected.get().size(); j++) {
+                // Caso que o Utilizador esteja conectado
+                if (idConvInt == clientsConnected.get().get(j).client.getId()) {
                     found = true;
-
-                    if (clientsConnected.get().get(i).client.getListContact().equals(""))
-                        clientsConnected.get().get(i).out.println("Esteve em contacto com uma pessoa infetada! É necessario fazer o teste!");
-                    else
-                        clientsConnected.get().get(i).out.println("Todos os contactos foram alertados com sucesso!");
+                    clientsConnected.get().get(i).out.println("Esteve em contacto com uma pessoa infetada! É necessario fazer o teste!");
                 }
 
             }
 
+            // Caso que o Utilizador não esteja conectado
             if (!found) {
-                if (this.readWriteFiles.userExists(listContact[0])) {
-                    // Caso que existe
-                    System.out.println("Actualizou a notificação !");
+                // Se existir um registo do Utilizador
+                if (this.readWriteFiles.userExists(idConvInt)) {
+                    System.out.println("ENTREI");
+                    this.readWriteFiles.UpdateNotificationContactUser(idConvInt);
                 } else {
-                    // Caso que não existe
+                    //Se não existir um registo do Utilizador
                 }
             }
-
         }
 
     }

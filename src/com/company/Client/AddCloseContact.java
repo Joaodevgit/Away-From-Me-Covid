@@ -124,7 +124,7 @@ public class AddCloseContact extends Application {
                 if (this.idContactInput.getText() != "") {
 
                     this.client.setCommand("ADICIONAR CONTACTOS");
-                    this.client.setListContact(this.idContactInput.getText());
+                    this.client.setListContact(this.client.getId() + ";" + this.idContactInput.getText());
 
                     this.out = new PrintWriter(socket.getOutputStream(), true);
                     this.out.println(this.client.toString());

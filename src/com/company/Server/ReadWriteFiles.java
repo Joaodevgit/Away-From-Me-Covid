@@ -64,8 +64,8 @@ public class ReadWriteFiles {
         }
     }
 
-    public boolean userExists(String id) {
-        int idUser = Integer.parseInt(id);
+    public boolean userExists(int id) {
+//        int idUser = Integer.parseInt(id);
 
         boolean exist = false;
 
@@ -75,11 +75,28 @@ public class ReadWriteFiles {
 
             JSONArray listUsers = (JSONArray) obj.get("Registo");
 
-            if (idUser < listUsers.size()) {
+            if (id < listUsers.size()) {
                 exist = true;
-
-                ((JSONObject) listUsers.get(idUser)).put("isNotified", true);
             }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return exist;
+    }
+
+    public void UpdateNotificationContactUser(int id) {
+//        int idUser = Integer.parseInt(id);
+
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONArray listUsers = (JSONArray) obj.get("Registo");
+
+            ((JSONObject) listUsers.get(id)).put("isNotified", true);
 
             JSONArray county = (JSONArray) obj.get("Concelhos");
 
@@ -99,8 +116,6 @@ public class ReadWriteFiles {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return exist;
     }
 
 }
