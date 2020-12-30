@@ -63,13 +63,6 @@ public class AddCloseContact extends Application {
                 this.client.setCommand("LOGOUT");
                 out.println(this.client.toString());
 
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                String serverMsg;
-                if ((serverMsg = in.readLine()) != null) {
-                    AlertUserBox.display("Recomendação", serverMsg);
-                }
-
                 addCloseContactWindow.close();
             } catch (IOException ioException) {
                 ioException.printStackTrace();

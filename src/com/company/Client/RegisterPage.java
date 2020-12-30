@@ -138,6 +138,7 @@ public class RegisterPage extends Application {
                         newRegister.put("password", contentPassword);
                         newRegister.put("county", contentCounty);
                         newRegister.put("isInfected", false);
+                        newRegister.put("isNotified", false);
 
                         registerlist.add(newRegister);
 

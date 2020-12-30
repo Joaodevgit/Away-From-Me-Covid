@@ -26,7 +26,7 @@ public class CovidTest extends Application {
     private Label sceneLabel;
     private Label descLabel;
     private Label testResultLabel;
-    private Button covidTestButton;
+    protected static Button covidTestButton;
     private Button returnMenuButton;
     private Scene covidTestScene;
 
@@ -34,7 +34,7 @@ public class CovidTest extends Application {
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
-    private Client client;
+    protected static Client client;
 
     public CovidTest(Socket socket, Client client) {
         this.socket = socket;
@@ -55,12 +55,11 @@ public class CovidTest extends Application {
                 this.client.setCommand("LOGOUT");
                 out.println(this.client.toString());
 
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                String serverMsg;
-                if ((serverMsg = in.readLine()) != null) {
-                    AlertUserBox.display("Recomendação", serverMsg);
-                }
+                //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//
+//                String serverMsg;
+//                if ((serverMsg = in.readLine()) != null) {
+                //}
 
                 covidTestWindow.close();
             } catch (IOException ioException) {
@@ -93,16 +92,15 @@ public class CovidTest extends Application {
                     out = new PrintWriter(socket.getOutputStream(), true);
                     this.client.setCommand("BOTÃO COVID");
                     out.println(this.client.toString());
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                    String serverMsg;
-                    if ((serverMsg = in.readLine()) != null) {
-                        AlertUserBox.display("Resultado Teste Covid", serverMsg);
-                        if (serverMsg.contains("positivo")) {
-                            this.covidTestButton.setDisable(true);
-                            this.client.setInfected(true);
-                        }
-                    }
+//                    String serverMsg;
+//                    if ((serverMsg = in.readLine()) != null) {
+//                        AlertUserBox.display("Resultado Teste Covid", serverMsg);
+//                        if (serverMsg.contains("positivo")) {
+//
+//                        }
+//                    }
                 } catch (UnknownHostException ex) {
                     System.out.println("Unknown Host.");
                     System.exit(1);

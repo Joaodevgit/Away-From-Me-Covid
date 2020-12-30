@@ -13,15 +13,18 @@ import java.io.IOException;
 
 public class ReadWriteFiles {
 
-    File file;
+    private File file;
+    private JSONParser jsonParser;
 
     public ReadWriteFiles() {
         this.file = new File("src/com/company/Data/Users.json");
+        this.jsonParser = new JSONParser();
     }
 
+    // Quando o Utilizador fecha a aplicação, a sua informação fica guardada
     public void writeJSONFile(Client userInfo) {
         try {
-            JSONParser jsonParser = new JSONParser();
+            this.jsonParser = new JSONParser();
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
             JSONArray listUsers = (JSONArray) obj.get("Registo");
@@ -59,8 +62,45 @@ public class ReadWriteFiles {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
+    public boolean userExists(String id) {
+        int idUser = Integer.parseInt(id);
+
+        boolean exist = false;
+
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+
+            JSONArray listUsers = (JSONArray) obj.get("Registo");
+
+            if (idUser < listUsers.size()) {
+                exist = true;
+
+                ((JSONObject) listUsers.get(idUser)).put("isNotified", true);
+            }
+
+            JSONArray county = (JSONArray) obj.get("Concelhos");
+
+            JSONObject obgWrite = new JSONObject();
+
+            obgWrite.put("Registo", listUsers);
+            obgWrite.put("Concelhos", county);
+
+            FileWriter fileWriter = new FileWriter(file.getPath());
+
+            fileWriter.write(obgWrite.toJSONString());
+
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return exist;
+    }
 
 }

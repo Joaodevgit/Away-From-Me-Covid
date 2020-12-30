@@ -5,14 +5,16 @@ public class Client {
     private int id;
     private String name;
     private boolean isInfected;
+    private boolean isNotified;
     private String county;
     private String command;
     private String listContact;
 
-    public Client(int id, String name, boolean isInfected, String county) {
+    public Client(int id, String name, boolean isInfected, boolean isNotified, String county) {
         this.id = id;
         this.name = name;
         this.isInfected = isInfected;
+        this.isNotified = isNotified;
         this.county = county;
         this.command = "";
         this.listContact = "";
@@ -66,12 +68,21 @@ public class Client {
         this.listContact = listContact;
     }
 
+    public boolean isNotified() {
+        return isNotified;
+    }
+
+    public void setNotified(boolean notified) {
+        isNotified = notified;
+    }
+
     @Override
     public String toString() {
         return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", isInfected=" + isInfected +
+                ", isNotified=" + isNotified +
                 ", county='" + county + '\'' +
                 ", command='" + command + '\'' +
                 ", listContact='" + listContact + '\'' +

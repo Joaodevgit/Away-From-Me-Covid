@@ -41,7 +41,6 @@ public class MenuPage extends Application {
 
     private Stage menuPageWindow;
     private Socket socket;
-    private BufferedReader in;
     private PrintWriter out;
     private Client client;
 
@@ -64,13 +63,6 @@ public class MenuPage extends Application {
 
                 this.client.setCommand("LOGOUT");
                 out.println(this.client.toString());
-
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                String serverMsg;
-                if ((serverMsg = in.readLine()) != null) {
-                    AlertUserBox.display("Recomendação", serverMsg);
-                }
 
                 menuPageWindow.close();
             } catch (IOException ioException) {

@@ -9,7 +9,7 @@ import java.io.*;
 public class Server {
 
     private static SynchronizedArrayList<WorkerThread> clientsConnected = new SynchronizedArrayList<>();
-    protected static SynchronizedArrayList<Client> clientsList = new SynchronizedArrayList<>();
+//    protected static SynchronizedArrayList<Client> clientsList = new SynchronizedArrayList<>();
 
     public static void main(String[] args) throws IOException {
 

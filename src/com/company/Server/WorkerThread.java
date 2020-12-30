@@ -16,6 +16,8 @@ public class WorkerThread extends Thread {
     private BufferedReader in;
     private CentralNodeInstructions centralNodeInstructions;
     private SynchronizedArrayList<WorkerThread> clientsConnected;
+    private Gson gson;
+    protected Client client;
 
     public WorkerThread(Socket clientSocket, SynchronizedArrayList<WorkerThread> clientsConnected) throws IOException {
         super("WorkerThread");
@@ -24,6 +26,7 @@ public class WorkerThread extends Thread {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this.centralNodeInstructions = new CentralNodeInstructions();
         this.clientsConnected = clientsConnected;
+        this.gson = new Gson();
     }
 
 
@@ -35,19 +38,11 @@ public class WorkerThread extends Thread {
                 System.out.println("inputLine: " + inputLine);
                 System.out.println("Resposta do cliente " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
 
-                Gson gson = new Gson();
-                Client client = gson.fromJson(inputLine, Client.class);
-
-                //TODO: FAZER A LISTA DE CLIENTESSSSS
-                // Verifica se o cliente já se encontra na lista de cliente na plataforma
-//                if (client.getCommand().equals("LOGIN") && !Server.clientsList.get().contains(client)) {
-//                    System.out.println("Adicionou");
-//                    Server.clientsList.add(client);
-//                }
+                this.client = this.gson.fromJson(inputLine, Client.class);
 
                 // Verifica se vai notificar a todos os clientes ou executa certos comandos devido a ação do botão
                 if (!client.getListContact().equals("")) {
-                    this.centralNodeInstructions.sendToAll(client.getCommand(), this.clientsConnected, Server.clientsList);
+                    this.centralNodeInstructions.sendToAll(client.getListContact(), this.clientsConnected);
                 } else {
                     System.out.println("Resposta do nó central: " + this.centralNodeInstructions.setInstruction(clientSocket, client));
                     out.println(this.centralNodeInstructions.setInstruction(clientSocket, client));

@@ -140,8 +140,8 @@ public class LoginMenu extends Application {
                         Socket socket = new Socket("localhost", 2048);
 
                         Client client = new Client(((Long) user.get("id")).intValue(),
-                                user.get("name").toString(),
-                                Boolean.parseBoolean(user.get("isInfected").toString()),
+                                user.get("name").toString(), Boolean.parseBoolean(user.get("isInfected").toString()),
+                                Boolean.parseBoolean(user.get("isNotified").toString()),
                                 user.get("county").toString());
 
                         client.setCommand("LOGIN");

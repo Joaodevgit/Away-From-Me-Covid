@@ -7,13 +7,11 @@ import java.util.regex.Pattern;
 
 public class CentralNodeInstructions {
 
-    CentralNode centralNode = new CentralNode();
+    private CentralNode centralNode = new CentralNode();
+    private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
     public String setInstruction(Socket clientSocket, Client clientModel) {
         String msg = null;
-//
-//        Gson gson = new Gson();
-//        Client client = gson.fromJson(client, Client.class);
 
         switch (clientModel.getCommand()) {
             case "LOGIN":
@@ -41,14 +39,38 @@ public class CentralNodeInstructions {
     }
 
     //TODO: Acabar o método e testar
-    public void sendToAll(String clientCommand, SynchronizedArrayList<WorkerThread> clientsConnected, SynchronizedArrayList<Client> listClient) {
-        clientCommand.split(";");
-        int i = 0;
+    public synchronized void sendToAll(String clientCommand, SynchronizedArrayList<WorkerThread> clientsConnected) {
+        String[] listContact = clientCommand.split(";");
+        boolean found = false;
 
         for (WorkerThread aClient : clientsConnected.get()) {
-            aClient.out.println("NOTIFY ALL " + listClient.get().get(i).getName());
-            i++;
+
+            for (int i = 0; i < listContact.length; i++) {
+
+                System.out.println("Posição " + i + ": " + clientsConnected.get().get(i).client.getId());
+
+                if (listContact[i].equals(clientsConnected.get().get(i).client.getId())) {
+                    found = true;
+
+                    if (clientsConnected.get().get(i).client.getListContact().equals(""))
+                        clientsConnected.get().get(i).out.println("Esteve em contacto com uma pessoa infetada! É necessario fazer o teste!");
+                    else
+                        clientsConnected.get().get(i).out.println("Todos os contactos foram alertados com sucesso!");
+                }
+
+            }
+
+            if (!found) {
+                if (this.readWriteFiles.userExists(listContact[0])) {
+                    // Caso que existe
+                    System.out.println("Actualizou a notificação !");
+                } else {
+                    // Caso que não existe
+                }
+            }
+
         }
+
     }
 
 }

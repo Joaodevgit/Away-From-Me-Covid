@@ -39,7 +39,7 @@ public class AlertUserBox {
 
             Thread newThread = new Thread(() -> {
                 try {
-                    Thread.sleep(20000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
