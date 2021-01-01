@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ReadWriteFiles {
 
-    private File file;
+    private final File file;
     private JSONParser jsonParser;
 
     public ReadWriteFiles() {
@@ -30,7 +30,7 @@ public class ReadWriteFiles {
             JSONArray listUsers = (JSONArray) obj.get("Registo");
 
             boolean found = false;
-            JSONObject user = null;
+            JSONObject user;
             int i = 0;
 
             while (!found && i < listUsers.size()) {
@@ -45,28 +45,31 @@ public class ReadWriteFiles {
             }
 
             JSONArray county = (JSONArray) obj.get("Concelhos");
+            JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
 
-            JSONObject obgWrite = new JSONObject();
+            if (unregisteredUsers == null) {
+                unregisteredUsers = new JSONArray();
+            }
 
-            obgWrite.put("Registo", listUsers);
-            obgWrite.put("Concelhos", county);
+            JSONObject objWrite = new JSONObject();
+
+            objWrite.put("UnregisteredUsers", unregisteredUsers);
+            objWrite.put("Registo", listUsers);
+            objWrite.put("Concelhos", county);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
-            fileWriter.write(obgWrite.toJSONString());
+            fileWriter.write(objWrite.toJSONString());
 
             fileWriter.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
+    //TODO: FAZER ACTUALIZAçÃO disto
     public boolean userExists(int id) {
-//        int idUser = Integer.parseInt(id);
-
         boolean exist = false;
 
         try {
@@ -79,18 +82,76 @@ public class ReadWriteFiles {
                 exist = true;
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
         return exist;
     }
 
-    public void UpdateNotificationContactUser(int id) {
-//        int idUser = Integer.parseInt(id);
+    public boolean userExists(String name) {
+        boolean isExist = false;
 
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONArray registerlist = (JSONArray) obj.get("Registo");
+
+            for (int i = 0; !isExist && i < registerlist.size(); i++) {
+                JSONObject register = (JSONObject) registerlist.get(i);
+
+                if (register.get("name").equals(name))
+                    isExist = true;
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        return isExist;
+    }
+
+    public void writeUserRegister(int id, String username, String password, String county) {
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONObject newRegister = new JSONObject();
+
+            JSONArray registerlist = (JSONArray) obj.get("Registo");
+
+            System.out.println("TAM: " + registerlist.size());
+
+            newRegister.put("id", id);
+            newRegister.put("name", username);
+            newRegister.put("password", password);
+            newRegister.put("county", county);
+            newRegister.put("isInfected", false);
+            newRegister.put("isNotified", false);
+
+            registerlist.add(newRegister);
+
+            JSONArray countyList = (JSONArray) obj.get("Concelhos");
+            JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
+
+
+            JSONObject objWrite = new JSONObject();
+
+            objWrite.put("Registo", registerlist);
+            objWrite.put("Concelhos", countyList);
+            objWrite.put("UnregisteredUsers", unregisteredUsers);
+
+            FileWriter fileWriter = new FileWriter(file.getPath());
+
+            fileWriter.write(objWrite.toJSONString());
+
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateNotificationContactUser(int id) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
@@ -99,21 +160,66 @@ public class ReadWriteFiles {
             ((JSONObject) listUsers.get(id)).put("isNotified", true);
 
             JSONArray county = (JSONArray) obj.get("Concelhos");
+            JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
 
-            JSONObject obgWrite = new JSONObject();
+            JSONObject objWrite = new JSONObject();
 
-            obgWrite.put("Registo", listUsers);
-            obgWrite.put("Concelhos", county);
+            objWrite.put("UnregisteredUsers", unregisteredUsers);
+            objWrite.put("Registo", listUsers);
+            objWrite.put("Concelhos", county);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
-            fileWriter.write(obgWrite.toJSONString());
+            fileWriter.write(objWrite.toJSONString());
 
             fileWriter.close();
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
+        }
+    }
+
+    public void writeUnregisteredUsers(int id) {
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONArray unregisteredUser = (JSONArray) obj.get("UnregisteredUsers");
+
+            boolean isExist = false;
+            JSONObject idUnregistered;
+
+            for (int i = 0; !isExist && i < unregisteredUser.size(); i++) {
+                idUnregistered = (JSONObject) unregisteredUser.get(i);
+
+                if (Integer.parseInt(idUnregistered.get("id").toString()) == id) {
+                    isExist = true;
+                }
+            }
+
+            if (!isExist) {
+                JSONObject unregisteredUsers = new JSONObject();
+
+                unregisteredUsers.put("id", id);
+
+                unregisteredUser.add(unregisteredUsers);
+
+                JSONArray county = (JSONArray) obj.get("Concelhos");
+                JSONArray register = (JSONArray) obj.get("Registo");
+
+                JSONObject objWrite = new JSONObject();
+
+                objWrite.put("UnregisteredUsers", unregisteredUser);
+                objWrite.put("Registo", register);
+                objWrite.put("Concelhos", county);
+
+                FileWriter fileWriter = new FileWriter(file.getPath());
+
+                fileWriter.write(objWrite.toJSONString());
+
+                fileWriter.close();
+            }
+
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }

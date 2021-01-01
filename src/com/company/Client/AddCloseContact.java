@@ -41,7 +41,7 @@ public class AddCloseContact extends Application {
 
     BufferedReader in;
     PrintWriter out;
-    private Client client;
+    protected static Client client;
 
     public AddCloseContact(Socket socket, Client client) {
         this.socket = socket;
@@ -67,7 +67,6 @@ public class AddCloseContact extends Application {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-
         });
 
         File file = new File("src/com/company/Data/Users.json");
@@ -129,7 +128,6 @@ public class AddCloseContact extends Application {
                     this.out = new PrintWriter(socket.getOutputStream(), true);
                     this.out.println(this.client.toString());
 //                    this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String closeContact;
 
 //                    if ((closeContact = in.readLine()) != null) {
 //                        //AlertUserBox.window = addCloseContactWindow;

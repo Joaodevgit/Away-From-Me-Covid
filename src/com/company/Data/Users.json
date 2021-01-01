@@ -1,4 +1,12 @@
 {
+  "UnregisteredUsers": [
+    {
+      "id": 5
+    },
+    {
+      "id": 10
+    }
+  ],
   "Registo": [
     {
       "password": "qweqwe",
@@ -23,6 +31,22 @@
       "name": "Mario",
       "county": "Felgueiras",
       "id": 2
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": true,
+      "isNotified": false,
+      "name": "MAMAM",
+      "county": "Lousada",
+      "id": 3
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": true,
+      "isNotified": false,
+      "name": "MAMAN",
+      "county": "Felgueiras",
+      "id": 4
     }
   ],
   "Concelhos": [

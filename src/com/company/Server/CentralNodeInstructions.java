@@ -71,10 +71,9 @@ public class CentralNodeInstructions {
             if (!found) {
                 // Se existir um registo do Utilizador
                 if (this.readWriteFiles.userExists(idConvInt)) {
-                    System.out.println("ENTREI");
-                    this.readWriteFiles.UpdateNotificationContactUser(idConvInt);
+                    this.readWriteFiles.updateNotificationContactUser(idConvInt);
                 } else {
-                    //Se não existir um registo do Utilizador
+                    this.readWriteFiles.writeUnregisteredUsers(idConvInt);
                 }
             }
         }

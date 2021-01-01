@@ -1,6 +1,7 @@
 package com.company.Client;
 
 import com.company.Models.Client;
+import com.company.Server.ReadWriteFiles;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,8 +29,10 @@ public class RegisterPage extends Application {
     private Label titleContent;
     private Label textUsername;
     private Label textPassword;
+    private Label textId;
     private TextField inputUsername;
     private TextField inputPass;
+    private TextField inputId;
     private ComboBox<String> comboBox;
     private Button register;
     private Button backMenu;
@@ -40,9 +43,13 @@ public class RegisterPage extends Application {
 
     private ArrayList<String> listContyName;
 
+    private ReadWriteFiles readWriteFiles;
+
     @Override
     public void start(Stage primaryStage) {
         registerPageWindow = primaryStage;
+
+        this.readWriteFiles = new ReadWriteFiles();
 
         // Method called when the user presses "X" on window
         this.registerPageWindow.setOnCloseRequest(e -> {
@@ -67,8 +74,13 @@ public class RegisterPage extends Application {
         this.textPassword.setText("Password");
         this.textPassword.setFont(new Font(15));
 
+        this.textId = new Label();
+        this.textId.setText("Nº Utente Saude");
+        this.textId.setFont(new Font(13));
+
         this.inputUsername = new TextField();
         this.inputPass = new TextField();
+        this.inputId = new TextField();
 
         File file = new File("src/com/company/Data/Users.json");
 
@@ -80,7 +92,7 @@ public class RegisterPage extends Application {
             JSONArray listCounty = (JSONArray) obj.get("Concelhos");
 
             listContyName = new ArrayList<>();
-            JSONObject county = null;
+            JSONObject county;
 
             for (int i = 0; i < listCounty.size(); i++) {
                 county = (JSONObject) listCounty.get(i);
@@ -98,78 +110,42 @@ public class RegisterPage extends Application {
         this.register = new Button("Criar Conta");
         Stage mainMenuPage = LoginMenu.getStage();
         this.register.setOnAction(e -> {
-            String contentUsername = this.inputUsername.getText();
-            String contentPassword = this.inputPass.getText();
-            String contentCounty = this.comboBox.getValue();
+            try {
+                int id = Integer.parseInt(this.inputId.getText());
 
-            boolean conditionRegist = false;
+                String contentUsername = this.inputUsername.getText();
+                String contentPassword = this.inputPass.getText();
+                String contentCounty = this.comboBox.getValue();
 
-            if (contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
-                conditionRegist = true;
-            }
+                boolean conditionRegist = false;
 
-            if (conditionRegist) {
-                System.out.println("RESPEITO !");
+                if ((id >= 100000000 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
+                    conditionRegist = true;
+                }
 
-                this.inputUsername.setText("");
-                this.inputPass.setText("");
+                if (conditionRegist) {
+                    System.out.println("RESPEITO !");
 
-                try {
-                    JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+                    this.inputUsername.setText("");
+                    this.inputPass.setText("");
 
-                    JSONArray registerlist = (JSONArray) obj.get("Registo");
-
-                    boolean isExist = false;
-
-                    for (int i = 0; !isExist && i < registerlist.size(); i++) {
-                        JSONObject register = (JSONObject) registerlist.get(i);
-
-                        if (register.get("name").equals(contentUsername))
-                            isExist = true;
-                    }
+                    boolean isExist = this.readWriteFiles.userExists(contentUsername);
 
                     if (!isExist) {
-                        JSONObject newRegister = new JSONObject();
-
-                        System.out.println("TAM: " + registerlist.size());
-
-                        newRegister.put("id", registerlist.size());
-                        newRegister.put("name", contentUsername);
-                        newRegister.put("password", contentPassword);
-                        newRegister.put("county", contentCounty);
-                        newRegister.put("isInfected", false);
-                        newRegister.put("isNotified", false);
-
-                        registerlist.add(newRegister);
-
-                        JSONArray county = (JSONArray) obj.get("Concelhos");
-
-                        JSONObject obgWrite = new JSONObject();
-
-                        obgWrite.put("Registo", registerlist);
-                        obgWrite.put("Concelhos", county);
-
-                        FileWriter fileWriter = new FileWriter(file.getPath());
-
-                        fileWriter.write(obgWrite.toJSONString());
-
-                        fileWriter.close();
+                        this.readWriteFiles.writeUserRegister(id, contentUsername, contentPassword, contentCounty);
 
                         mainMenuPage.setScene(LoginMenu.getScene());
                     } else {
                         AlertUserBox.display("Registo", "Conta já existente");
                     }
 
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
+                } else {
+                    AlertUserBox.display("Registo", "Não respeita as condições para se registar");
                 }
 
-            } else {
-                AlertUserBox.display("Registo", "Não respeita as condições para se registar");
+            } catch (NumberFormatException ex) {
+                AlertUserBox.display("Registo", "Nº Utente de Saúde inválido. Introduza só números");
             }
-
         });
 
         this.backMenu = new Button("Voltar");
@@ -179,6 +155,10 @@ public class RegisterPage extends Application {
         VBox titleContainer = new VBox(10);
         titleContainer.setAlignment(Pos.CENTER);
         titleContainer.getChildren().addAll(this.titleContent);
+
+        HBox containerId = new HBox(10);
+        containerId.setAlignment(Pos.CENTER);
+        containerId.getChildren().addAll(this.textId, this.inputId);
 
         // Container do preenchimento do login
         HBox containerLoginUsername = new HBox(10);
@@ -200,7 +180,7 @@ public class RegisterPage extends Application {
 
         VBox mainMenuButtons = new VBox(10);
         mainMenuButtons.setAlignment(Pos.CENTER);
-        mainMenuButtons.getChildren().addAll(containerLoginUsername, containerLoginPass, comboBox);
+        mainMenuButtons.getChildren().addAll(containerId, containerLoginUsername, containerLoginPass, comboBox);
 
         // Container dos butões
         HBox containerButton = new HBox(10);
@@ -212,7 +192,6 @@ public class RegisterPage extends Application {
         borderPanelayout.setTop(titleContainer);
         borderPanelayout.setCenter(mainMenuButtons);
         borderPanelayout.setBottom(containerButton);
-
 
         this.registerPageScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 

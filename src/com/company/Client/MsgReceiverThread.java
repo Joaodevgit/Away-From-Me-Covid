@@ -35,6 +35,7 @@ public class MsgReceiverThread extends Thread {
                     AlertUserBox.display("Recomendação", inputLine);
                 } else {
                     AlertUserBox.display("NOTIFY ALL", inputLine + "\nSocket: " + this.socket.getRemoteSocketAddress().toString());
+                    AddCloseContact.client.setListContact("");
                 }
             }
         } catch (UnknownHostException e) {
