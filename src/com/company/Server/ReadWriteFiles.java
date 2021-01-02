@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ReadWriteFiles {
 
@@ -39,6 +40,7 @@ public class ReadWriteFiles {
                 if (userInfo.getId() == ((Long) user.get("id")).intValue()) {
                     found = true;
                     ((JSONObject) listUsers.get(i)).put("isInfected", userInfo.isInfected());
+                    ((JSONObject) listUsers.get(i)).put("isNotified", userInfo.isNotified());
                 }
 
                 i++;
@@ -68,20 +70,26 @@ public class ReadWriteFiles {
         }
     }
 
-    //TODO: FAZER ACTUALIZAçÃO disto
     public boolean userExists(int id) {
         boolean exist = false;
 
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-
             JSONArray listUsers = (JSONArray) obj.get("Registo");
 
-            if (id < listUsers.size()) {
-                exist = true;
-            }
+            int i = 0;
+            JSONObject user;
 
+            while (!exist && i < listUsers.size()) {
+                user = (JSONObject) listUsers.get(i);
+
+                if (Integer.parseInt(user.get("id").toString()) == id) {
+                    exist = true;
+                }
+
+                i++;
+            }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
@@ -89,28 +97,67 @@ public class ReadWriteFiles {
         return exist;
     }
 
-    public boolean userExists(String name) {
-        boolean isExist = false;
+    public int indexUnregisteredUsers(int id) {
+        int position = -1;
 
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray registerlist = (JSONArray) obj.get("Registo");
+            JSONArray listUsers = (JSONArray) obj.get("UnregisteredUsers");
 
-            for (int i = 0; !isExist && i < registerlist.size(); i++) {
-                JSONObject register = (JSONObject) registerlist.get(i);
+            int i = 0;
+            JSONObject user;
+            boolean found = false;
 
-                if (register.get("name").equals(name))
-                    isExist = true;
+            while (!found && i < listUsers.size()) {
+                user = (JSONObject) listUsers.get(i);
+
+                if (Integer.parseInt(user.get("id").toString()) == id) {
+                    found = true;
+                } else {
+                    i++;
+                }
+            }
+
+            if (found) {
+                position = i;
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
-        return isExist;
+        return position;
     }
 
-    public void writeUserRegister(int id, String username, String password, String county) {
+    public void removeUnregisteredUsers(int position) {
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+            JSONArray listUsersUnregistered = (JSONArray) obj.get("UnregisteredUsers");
+
+            listUsersUnregistered.remove(position);
+
+            JSONArray county = (JSONArray) obj.get("Concelhos");
+            JSONArray unregisteredUsers = (JSONArray) obj.get("Registo");
+
+            JSONObject objWrite = new JSONObject();
+
+            objWrite.put("UnregisteredUsers", listUsersUnregistered);
+            objWrite.put("Registo", unregisteredUsers);
+            objWrite.put("Concelhos", county);
+
+            FileWriter fileWriter = new FileWriter(file.getPath());
+
+            fileWriter.write(objWrite.toJSONString());
+
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeUserRegister(int id, String username, String password, boolean isNotified, String county) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
@@ -125,13 +172,12 @@ public class ReadWriteFiles {
             newRegister.put("password", password);
             newRegister.put("county", county);
             newRegister.put("isInfected", false);
-            newRegister.put("isNotified", false);
+            newRegister.put("isNotified", isNotified);
 
             registerlist.add(newRegister);
 
             JSONArray countyList = (JSONArray) obj.get("Concelhos");
             JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
-
 
             JSONObject objWrite = new JSONObject();
 
@@ -157,7 +203,20 @@ public class ReadWriteFiles {
 
             JSONArray listUsers = (JSONArray) obj.get("Registo");
 
-            ((JSONObject) listUsers.get(id)).put("isNotified", true);
+            int i = 0;
+            boolean found = false;
+            JSONObject user;
+
+            while (!found && i < listUsers.size()) {
+                user = (JSONObject) listUsers.get(i);
+
+                if (Integer.parseInt(user.get("id").toString()) == id) {
+                    found = true;
+                    ((JSONObject) listUsers.get(i)).put("isNotified", true);
+                } else {
+                    i++;
+                }
+            }
 
             JSONArray county = (JSONArray) obj.get("Concelhos");
             JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
@@ -222,6 +281,31 @@ public class ReadWriteFiles {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<String> spinnerOptions() {
+        ArrayList<String> options = new ArrayList<>();
+
+        try {
+            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+            JSONArray listCounty = (JSONArray) obj.get("Concelhos");
+
+            JSONObject county;
+
+            for (int i = 0; i < listCounty.size(); i++) {
+                county = (JSONObject) listCounty.get(i);
+
+                options.add(county.get("name").toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return options;
     }
 
 }

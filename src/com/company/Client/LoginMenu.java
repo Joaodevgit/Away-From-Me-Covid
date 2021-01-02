@@ -148,7 +148,7 @@ public class LoginMenu extends Application {
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                         out.println(client.toString());
-                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         String startThreadNotification;
 
                         Platform.runLater(() -> {
@@ -162,10 +162,10 @@ public class LoginMenu extends Application {
                         MenuPage menuPage = new MenuPage(socket, client);
 
                         try {
-                            if ((startThreadNotification = in.readLine()) != null) {
+                            //if ((startThreadNotification = in.readLine()) != null) {
                                 //AlertUserBox.window = mainMenuWindow;
-                                AlertUserBox.display("Bem vindo", startThreadNotification);
-                            }
+                                //AlertUserBox.display("Bem vindo", startThreadNotification);
+                            //}
 
                             menuPage.start(mainMenuWindow);
                         } catch (Exception ex) {

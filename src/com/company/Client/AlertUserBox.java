@@ -19,7 +19,7 @@ public class AlertUserBox {
             // até esta janela ter sido fechada
             //window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
-            window.setWidth(400);
+            window.setWidth(500);
             window.setHeight(150);
 
             Label label = new Label();

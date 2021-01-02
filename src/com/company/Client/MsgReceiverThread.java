@@ -25,16 +25,20 @@ public class MsgReceiverThread extends Thread {
 
             while ((inputLine = in.readLine()) != null) {
                 //System.out.println("Server Response: " + inputLine);
-                if (inputLine.contains("negativo")) {
+                if (inputLine.contains("Bem vindo") || inputLine.contains("infetada")) {
+                    AlertUserBox.display("Bem vindo", inputLine);
+                } else if (inputLine.contains("negativo")) {
                     AlertUserBox.display("Resultado Teste Covid", inputLine);
+                    CovidTest.client.setNotified(false);
                 } else if (inputLine.contains("positivo")) {
                     AlertUserBox.display("Resultado Teste Covid", inputLine);
                     CovidTest.covidTestButton.setDisable(true);
                     CovidTest.client.setInfected(true);
+                    CovidTest.client.setNotified(false);
                 } else if (inputLine.contains("Siga as recomendações da DGS e fique em casa !")) {
                     AlertUserBox.display("Recomendação", inputLine);
                 } else {
-                    AlertUserBox.display("NOTIFY ALL", inputLine + "\nSocket: " + this.socket.getRemoteSocketAddress().toString());
+                    AlertUserBox.display("NOTIFY ALL", inputLine);
                     AddCloseContact.client.setListContact("");
                 }
             }
@@ -47,7 +51,7 @@ public class MsgReceiverThread extends Thread {
 
         try {
             in.close();
-            //socket.close();
+            socket.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

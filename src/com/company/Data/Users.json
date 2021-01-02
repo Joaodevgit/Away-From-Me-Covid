@@ -1,10 +1,13 @@
 {
   "UnregisteredUsers": [
     {
-      "id": 5
+      "id": 10
     },
     {
-      "id": 10
+      "id": 5555
+    },
+    {
+      "id": 444444
     }
   ],
   "Registo": [
@@ -27,7 +30,7 @@
     {
       "password": "qweqwe",
       "isInfected": false,
-      "isNotified": true,
+      "isNotified": false,
       "name": "Mario",
       "county": "Felgueiras",
       "id": 2
@@ -47,6 +50,30 @@
       "name": "MAMAN",
       "county": "Felgueiras",
       "id": 4
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": false,
+      "isNotified": false,
+      "name": "JT_VALORANT",
+      "county": "Lousada",
+      "id": 456
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": true,
+      "isNotified": false,
+      "name": "JTTT",
+      "county": "Felgueiras",
+      "id": 5
+    },
+    {
+      "password": "qweqwe",
+      "isInfected": false,
+      "isNotified": false,
+      "name": "PPPP",
+      "county": "Felgueiras",
+      "id": 4444
     }
   ],
   "Concelhos": [

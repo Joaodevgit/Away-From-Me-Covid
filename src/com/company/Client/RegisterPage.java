@@ -1,6 +1,5 @@
 package com.company.Client;
 
-import com.company.Models.Client;
 import com.company.Server.ReadWriteFiles;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -15,13 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class RegisterPage extends Application {
@@ -82,29 +75,7 @@ public class RegisterPage extends Application {
         this.inputPass = new TextField();
         this.inputId = new TextField();
 
-        File file = new File("src/com/company/Data/Users.json");
-
-        JSONParser jsonParser = new JSONParser();
-
-        try {
-            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
-
-            JSONArray listCounty = (JSONArray) obj.get("Concelhos");
-
-            listContyName = new ArrayList<>();
-            JSONObject county;
-
-            for (int i = 0; i < listCounty.size(); i++) {
-                county = (JSONObject) listCounty.get(i);
-
-                listContyName.add(county.get("name").toString());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        listContyName = this.readWriteFiles.spinnerOptions();
 
         //Botões
         this.register = new Button("Criar Conta");
@@ -119,20 +90,30 @@ public class RegisterPage extends Application {
 
                 boolean conditionRegist = false;
 
-                if ((id >= 100000000 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
+                //id >= 100000000 && id <= 999999999 Muito trabalho para testar
+                if ((id >= 0 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
                     conditionRegist = true;
                 }
 
                 if (conditionRegist) {
                     System.out.println("RESPEITO !");
 
-                    this.inputUsername.setText("");
-                    this.inputPass.setText("");
-
-                    boolean isExist = this.readWriteFiles.userExists(contentUsername);
+                    boolean isExist = this.readWriteFiles.userExists(id);
 
                     if (!isExist) {
-                        this.readWriteFiles.writeUserRegister(id, contentUsername, contentPassword, contentCounty);
+
+                        int checkUserUnregisterIndex = this.readWriteFiles.indexUnregisteredUsers(id);
+
+                        this.inputUsername.setText("");
+                        this.inputPass.setText("");
+
+                        //Caso que a conta não existe, verifica se o Utilizador não se encontra na lista dos não registado
+                        if (checkUserUnregisterIndex != -1) {
+                            this.readWriteFiles.removeUnregisteredUsers(checkUserUnregisterIndex);
+                            this.readWriteFiles.writeUserRegister(id, contentUsername, contentPassword, true, contentCounty);
+                        } else {
+                            this.readWriteFiles.writeUserRegister(id, contentUsername, contentPassword, false, contentCounty);
+                        }
 
                         mainMenuPage.setScene(LoginMenu.getScene());
                     } else {
