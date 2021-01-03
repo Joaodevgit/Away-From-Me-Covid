@@ -1,8 +1,18 @@
 package com.company.Server;
 
 import com.company.Models.Client;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.MulticastSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Random;
 
 public class CentralNode {
@@ -26,20 +36,118 @@ public class CentralNode {
         return result;
     }
 
-    public String addCloseContact(Socket clientSocket, String contacts) {
-        String res = "";
-
-        for (int i = 0; i < contacts.split(";").length; i++) {
-            res += contacts.split(";")[i] + " ";
-        }
-
-        return "Contacto(s) " + res + " adicinado(s) com sucesso";
-    }
-
     public String saveUserInfo(Socket clientSocket, Client userInfo) {
         this.readWriteFiles.writeJSONFile(userInfo);
 
         return "Siga as recomendações da DGS e fique em casa !";
     }
 
+    public void printClientsConnected(SynchronizedArrayList<WorkerThread> clientsConnected) {
+
+        if (clientsConnected.get().size() != 0) {
+            System.out.println("Os clientes conetados são: ");
+            for (int i = 0; i < clientsConnected.get().size(); i++) {
+                System.out.println(clientsConnected.get().get(i).client.toString());
+            }
+        } else {
+            System.out.println("Atualmente não existem clientes conetados!");
+        }
+    }
+
+    // Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
+    public int getClientCountyPort(Client client) {
+
+        File file = new File("src/com/company/Data/Users.json");
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+
+                for (int i = 0; i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+                    if (client.getCounty().equals(countyObj.get("name").toString())) {
+                        return Integer.parseInt(countyObj.get("porta").toString());
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return -1;
+    }
+
+    // Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
+    public String getCountyTotalInfected(String countyName) {
+
+        File file = new File("src/com/company/Data/Users.json");
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+
+                for (int i = 0; i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+                    if (countyName.equals(countyObj.get("name").toString())) {
+                        return "O concelho " + countyObj + " tem " + countyObj.get("infectedTot").toString() + " pessoas infetadas";
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "Concelho inexistente";
+    }
+
+    // Método responsável por atualizar a lista de portas dos grupos de multicast
+    public SynchronizedArrayList<MulticastSocket> updateMulticastGroups(SynchronizedArrayList<WorkerThread> clientsConnected, SynchronizedArrayList<MulticastSocket> multicastGroups) {
+
+        for (int i = 0; i < clientsConnected.get().size(); i++) {
+            if (!isMulticastGroupPortExists(clientsConnected.get().get(i).client, multicastGroups)) {
+                try {
+                    int port = getClientCountyPort(clientsConnected.get().get(i).client);
+                    multicastGroups.add(new MulticastSocket(port));
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return multicastGroups;
+    }
+
+    // Método responsável por verificar se uma dada porta já existe (ou não) nos grupos de multicast
+    public boolean isMulticastGroupPortExists(Client client, SynchronizedArrayList<MulticastSocket> multicastGroups) {
+        int i = 0;
+        boolean found = false;
+        while (!found && i < multicastGroups.get().size()) {
+            if (multicastGroups.get().get(i).getLocalPort() == getClientCountyPort(client)) {
+                found = true;
+            }
+            i++;
+        }
+
+        return found;
+    }
 }

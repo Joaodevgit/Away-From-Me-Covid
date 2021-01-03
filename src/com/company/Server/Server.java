@@ -1,8 +1,5 @@
 package com.company.Server;
 
-import com.company.Models.Client;
-import com.google.gson.Gson;
-
 import java.net.*;
 import java.io.*;
 
@@ -20,17 +17,18 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            System.err.println("Could not listen on port " + port + ".");
+            System.err.println("Não foi possível ligar-se à porta " + port + ".");
             System.exit(-1);
         }
 
+        new MulticastServerThread(clientsConnected).start();
+
         while (listening) {
-            System.out.println("[SERVER] Waiting for a new client connection...");
+            System.out.println("[SERVER] Aguardando por uma conexão do cliente...");
             Socket client = serverSocket.accept();
-            System.out.println("[SERVER] Client " + client.getRemoteSocketAddress().toString() + " has connected!");
+            System.out.println("[SERVER] Cliente " + client.getRemoteSocketAddress().toString() + " conectou-se!");
 
             WorkerThread clientThread = new WorkerThread(client, clientsConnected);
-
             clientsConnected.add(clientThread);
             //clientsList.add(clientModel);
             clientThread.start();
