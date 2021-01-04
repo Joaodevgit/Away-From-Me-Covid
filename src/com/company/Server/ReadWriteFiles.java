@@ -6,10 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ReadWriteFiles {
@@ -307,5 +304,70 @@ public class ReadWriteFiles {
 
         return options;
     }
+
+    // Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
+    public int getClientCountyPort(Client client) {
+
+        File file = new File("src/com/company/Data/Users.json");
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+
+                for (int i = 0; i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+                    if (client.getCounty().equals(countyObj.get("name").toString())) {
+                        return Integer.parseInt(countyObj.get("porta").toString());
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return -1;
+    }
+
+    // Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
+    public int getCountyTotalInfected(String countyName) {
+
+        File file = new File("src/com/company/Data/Users.json");
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+
+                for (int i = 0; i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+                    if (countyName.equals(countyObj.get("name").toString())) {
+                        return Integer.parseInt(countyObj.get("infectedTot").toString());
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return -2;
+    }
+
 
 }

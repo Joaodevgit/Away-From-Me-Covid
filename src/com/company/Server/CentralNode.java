@@ -54,69 +54,6 @@ public class CentralNode {
         }
     }
 
-    // Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
-    public int getClientCountyPort(Client client) {
-
-        File file = new File("src/com/company/Data/Users.json");
-
-        if (file.exists()) {
-            // Caso que o ficheiro exista
-            try {
-                JSONParser jsonParser = new JSONParser();
-                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
-
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
-
-                JSONObject countyObj;
-
-                for (int i = 0; i < listCounties.size(); i++) {
-                    countyObj = (JSONObject) listCounties.get(i);
-                    if (client.getCounty().equals(countyObj.get("name").toString())) {
-                        return Integer.parseInt(countyObj.get("porta").toString());
-                    }
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return -1;
-    }
-
-    // Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
-    public String getCountyTotalInfected(String countyName) {
-
-        File file = new File("src/com/company/Data/Users.json");
-
-        if (file.exists()) {
-            // Caso que o ficheiro exista
-            try {
-                JSONParser jsonParser = new JSONParser();
-                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
-
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
-
-                JSONObject countyObj;
-
-                for (int i = 0; i < listCounties.size(); i++) {
-                    countyObj = (JSONObject) listCounties.get(i);
-                    if (countyName.equals(countyObj.get("name").toString())) {
-                        return "O concelho " + countyObj + " tem " + countyObj.get("infectedTot").toString() + " pessoas infetadas";
-                    }
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return "Concelho inexistente";
-    }
 
     // Método responsável por atualizar a lista de portas dos grupos de multicast
     public SynchronizedArrayList<MulticastSocket> updateMulticastGroups(SynchronizedArrayList<WorkerThread> clientsConnected, SynchronizedArrayList<MulticastSocket> multicastGroups) {
@@ -124,7 +61,7 @@ public class CentralNode {
         for (int i = 0; i < clientsConnected.get().size(); i++) {
             if (!isMulticastGroupPortExists(clientsConnected.get().get(i).client, multicastGroups)) {
                 try {
-                    int port = getClientCountyPort(clientsConnected.get().get(i).client);
+                    int port = this.readWriteFiles.getClientCountyPort(clientsConnected.get().get(i).client);
                     multicastGroups.add(new MulticastSocket(port));
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
@@ -142,7 +79,7 @@ public class CentralNode {
         int i = 0;
         boolean found = false;
         while (!found && i < multicastGroups.get().size()) {
-            if (multicastGroups.get().get(i).getLocalPort() == getClientCountyPort(client)) {
+            if (multicastGroups.get().get(i).getLocalPort() == this.readWriteFiles.getClientCountyPort(client)) {
                 found = true;
             }
             i++;

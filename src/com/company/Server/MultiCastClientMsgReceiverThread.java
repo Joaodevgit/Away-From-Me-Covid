@@ -1,5 +1,7 @@
 package com.company.Server;
 
+import com.company.Client.AlertUserBox;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
@@ -26,7 +28,8 @@ public class MultiCastClientMsgReceiverThread extends Thread{
 
                 if (datagramPacket != null) {
                     String serverMsgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-                    System.out.println("Resposta do servidor: " + serverMsgRcvd);
+                    AlertUserBox.display("Aviso Concelho", serverMsgRcvd);
+                    //System.out.println("Resposta do servidor: " + serverMsgRcvd);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

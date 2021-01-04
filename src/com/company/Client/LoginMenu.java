@@ -1,6 +1,8 @@
 package com.company.Client;
 
 import com.company.Models.Client;
+import com.company.Server.MultiCastClientMsgReceiverThread;
+import com.company.Server.ReadWriteFiles;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -19,6 +21,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -87,6 +91,8 @@ public class LoginMenu extends Application {
         launch(args);
     }
 
+    ReadWriteFiles readWriteFiles = new ReadWriteFiles();
+
     @Override
     public void start(Stage primaryStage) {
         mainMenuWindow = primaryStage;
@@ -137,12 +143,17 @@ public class LoginMenu extends Application {
                         this.inputUsername.setText("");
                         this.textPassword.setText("");
 
-                        Socket socket = new Socket("localhost", 2048);
 
                         Client client = new Client(((Long) user.get("id")).intValue(),
                                 user.get("name").toString(), Boolean.parseBoolean(user.get("isInfected").toString()),
                                 Boolean.parseBoolean(user.get("isNotified").toString()),
                                 user.get("county").toString());
+
+
+                        Socket socket = new Socket("localhost", 2048);
+                        MulticastSocket clientMulticastSocket = new MulticastSocket(this.readWriteFiles.getClientCountyPort(client));
+                        InetAddress groupMulticast = InetAddress.getByName("230.0.0.1");
+                        clientMulticastSocket.joinGroup(groupMulticast);
 
                         client.setCommand("LOGIN");
 
@@ -154,6 +165,7 @@ public class LoginMenu extends Application {
                         Platform.runLater(() -> {
                             try {
                                 new MsgReceiverThread(socket).start();
+                                new MultiCastClientMsgReceiverThread(clientMulticastSocket).start();
                             } catch (IOException ioException) {
                                 ioException.printStackTrace();
                             }

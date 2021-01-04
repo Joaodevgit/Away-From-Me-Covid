@@ -78,64 +78,64 @@
   ],
   "Concelhos": [
     {
-      "porta": 4446,
       "name": "Celorico de Basto",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4446
     },
     {
-      "porta": 4447,
       "name": "Felgueiras",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4447
     },
     {
-      "porta": 4448,
       "name": "Amarante",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4448
     },
     {
-      "porta": 4449,
       "name": "Lousada",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4449
     },
     {
-      "porta": 4450,
       "name": "Paços de Ferreira",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4450
     },
     {
-      "porta": 4451,
       "name": "Paredes",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4451
     },
     {
-      "porta": 4452,
       "name": "Penafiel",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4452
     },
     {
-      "porta": 4453,
       "name": "Marco de Canaveses",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4453
     },
     {
-      "porta": 4454,
       "name": "Baião",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4454
     },
     {
-      "porta": 4455,
       "name": "Castelo de Paiva",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4455
     },
     {
-      "porta": 4456,
       "name": "Cinfães",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4456
     },
     {
-      "porta": 4457,
       "name": "Resende",
-      "infectedTot": -1
+      "infectedTot": 0,
+      "porta": 4457
     }
   ]
 }

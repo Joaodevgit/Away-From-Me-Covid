@@ -14,9 +14,7 @@ public class MulticastServerThread extends Thread {
     private SynchronizedArrayList<WorkerThread> clientsConnected;
     private CentralNode centralNode = new CentralNode();
     private SynchronizedArrayList<MulticastSocket> countyMulticastSockets;
-//    MulticastSocket multicastSocket = new MulticastSocket(4446);
-    //InetAddress groupMulticast = InetAddress.getByName("230.0.0.1");
-//    multicastSocket.joinGroup(groupMulticast);
+    private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
     public MulticastServerThread(SynchronizedArrayList<WorkerThread> clientsConnected) throws IOException {
         super("ServerHandlerThread");
@@ -36,6 +34,54 @@ public class MulticastServerThread extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                try {
+                    InetAddress group = InetAddress.getByName("230.0.0.1");
+                    byte[] buf = new byte[1024];
+                    DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length);
+
+                    SynchronizedArrayList<MulticastSocket> clientPorts = this.centralNode.
+                            updateMulticastGroups(this.clientsConnected, this.countyMulticastSockets);
+
+                    for (int i = 0; i < clientPorts.get().size(); i++) {
+                        for (int j = 0; j < this.clientsConnected.get().size(); j++) {
+                            int clientPort = this.readWriteFiles.getClientCountyPort(this.clientsConnected.get().get(j).client);
+                            if (clientPort == clientPorts.get().get(i).getLocalPort()) {
+                                if (datagramPacket != null) {
+                                    String serverMsg;
+                                    int infectedCountyNo = this.readWriteFiles.getCountyTotalInfected(this.clientsConnected.get().get(j).client.getCounty());
+                                    if (infectedCountyNo != -1) {
+                                        serverMsg = "O nº de infetados no concelho " + this.clientsConnected.get().get(j).client.getCounty() +
+                                                " é: " + infectedCountyNo;
+                                    } else {
+                                        serverMsg = "O concelho " + this.clientsConnected.get().get(j).client.getCounty() + " não tem infetados";
+                                    }
+                                    buf = serverMsg.getBytes();
+                                    datagramPacket = new DatagramPacket(buf, buf.length, group, clientPorts.get().get(i).getLocalPort());
+                                    this.datagramSocket.send(datagramPacket);
+                                }
+                            }
+                        }
+                    }
+//                    datagramPacket = new DatagramPacket(buf, buf.length);
+//                    this.datagramSocket.receive(datagramPacket);
+//
+//                    String msgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+//                    System.out.println("O server recebeu do cliente " + datagramPacket.getAddress() + ":" + datagramPacket.getPort() + " a mensagem: " + msgRcvd);
+//
+//                    long total = System.nanoTime() - Long.parseLong(msgRcvd);
+//                    String str = "O valor é: " + total;
+//                    buf = str.getBytes();
+//                    datagramPacket = new DatagramPacket(buf, buf.length, group, 4446);
+//                    this.datagramSocket.send(datagramPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    this.listening = false;
+                }
+            }
+        }
+    }
+}
+
 //              O getClientCountyPort está a retornar bem o nº da porta
 //                System.out.println("Portas");
 //                for (int i = 0; i < this.clientsConnected.get().size(); i++) {
@@ -45,47 +91,13 @@ public class MulticastServerThread extends Thread {
 //                for (int i = 0; i < this.clientsConnected.get().size(); i++) {
 //                    System.out.println(centralNode.isMulticastGroupPortExists(this.clientsConnected.get().get(i).client,countyMulticastSockets));
 //                }
-
-                System.out.println("Antes");
-                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
-                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
-                }
-                centralNode.updateMulticastGroups(this.clientsConnected, this.countyMulticastSockets);
-                System.out.println("Depois");
-                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
-                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
-                }
-//            try {
-//                InetAddress group = InetAddress.getByName("230.0.0.1");
-//                byte[] buf = new byte[1024];
-//
-//                //receive request
-//                DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length);
-//                datagramSocket.receive(datagramPacket);
-//
-//                if (datagramPacket != null) {
-//                    String question = "Qual é o teu tempo local?";
-//                    buf = question.getBytes();
-//                    datagramPacket = new DatagramPacket(buf, buf.length, group, 4446);
-//                    this.datagramSocket.send(datagramPacket);
+//                O updateMulticastGroups atualiza a lista de portas
+//                System.out.println("Antes");
+//                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
+//                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
 //                }
-//                datagramPacket = new DatagramPacket(buf, buf.length);
-//                this.datagramSocket.receive(datagramPacket);
-//
-//                String msgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-//                System.out.println("O server recebeu do cliente " + datagramPacket.getAddress() + ":" + datagramPacket.getPort() + " a mensagem: " + msgRcvd);
-//
-//                long total = System.nanoTime() - Long.parseLong(msgRcvd);
-//                String str = "O valor é: " + total;
-//                buf = str.getBytes();
-//                datagramPacket = new DatagramPacket(buf, buf.length, group, 4446);
-//                this.datagramSocket.send(datagramPacket);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                this.listening = false;
-//            }
-            }
-            this.datagramSocket.close();
-        }
-    }
-}
+//                centralNode.updateMulticastGroups(this.clientsConnected, this.countyMulticastSockets);
+//                System.out.println("Depois");
+//                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
+//                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
+//                }
