@@ -36,8 +36,21 @@ public class CentralNode {
         return result;
     }
 
-    public String saveUserInfo(Socket clientSocket, Client userInfo) {
-        this.readWriteFiles.writeJSONFile(userInfo);
+    public String saveUserInfo(Client clientInfo, SynchronizedArrayList<WorkerThread> clientsConnected) {
+
+        int i = 0;
+        boolean found = false;
+        while (!found && i < clientsConnected.get().size()) {
+            if (clientInfo.getId() == clientsConnected.get().get(i).client.getId()) {
+                found = true;
+            }else{
+                i++;
+            }
+        }
+
+        clientsConnected.removeElement(clientsConnected.get().get(i));
+
+        this.readWriteFiles.writeJSONFile(clientInfo);
 
         return "Siga as recomendações da DGS e fique em casa !";
     }

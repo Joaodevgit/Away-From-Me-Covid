@@ -32,29 +32,31 @@ public class WorkerThread extends Thread {
 
     public void run() {
         try {
-            String inputLine;
+            if (!this.clientsConnected.get().isEmpty()) {
+                String inputLine;
 
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println("inputLine: " + inputLine);
-                System.out.println("Resposta do cliente " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
+                while ((inputLine = in.readLine()) != null) {
+                    System.out.println("inputLine: " + inputLine);
+                    System.out.println("Resposta do cliente " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
 
-                this.client = this.gson.fromJson(inputLine, Client.class);
+                    this.client = this.gson.fromJson(inputLine, Client.class);
 
-                // Verifica se vai notificar a todos os clientes ou executa certos comandos devido a ação do botão
-                if (!client.getListContact().equals("")) {
-                    this.centralNodeInstructions.sendToAll(client, this.clientsConnected);
-                } else {
-                    System.out.println("Resposta do nó central: " + this.centralNodeInstructions.setInstruction(clientSocket, client));
-                    out.println(this.centralNodeInstructions.setInstruction(clientSocket, client));
+                    // Verifica se vai notificar a todos os clientes ou executa certos comandos devido a ação do botão
+                    if (!client.getListContact().equals("")) {
+                        this.centralNodeInstructions.sendToAll(client, this.clientsConnected);
+                    } else {
+                        String msg = this.centralNodeInstructions.setInstruction(clientSocket, client, this.clientsConnected);
+                        System.out.println("Resposta do nó central: " + msg);
+                        out.println(msg);
+                    }
+
+                    if (inputLine.equals("Bye"))
+                        break;
                 }
-
-                if (inputLine.equals("Bye"))
-                    break;
+                out.close();
+                in.close();
+                clientSocket.close();
             }
-
-            out.close();
-            in.close();
-            clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,7 @@
 package com.company.Server;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.util.ArrayList;
+import java.net.*;
 
 public class MulticastServerThread extends Thread {
 
@@ -30,7 +26,7 @@ public class MulticastServerThread extends Thread {
                 System.out.println("Servidor multicast a ouvir...");
                 // Intervalo de tempo para a notificação ser lançada
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -49,7 +45,7 @@ public class MulticastServerThread extends Thread {
                                 if (datagramPacket != null) {
                                     String serverMsg;
                                     int infectedCountyNo = this.readWriteFiles.getCountyTotalInfected(this.clientsConnected.get().get(j).client.getCounty());
-                                    if (infectedCountyNo != -1) {
+                                    if (infectedCountyNo != 0) {
                                         serverMsg = "O nº de infetados no concelho " + this.clientsConnected.get().get(j).client.getCounty() +
                                                 " é: " + infectedCountyNo;
                                     } else {

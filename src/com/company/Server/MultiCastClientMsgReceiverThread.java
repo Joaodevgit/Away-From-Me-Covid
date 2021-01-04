@@ -29,7 +29,6 @@ public class MultiCastClientMsgReceiverThread extends Thread{
                 if (datagramPacket != null) {
                     String serverMsgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
                     AlertUserBox.display("Aviso Concelho", serverMsgRcvd);
-                    //System.out.println("Resposta do servidor: " + serverMsgRcvd);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

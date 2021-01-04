@@ -61,7 +61,7 @@ public class MenuPage extends Application {
             try {
                 out = new PrintWriter(socket.getOutputStream(), true);
 
-                this.client.setCommand("LOGOUT");
+                this.client.setCommand("BOTÃO LOGOUT");
                 out.println(this.client.toString());
 
                 menuPageWindow.close();
@@ -109,7 +109,7 @@ public class MenuPage extends Application {
         this.covidTestSceneButton = new Button("Teste Covid-19");
 
         this.covidTestSceneButton.setOnAction(event -> {
-            CovidTest covidTest = new CovidTest(socket, this.client);
+            CovidTest covidTest = new CovidTest(this.socket, this.client);
 
             try {
                 covidTest.start(this.menuPageWindow);
@@ -122,8 +122,16 @@ public class MenuPage extends Application {
         // Botão Logout
         this.logoutButton = new Button("Logout");
         this.logoutButton.setOnAction(e -> {
+            try {
+                out = new PrintWriter(socket.getOutputStream(), true);
+                this.client.setCommand("BOTÃO LOGOUT");
+                out.println(this.client.toString());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             LoginMenu loginMenu = new LoginMenu();
             loginMenu.start(this.menuPageWindow);
+
             //MainMenu.getStage().setScene(MainMenu.getScene());
         });
 

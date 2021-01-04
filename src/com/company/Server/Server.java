@@ -23,6 +23,7 @@ public class Server {
 
         new MulticastServerThread(clientsConnected).start();
 
+
         while (listening) {
             System.out.println("[SERVER] Aguardando por uma conexão do cliente...");
             Socket client = serverSocket.accept();

@@ -16,4 +16,8 @@ public class SynchronizedArrayList<T> {
     public synchronized ArrayList<T> get() {
         return this.list;
     }
+
+    public synchronized boolean removeElement(T object){
+        return this.list.remove(object);
+    }
 }

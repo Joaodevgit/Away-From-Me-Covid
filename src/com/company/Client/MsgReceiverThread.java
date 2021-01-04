@@ -22,8 +22,8 @@ public class MsgReceiverThread extends Thread {
     public void run() {
         try {
             String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
+            boolean isLogout = false;
+            while ((inputLine = in.readLine()) != null && !isLogout) {
                 //System.out.println("Server Response: " + inputLine);
                 if (inputLine.contains("Bem vindo") || inputLine.contains("infetada")) {
                     AlertUserBox.display("Bem vindo", inputLine);
@@ -37,9 +37,11 @@ public class MsgReceiverThread extends Thread {
                     CovidTest.client.setNotified(false);
                 } else if (inputLine.contains("Siga as recomendações da DGS e fique em casa !")) {
                     AlertUserBox.display("Recomendação", inputLine);
-                } else {
+                } else if(inputLine.contains("Esteve em contacto com uma pessoa infetada...")){
                     AlertUserBox.display("NOTIFY ALL", inputLine);
                     AddCloseContact.client.setListContact("");
+                }else{
+                    isLogout = true;
                 }
             }
         } catch (UnknownHostException e) {

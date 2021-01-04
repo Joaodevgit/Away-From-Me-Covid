@@ -311,7 +311,7 @@ public class ReadWriteFiles {
         File file = new File("src/com/company/Data/Users.json");
 
         if (file.exists()) {
-            // Caso que o ficheiro exista
+            // Caso o ficheiro exista
             try {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));

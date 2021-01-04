@@ -10,24 +10,24 @@ public class CentralNodeInstructions {
     private CentralNode centralNode = new CentralNode();
     private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
-    public String setInstruction(Socket clientSocket, Client clientModel) {
+    public String setInstruction(Socket clientSocket, Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
         String msg = null;
 
-        switch (clientModel.getCommand()) {
-            case "LOGIN":
-                if (clientModel.isNotified()) {
+        switch (client.getCommand()) {
+            case "BOTÃO LOGIN":
+                if (client.isNotified()) {
                     msg = "Esteve em contacto com uma pessoa infetada...É necessário que faça o teste";
                 } else {
-                    msg = "Bem vindo " + clientModel.getName();
+                    msg = "Bem vindo " + client.getName();
                 }
                 break;
 
-            case "LOGOUT":
-                msg = this.centralNode.saveUserInfo(clientSocket, clientModel);
+            case "BOTÃO LOGOUT":
+                msg = this.centralNode.saveUserInfo(client, clientsConnected);
                 break;
 
             case "BOTÃO COVID":
-                msg = centralNode.testCovid(clientSocket);
+                msg = this.centralNode.testCovid(clientSocket);
                 break;
 
 //            case "ADICIONAR CONTACTOS":

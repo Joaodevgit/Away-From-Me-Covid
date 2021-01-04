@@ -155,7 +155,7 @@ public class LoginMenu extends Application {
                         InetAddress groupMulticast = InetAddress.getByName("230.0.0.1");
                         clientMulticastSocket.joinGroup(groupMulticast);
 
-                        client.setCommand("LOGIN");
+                        client.setCommand("BOTÃO LOGIN");
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                         out.println(client.toString());
@@ -185,7 +185,7 @@ public class LoginMenu extends Application {
                         }
                     } else {
                         System.out.println();
-                        AlertUserBox.display("LogIn", "Utilizador não existente");
+                        AlertUserBox.display("Login", "Utilizador não existente");
                     }
 
                 } catch (ParseException parseException) {
