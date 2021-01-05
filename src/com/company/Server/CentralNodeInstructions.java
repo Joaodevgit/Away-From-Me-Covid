@@ -27,7 +27,7 @@ public class CentralNodeInstructions {
                 break;
 
             case "BOTÃO COVID":
-                msg = this.centralNode.testCovid(clientSocket);
+                msg = this.centralNode.testCovid(clientSocket, client);
                 break;
 
 //            case "ADICIONAR CONTACTOS":

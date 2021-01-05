@@ -21,7 +21,8 @@ public class Server {
             System.exit(-1);
         }
 
-        new MulticastServerThread(clientsConnected).start();
+        new MulticastServerSenderThread(clientsConnected).start();
+        new BroadcastServerSenderThread(clientsConnected).start();
 
 
         while (listening) {

@@ -1,8 +1,8 @@
 package com.company.Client;
 
 import com.company.Models.Client;
-import com.company.Server.MultiCastClientMsgReceiverThread;
 import com.company.Server.ReadWriteFiles;
+import com.company.Server.UDPClientMsgReceiverThread;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -24,13 +24,13 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class LoginMenu extends Application {
 
     /* Variáveis Constantes */
     private static final int SCENE_WIDTH = 500;
     private static final int SCENE_HEIGHT = 500;
+    private static final int BROADCAST_PORT = 5000;
     private static final int NOTIFICATION_WIDTH = 300;
     private static final int NOTIFICATION_HEIGHT = 100;
 
@@ -149,11 +149,18 @@ public class LoginMenu extends Application {
                                 Boolean.parseBoolean(user.get("isNotified").toString()),
                                 user.get("county").toString());
 
-
+                        // Socket do cliente responsável pelas comunicações TCP com o servidor
                         Socket socket = new Socket("localhost", 2048);
+
+                        // Socket do cliente responsável pelas comunicações UDP (Multicast) com o servidor
                         MulticastSocket clientMulticastSocket = new MulticastSocket(this.readWriteFiles.getClientCountyPort(client));
                         InetAddress groupMulticast = InetAddress.getByName("230.0.0.1");
                         clientMulticastSocket.joinGroup(groupMulticast);
+
+                        // Socket do cliente responsável pelas comunicações UDP (Broadcast) com o servidor
+                        MulticastSocket clientBroacastSocket = new MulticastSocket(BROADCAST_PORT);
+                        InetAddress groupBroadcast = InetAddress.getByName("230.0.0.2");
+                        clientBroacastSocket.joinGroup(groupBroadcast);
 
                         client.setCommand("BOTÃO LOGIN");
 
@@ -165,7 +172,8 @@ public class LoginMenu extends Application {
                         Platform.runLater(() -> {
                             try {
                                 new MsgReceiverThread(socket).start();
-                                new MultiCastClientMsgReceiverThread(clientMulticastSocket).start();
+                                new UDPClientMsgReceiverThread(clientMulticastSocket).start();
+                                new UDPClientMsgReceiverThread(clientBroacastSocket).start();
                             } catch (IOException ioException) {
                                 ioException.printStackTrace();
                             }

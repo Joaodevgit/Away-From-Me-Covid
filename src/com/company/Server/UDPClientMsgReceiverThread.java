@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 
-public class MultiCastClientMsgReceiverThread extends Thread{
+public class UDPClientMsgReceiverThread extends Thread{
 
     MulticastSocket multicastSocket;
     private boolean listening = true;
 
 
-    public MultiCastClientMsgReceiverThread(MulticastSocket multicastSocket) {
-        super("MultiCastClientMsgReceiver");
+    public UDPClientMsgReceiverThread(MulticastSocket multicastSocket) {
+        super("UDPClientMsgReceiverThread");
         this.multicastSocket = multicastSocket;
     }
 
@@ -28,7 +28,7 @@ public class MultiCastClientMsgReceiverThread extends Thread{
 
                 if (datagramPacket != null) {
                     String serverMsgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-                    AlertUserBox.display("Aviso Concelho", serverMsgRcvd);
+                    AlertUserBox.display("Aviso Número Infetados", serverMsgRcvd);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

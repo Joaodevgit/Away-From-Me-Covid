@@ -23,7 +23,7 @@ public class CentralNode {
         this.readWriteFiles = new ReadWriteFiles();
     }
 
-    public String testCovid(Socket clientSocket) {
+    public String testCovid(Socket clientSocket, Client client) {
         String result;
         int randNumber = new Random().nextInt(2);
 
@@ -31,6 +31,7 @@ public class CentralNode {
             result = "O teste do cliente" + clientSocket.getRemoteSocketAddress().toString() + " deu negativo";
         } else {
             result = "O teste do cliente" + clientSocket.getRemoteSocketAddress().toString() + " deu positivo";
+            this.readWriteFiles.addInfectedCounty(client.getCounty());
         }
 
         return result;
@@ -43,7 +44,7 @@ public class CentralNode {
         while (!found && i < clientsConnected.get().size()) {
             if (clientInfo.getId() == clientsConnected.get().get(i).client.getId()) {
                 found = true;
-            }else{
+            } else {
                 i++;
             }
         }

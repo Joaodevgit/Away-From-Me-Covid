@@ -3,7 +3,7 @@ package com.company.Server;
 import java.io.IOException;
 import java.net.*;
 
-public class MulticastServerThread extends Thread {
+public class MulticastServerSenderThread extends Thread {
 
     protected DatagramSocket datagramSocket;
     protected boolean listening = true;
@@ -12,7 +12,7 @@ public class MulticastServerThread extends Thread {
     private SynchronizedArrayList<MulticastSocket> countyMulticastSockets;
     private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
-    public MulticastServerThread(SynchronizedArrayList<WorkerThread> clientsConnected) throws IOException {
+    public MulticastServerSenderThread(SynchronizedArrayList<WorkerThread> clientsConnected) throws IOException {
         super("ServerHandlerThread");
         this.datagramSocket = new DatagramSocket(4445);
         this.clientsConnected = clientsConnected;
@@ -26,7 +26,7 @@ public class MulticastServerThread extends Thread {
                 System.out.println("Servidor multicast a ouvir...");
                 // Intervalo de tempo para a notificação ser lançada
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(30000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

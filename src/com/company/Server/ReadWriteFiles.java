@@ -369,5 +369,92 @@ public class ReadWriteFiles {
         return -2;
     }
 
+    // Método responsável por obter o nº total de infetados da sub-região do Tâmega e Vale do Sousa
+    public int getSubRegionTotalInfected() {
+
+        File file = new File("src/com/company/Data/Users.json");
+        int totalInfected = 0;
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+
+                for (int i = 0; i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+
+                    totalInfected += Integer.parseInt(countyObj.get("infectedTot").toString());
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return totalInfected;
+    }
+
+    // Método responsável por adicionar mais uma pessoa no total de infectados de um determinado concelho
+    public void addInfectedCounty(String country) {
+
+        File file = new File("src/com/company/Data/Users.json");
+
+        if (file.exists()) {
+            // Caso que o ficheiro exista
+            try {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
+
+                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+
+                JSONObject countyObj;
+                boolean found = false;
+
+                for (int i = 0; !found && i < listCounties.size(); i++) {
+                    countyObj = (JSONObject) listCounties.get(i);
+
+                    if (countyObj.get("name").equals(country)) {
+                        found = true;
+                        int totalAdd = Integer.parseInt(countyObj.get("infectedTot").toString()) + 1;
+
+                        ((JSONObject) listCounties.get(i)).put("infectedTot", totalAdd);
+                    }
+
+                }
+
+                JSONArray county = (JSONArray) obj.get("UnregisteredUsers");
+                JSONArray register = (JSONArray) obj.get("Registo");
+
+                JSONObject objWrite = new JSONObject();
+
+                objWrite.put("UnregisteredUsers", county);
+                objWrite.put("Registo", register);
+                objWrite.put("Concelhos", listCounties);
+
+                FileWriter fileWriter = new FileWriter(file.getPath());
+
+                fileWriter.write(objWrite.toJSONString());
+
+                fileWriter.close();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 }
