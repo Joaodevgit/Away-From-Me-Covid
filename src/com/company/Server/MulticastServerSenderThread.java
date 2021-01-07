@@ -22,14 +22,14 @@ public class MulticastServerSenderThread extends Thread {
     @Override
     public void run() {
         while (listening) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (!this.clientsConnected.get().isEmpty()) {
                 System.out.println("Servidor multicast a ouvir...");
                 // Intervalo de tempo para a notificação ser lançada
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 try {
                     InetAddress group = InetAddress.getByName("230.0.0.1");
                     byte[] buf = new byte[1024];
@@ -58,42 +58,12 @@ public class MulticastServerSenderThread extends Thread {
                             }
                         }
                     }
-//                    datagramPacket = new DatagramPacket(buf, buf.length);
-//                    this.datagramSocket.receive(datagramPacket);
-//
-//                    String msgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-//                    System.out.println("O server recebeu do cliente " + datagramPacket.getAddress() + ":" + datagramPacket.getPort() + " a mensagem: " + msgRcvd);
-//
-//                    long total = System.nanoTime() - Long.parseLong(msgRcvd);
-//                    String str = "O valor é: " + total;
-//                    buf = str.getBytes();
-//                    datagramPacket = new DatagramPacket(buf, buf.length, group, 4446);
-//                    this.datagramSocket.send(datagramPacket);
                 } catch (IOException e) {
                     e.printStackTrace();
                     this.listening = false;
                 }
             }
         }
+        this.datagramSocket.close();
     }
 }
-
-//              O getClientCountyPort está a retornar bem o nº da porta
-//                System.out.println("Portas");
-//                for (int i = 0; i < this.clientsConnected.get().size(); i++) {
-//                    System.out.println(centralNode.getClientCountyPort(this.clientsConnected.get().get(i).client));
-//                }
-//              O isMulticastGroupPortExists está a retornar bem se o nº da porta existe ou não no array
-//                for (int i = 0; i < this.clientsConnected.get().size(); i++) {
-//                    System.out.println(centralNode.isMulticastGroupPortExists(this.clientsConnected.get().get(i).client,countyMulticastSockets));
-//                }
-//                O updateMulticastGroups atualiza a lista de portas
-//                System.out.println("Antes");
-//                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
-//                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
-//                }
-//                centralNode.updateMulticastGroups(this.clientsConnected, this.countyMulticastSockets);
-//                System.out.println("Depois");
-//                for (int i = 0; i < this.countyMulticastSockets.get().size(); i++) {
-//                    System.out.println(this.countyMulticastSockets.get().get(i).getLocalPort());
-//                }

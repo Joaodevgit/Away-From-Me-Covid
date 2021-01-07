@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,8 +29,8 @@ import java.net.Socket;
 public class LoginMenu extends Application {
 
     /* Variáveis Constantes */
-    private static final int SCENE_WIDTH = 500;
-    private static final int SCENE_HEIGHT = 500;
+    private static final int SCENE_WIDTH = 600;
+    private static final int SCENE_HEIGHT = 650;
     private static final int BROADCAST_PORT = 5000;
     private static final int NOTIFICATION_WIDTH = 300;
     private static final int NOTIFICATION_HEIGHT = 100;
@@ -97,6 +98,7 @@ public class LoginMenu extends Application {
     public void start(Stage primaryStage) {
         mainMenuWindow = primaryStage;
 
+        mainMenuWindow.getIcons().add(new Image("https://user-images.githubusercontent.com/44362304/103882959-761f8c80-50d4-11eb-9e3d-6f4f3c0e276c.png"));
         /**
          * Scene MenuPage
          **/
@@ -143,7 +145,6 @@ public class LoginMenu extends Application {
                         this.inputUsername.setText("");
                         this.textPassword.setText("");
 
-
                         Client client = new Client(((Long) user.get("id")).intValue(),
                                 user.get("name").toString(), Boolean.parseBoolean(user.get("isInfected").toString()),
                                 Boolean.parseBoolean(user.get("isNotified").toString()),
@@ -162,6 +163,8 @@ public class LoginMenu extends Application {
                         InetAddress groupBroadcast = InetAddress.getByName("230.0.0.2");
                         clientBroacastSocket.joinGroup(groupBroadcast);
 
+                        client.setClientMulticastSocket(clientMulticastSocket);
+                        client.setClientBroadcastSocket(clientBroacastSocket);
                         client.setCommand("BOTÃO LOGIN");
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);

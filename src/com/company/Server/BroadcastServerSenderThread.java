@@ -12,6 +12,12 @@ public class BroadcastServerSenderThread extends Thread {
 
     public BroadcastServerSenderThread(SynchronizedArrayList<WorkerThread> clientsConnected) {
         this.clientsConnected = clientsConnected;
+        try {
+            this.broadcastSocket = new DatagramSocket();
+            this.broadcastSocket.setBroadcast(true);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 
     protected boolean listening = true;
@@ -19,25 +25,22 @@ public class BroadcastServerSenderThread extends Thread {
     @Override
     public void run() {
         while (listening) {
+            try {
+                Thread.sleep(16000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (!this.clientsConnected.get().isEmpty()) {
+                System.out.println("Servidor broadcast a ouvir...");
                 // Intervalo de tempo para a notificação ser lançada
-                try {
-                    Thread.sleep(45000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 try {
                     String serverMsg = "O nº total de infetados na Sub-região do Tâmega e Vale do Sousa é: " +
                             this.readWriteFiles.getSubRegionTotalInfected();
 
-                    broadcastSocket = new DatagramSocket();
-                    broadcastSocket.setBroadcast(true);
-
                     byte[] buf = serverMsg.getBytes();
 
                     DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(BROADCAST_ADDRESS), 5000);
-                    broadcastSocket.send(packet);
-                    broadcastSocket.close();
+                    this.broadcastSocket.send(packet);
                 } catch (UnknownHostException | SocketException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -45,6 +48,7 @@ public class BroadcastServerSenderThread extends Thread {
                 }
             }
         }
+        this.broadcastSocket.close();
     }
 
 

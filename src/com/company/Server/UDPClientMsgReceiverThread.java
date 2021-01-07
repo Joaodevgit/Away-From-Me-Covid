@@ -34,5 +34,6 @@ public class UDPClientMsgReceiverThread extends Thread{
                 e.printStackTrace();
             }
         }
+        this.multicastSocket.close();
     }
 }

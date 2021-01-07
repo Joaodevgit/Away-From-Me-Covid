@@ -55,20 +55,7 @@ public class CentralNode {
 
         return "Siga as recomendações da DGS e fique em casa !";
     }
-
-    public void printClientsConnected(SynchronizedArrayList<WorkerThread> clientsConnected) {
-
-        if (clientsConnected.get().size() != 0) {
-            System.out.println("Os clientes conetados são: ");
-            for (int i = 0; i < clientsConnected.get().size(); i++) {
-                System.out.println(clientsConnected.get().get(i).client.toString());
-            }
-        } else {
-            System.out.println("Atualmente não existem clientes conetados!");
-        }
-    }
-
-
+    
     // Método responsável por atualizar a lista de portas dos grupos de multicast
     public SynchronizedArrayList<MulticastSocket> updateMulticastGroups(SynchronizedArrayList<WorkerThread> clientsConnected, SynchronizedArrayList<MulticastSocket> multicastGroups) {
 

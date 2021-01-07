@@ -7,16 +7,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class MenuPage extends Application {
@@ -36,6 +35,11 @@ public class MenuPage extends Application {
 
     private Label titleLabel;
     private Label welcomeMsgLabel;
+
+    /**
+     * Imagem Menu Principal
+     */
+    private ImageView imageView;
 
     private Scene mainScene;
 
@@ -86,6 +90,23 @@ public class MenuPage extends Application {
         this.welcomeMsgLabel.setText("Bem vindo ao Away From Me Covid!");
         this.welcomeMsgLabel.setFont(new Font(20));
 
+        // Imagem do menu principal
+        //Creating an image
+        //Setting the image view
+        this.imageView = new ImageView("https://user-images.githubusercontent.com/44362304/103881998-1bd1fc00-50d3-11eb-82d4-e5f842f3d61f.png");
+
+        //Setting the position of the image
+        imageView.setX(50);
+        imageView.setY(25);
+
+        //setting the fit height and width of the image view
+        imageView.setFitHeight(455);
+        imageView.setFitWidth(500);
+
+        //Setting the preserve ratio of the image view
+        imageView.setPreserveRatio(true);
+
+
         /* Botões */
 
         // Botão de acesso à scene de adicionar contatos próximos
@@ -135,12 +156,13 @@ public class MenuPage extends Application {
             //MainMenu.getStage().setScene(MainMenu.getScene());
         });
 
+
         /* Containers Menu Principal */
 
         // Container do Título
         VBox titleBoxContainer = new VBox(10);
         titleBoxContainer.setAlignment(Pos.CENTER);
-        titleBoxContainer.getChildren().addAll(this.titleLabel, this.welcomeMsgLabel);
+        titleBoxContainer.getChildren().addAll(this.titleLabel, this.welcomeMsgLabel, this.imageView);
 
         // Container dos botões centrais
         VBox mainMenuButtons = new VBox(50);
