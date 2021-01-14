@@ -4,7 +4,6 @@ import com.company.Client.AlertUserBox;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 public class UDPClientMsgReceiverThread extends Thread {
@@ -17,6 +16,9 @@ public class UDPClientMsgReceiverThread extends Thread {
         this.multicastSocket = multicastSocket;
     }
 
+    /**
+     * Método responsável por executar a thread que irá tratar de receber os datagramsocket (mensagem) da parte do servidor
+     */
     @Override
     public void run() {
 

@@ -6,7 +6,6 @@ import java.io.*;
 public class Server {
 
     private static SynchronizedArrayList<WorkerThread> clientsConnected = new SynchronizedArrayList<>();
-//    protected static SynchronizedArrayList<Client> clientsList = new SynchronizedArrayList<>();
 
     public static void main(String[] args) throws IOException {
 
@@ -21,7 +20,9 @@ public class Server {
             System.exit(-1);
         }
 
+        // Thread do server multicast
         new MulticastServerSenderThread(clientsConnected).start();
+        // Thread do server broadcast
         new BroadcastServerSenderThread(clientsConnected).start();
 
 
@@ -32,7 +33,6 @@ public class Server {
 
             WorkerThread clientThread = new WorkerThread(client, clientsConnected);
             clientsConnected.add(clientThread);
-            //clientsList.add(clientModel);
             clientThread.start();
         }
 

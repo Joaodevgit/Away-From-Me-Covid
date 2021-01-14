@@ -19,8 +19,13 @@ public class ReadWriteFiles {
         this.jsonParser = new JSONParser();
     }
 
-    // Quando o Utilizador fecha a aplicação, a sua informação fica guardada
-    public void writeJSONFile(Client userInfo) {
+
+    /**
+     * Método responsável por escrever para ficheiro as informações do cliente enquanto este usa a aplicação
+     *
+     * @param client objeto do cliente (modelo)
+     */
+    public void writeJSONFile(Client client) {
         try {
             this.jsonParser = new JSONParser();
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
@@ -34,10 +39,10 @@ public class ReadWriteFiles {
             while (!found && i < listUsers.size()) {
                 user = (JSONObject) listUsers.get(i);
 
-                if (userInfo.getId() == ((Long) user.get("id")).intValue()) {
+                if (client.getId() == ((Long) user.get("id")).intValue()) {
                     found = true;
-                    ((JSONObject) listUsers.get(i)).put("isInfected", userInfo.isInfected());
-                    ((JSONObject) listUsers.get(i)).put("isNotified", userInfo.isNotified());
+                    ((JSONObject) listUsers.get(i)).put("isInfected", client.isInfected());
+                    ((JSONObject) listUsers.get(i)).put("isNotified", client.isNotified());
                 }
 
                 i++;
@@ -67,6 +72,12 @@ public class ReadWriteFiles {
         }
     }
 
+    /**
+     * Método responsável por verificar se um cliente, existe ou não, dado o seu id no ficheiro JSON
+     *
+     * @param id id do cliente
+     * @return true se o cliente existe, caso contrário retorna false
+     */
     public boolean userExists(int id) {
         boolean exist = false;
 
@@ -94,6 +105,12 @@ public class ReadWriteFiles {
         return exist;
     }
 
+    /**
+     * Método responsável por retornar o índice da posição do cliente que ainda não está registado na aplicação
+     *
+     * @param id id do cliente
+     * @return a posição do cliente se este existir, caso contrário retorna -1
+     */
     public int indexUnregisteredUsers(int id) {
         int position = -1;
 
@@ -126,6 +143,11 @@ public class ReadWriteFiles {
         return position;
     }
 
+    /**
+     * Método responsável por remover o cliente do ficheiro JSON, dada a sua posição no array de clientes registados
+     *
+     * @param position posição do cliente a ser removido
+     */
     public void removeUnregisteredUsers(int position) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
@@ -154,6 +176,15 @@ public class ReadWriteFiles {
         }
     }
 
+    /**
+     * Método responsável por escrever para ficheiro as informações do cliente quando este se regista
+     *
+     * @param id         id do cliente
+     * @param username   username do cliente
+     * @param password   password do cliente
+     * @param isNotified se já foi notificado ou não (true/false)
+     * @param county     concelho do cliente
+     */
     public void writeUserRegister(int id, String username, String password, boolean isNotified, String county) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
@@ -194,6 +225,11 @@ public class ReadWriteFiles {
         }
     }
 
+    /**
+     * Método responsável por adicionar um contato que ainda não está registado na aplicação
+     *
+     * @param id id do contato não registado
+     */
     public void updateNotificationContactUser(int id) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
@@ -235,6 +271,12 @@ public class ReadWriteFiles {
         }
     }
 
+    /**
+     * Método responsável por escrever para ficheiro os utilizadores que foram adicionados aos contatos próximos e que
+     * ainda não se encontram registados na aplicação
+     *
+     * @param id id do cliente não registado
+     */
     public void writeUnregisteredUsers(int id) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
@@ -280,6 +322,11 @@ public class ReadWriteFiles {
         }
     }
 
+    /**
+     * Método responsável por carregar o spinner, do ficheiro JSON com o nome dos concelhos
+     *
+     * @return a lista de opções
+     */
     public ArrayList<String> spinnerOptions() {
         ArrayList<String> options = new ArrayList<>();
 
@@ -305,7 +352,13 @@ public class ReadWriteFiles {
         return options;
     }
 
-    // Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
+
+    /**
+     * Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
+     *
+     * @param client objeto do cliente (modelo)
+     * @return a porta do cliente
+     */
     public int getClientCountyPort(Client client) {
 
         File file = new File("src/com/company/Data/Users.json");
@@ -337,7 +390,13 @@ public class ReadWriteFiles {
         return -1;
     }
 
-    // Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
+
+    /**
+     * Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
+     *
+     * @param countyName nome do concelho
+     * @return nº total de infetados do concelho pretendido
+     */
     public int getCountyTotalInfected(String countyName) {
 
         File file = new File("src/com/company/Data/Users.json");
@@ -369,7 +428,12 @@ public class ReadWriteFiles {
         return -2;
     }
 
-    // Método responsável por obter o nº total de infetados da sub-região do Tâmega e Vale do Sousa
+
+    /**
+     * Método responsável por obter o nº total de infetados da sub-região do Tâmega e Vale do Sousa
+     *
+     * @return nº total de infetados da sub-região do Tâmega e Vale do Sousa
+     */
     public int getSubRegionTotalInfected() {
 
         File file = new File("src/com/company/Data/Users.json");
@@ -403,8 +467,13 @@ public class ReadWriteFiles {
         return totalInfected;
     }
 
-    // Método responsável por adicionar mais uma pessoa no total de infectados de um determinado concelho
-    public void addInfectedCounty(String country) {
+
+    /**
+     * Método responsável por adicionar mais uma pessoa no total de infectados de um determinado concelho
+     *
+     * @param county nome do concelho
+     */
+    public void addInfectedCounty(String county) {
 
         File file = new File("src/com/company/Data/Users.json");
 
@@ -422,7 +491,7 @@ public class ReadWriteFiles {
                 for (int i = 0; !found && i < listCounties.size(); i++) {
                     countyObj = (JSONObject) listCounties.get(i);
 
-                    if (countyObj.get("name").equals(country)) {
+                    if (countyObj.get("name").equals(county)) {
                         found = true;
                         int totalAdd = Integer.parseInt(countyObj.get("infectedTot").toString()) + 1;
 
@@ -431,12 +500,12 @@ public class ReadWriteFiles {
 
                 }
 
-                JSONArray county = (JSONArray) obj.get("UnregisteredUsers");
+                JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
                 JSONArray register = (JSONArray) obj.get("Registo");
 
                 JSONObject objWrite = new JSONObject();
 
-                objWrite.put("UnregisteredUsers", county);
+                objWrite.put("UnregisteredUsers", unregisteredUsers);
                 objWrite.put("Registo", register);
                 objWrite.put("Concelhos", listCounties);
 
@@ -454,7 +523,6 @@ public class ReadWriteFiles {
                 e.printStackTrace();
             }
         }
-
     }
 
 }

@@ -29,7 +29,10 @@ public class WorkerThread extends Thread {
         this.gson = new Gson();
     }
 
-
+    /**
+     * Método responsável por executar a thread que irá tratar de receber a mensagem do nó central e de a enviar para o
+     * cliente
+     */
     public void run() {
         try {
             if (!this.clientsConnected.get().isEmpty()) {
@@ -61,13 +64,5 @@ public class WorkerThread extends Thread {
             e.printStackTrace();
         }
     }
-
-//    private void sendMessageToAllClients(String msg, Socket client) {
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//        LocalDateTime now = LocalDateTime.now();
-//        for (WorkerThread aClient : clients) {
-//            aClient.out.println(dtf.format(now) + " O Cliente: " + client.getRemoteSocketAddress().toString() + " diz: " + msg);
-//        }
-//    }
 }
 

@@ -19,17 +19,21 @@ public class MulticastServerSenderThread extends Thread {
         this.countyMulticastSockets = new SynchronizedArrayList<>();
     }
 
+    /**
+     * Método responsável por executar a thread que irá tratar de enviar as mensagens por multicast aos clientes, a
+     * informar o nº de infetados do seu respetivo concelho pertencente à sub-região Tâmega e Vale do Sousa
+     */
     @Override
     public void run() {
         while (listening) {
+            // Intervalo de tempo para a notificação ser lançada (30s em 30s)
             try {
-                Thread.sleep(9000);
+                Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if (!this.clientsConnected.get().isEmpty()) {
                 System.out.println("Servidor multicast a ouvir...");
-                // Intervalo de tempo para a notificação ser lançada
                 try {
                     InetAddress group = InetAddress.getByName("230.0.0.1");
                     byte[] buf = new byte[1024];

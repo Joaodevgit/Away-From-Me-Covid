@@ -10,6 +10,15 @@ public class CentralNodeInstructions {
     private CentralNode centralNode = new CentralNode();
     private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
+
+    /**
+     * Método responsável por receber uma determinada ação (em string) do cliente na aplicação
+     *
+     * @param clientSocket     socket associado ao cliente
+     * @param client           objeto do cliente (modelo)
+     * @param clientsConnected array de clientes atualmente conetados na aplicação
+     * @return a mensagem resultante do clique do cliente
+     */
     public String setInstruction(Socket clientSocket, Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
         String msg = null;
 
@@ -29,20 +38,19 @@ public class CentralNodeInstructions {
             case "BOTÃO COVID":
                 msg = this.centralNode.testCovid(clientSocket, client);
                 break;
-
-//            case "ADICIONAR CONTACTOS":
-//                if (Pattern.matches("^[0-9]+(;[0-9]+)*$", clientModel.getListContact())) {
-//                    msg = centralNode.addCloseContact(clientSocket, clientModel.getListContact());
-//                } else {
-//                    msg = "Introdução de Id's inválida";
-//                }
-//                break;
         }
 
         return msg;
     }
 
-    //TODO: Acabar o método e testar
+    /**
+     * Método responsável por enviar ao cliente que adicionou os contatos próximos a mensagem: "Todos os contactos foram
+     * alertados com sucesso!" e responsável por enviar aos contatos próximos que foram adicionados a mensagem:" Esteve
+     * em contacto com uma pessoa infetada! É necessario fazer o teste!"
+     *
+     * @param client           objeto do cliente (modelo)
+     * @param clientsConnected array de clientes atualmente conetados na aplicação
+     */
     public synchronized void sendToAll(Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
 
         if (Pattern.matches("^[0-9]+(;[0-9]+)*$", client.getListContact())) {
@@ -59,9 +67,7 @@ public class CentralNodeInstructions {
 
             for (int i = 1; i < listContact.length; i++) {
                 found = false;
-
                 idConvInt = Integer.parseInt(listContact[i]);
-
                 System.out.println("ID CONTACT: " + idConvInt);
 
                 for (int j = 0; !found && j < clientsConnected.get().size(); j++) {
@@ -70,9 +76,7 @@ public class CentralNodeInstructions {
                         found = true;
                         clientsConnected.get().get(i).out.println("Esteve em contacto com uma pessoa infetada! É necessario fazer o teste!");
                     }
-
                 }
-
                 // Caso que o Utilizador não esteja conectado
                 if (!found) {
                     // Se existir um registo do Utilizador
@@ -95,7 +99,5 @@ public class CentralNodeInstructions {
                 }
             }
         }
-
     }
-
 }
