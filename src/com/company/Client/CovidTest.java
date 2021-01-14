@@ -31,7 +31,6 @@ public class CovidTest extends Application {
     private Scene covidTestScene;
 
     private Stage covidTestWindow;
-    private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
     protected static Client client;
@@ -41,11 +40,17 @@ public class CovidTest extends Application {
         this.client = client;
     }
 
+    /**
+     * Método responsável por inicar a interface grafica de "Teste ao Covid"
+     *
+     * @param primaryStage - Container principal do JavaFX
+     */
     @Override
     public void start(Stage primaryStage) {
         this.covidTestWindow = primaryStage;
 
-        // Method called when the user presses "X" on window
+        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
+        // Utilizador
         this.covidTestWindow.setOnCloseRequest(e -> {
             e.consume();
 
@@ -54,12 +59,6 @@ public class CovidTest extends Application {
 
                 this.client.setCommand("LOGOUT");
                 out.println(this.client.toString());
-
-                //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//                String serverMsg;
-//                if ((serverMsg = in.readLine()) != null) {
-                //}
 
                 covidTestWindow.close();
             } catch (IOException ioException) {
@@ -92,15 +91,6 @@ public class CovidTest extends Application {
                     out = new PrintWriter(socket.getOutputStream(), true);
                     this.client.setCommand("BOTÃO COVID");
                     out.println(this.client.toString());
-                    //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-//                    String serverMsg;
-//                    if ((serverMsg = in.readLine()) != null) {
-//                        AlertUserBox.display("Resultado Teste Covid", serverMsg);
-//                        if (serverMsg.contains("positivo")) {
-//
-//                        }
-//                    }
                 } catch (UnknownHostException ex) {
                     System.out.println("Unknown Host.");
                     System.exit(1);

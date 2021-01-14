@@ -11,13 +11,16 @@ import javafx.stage.Stage;
 
 public class AlertUserBox {
 
+    /**
+     * Método responsável por inicar a interface grafica da notificação de todos os eventos do Servidor
+     *
+     * @param title   Titulo da notificação
+     * @param message Conteudo da mensagem na Notificação
+     */
     public static void display(String title, String message) {
         Platform.runLater(() -> {
             Stage window = new Stage();
 
-            // Bloqueio de interações com outras janelas
-            // até esta janela ter sido fechada
-            //window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
             window.setWidth(500);
             window.setHeight(150);
@@ -46,6 +49,7 @@ public class AlertUserBox {
 
                 Platform.runLater(() -> window.close());
             });
+
             newThread.start();
         });
     }

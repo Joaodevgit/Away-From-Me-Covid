@@ -38,27 +38,33 @@ public class RegisterPage extends Application {
 
     private ReadWriteFiles readWriteFiles;
 
+    /**
+     * Método responsável por inicar a interface grafica de "Registar Conta"
+     *
+     * @param primaryStage - Container principal do JavaFX
+     */
     @Override
     public void start(Stage primaryStage) {
-        registerPageWindow = primaryStage;
+        this.registerPageWindow = primaryStage;
 
         this.readWriteFiles = new ReadWriteFiles();
 
-        // Method called when the user presses "X" on window
+        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
+        // Utilizador
         this.registerPageWindow.setOnCloseRequest(e -> {
             e.consume();
 
             AlertUserBox.display("Recomendação", "Siga as recomendações da DGS e fique em casa !");
 
-            registerPageWindow.close();
+            this.registerPageWindow.close();
         });
 
-        //Titulo da Scene
+        // Titulo da Scene
         this.titleContent = new Label();
         this.titleContent.setText("Registar Conta");
         this.titleContent.setFont(new Font(30));
 
-        //Formulario do registo
+        // Formulario do registo
         this.textUsername = new Label();
         this.textUsername.setText("Username");
         this.textUsername.setFont(new Font(15));
@@ -75,9 +81,9 @@ public class RegisterPage extends Application {
         this.inputPass = new TextField();
         this.inputId = new TextField();
 
-        listContyName = this.readWriteFiles.spinnerOptions();
+        this.listContyName = this.readWriteFiles.spinnerOptions();
 
-        //Botões
+        // Botões
         this.register = new Button("Criar Conta");
         Stage mainMenuPage = LoginMenu.getStage();
         this.register.setOnAction(e -> {
@@ -91,7 +97,7 @@ public class RegisterPage extends Application {
                 boolean conditionRegist = false;
 
                 //id >= 100000000 && id <= 999999999 Muito trabalho para testar
-                if ((id >= 0 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
+                if ((id >= 100000000 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
                     conditionRegist = true;
                 }
 
@@ -132,7 +138,7 @@ public class RegisterPage extends Application {
         this.backMenu = new Button("Voltar");
         this.backMenu.setOnAction(e -> mainMenuPage.setScene(LoginMenu.getScene()));
 
-        //Container do titulo
+        // Container do titulo
         VBox titleContainer = new VBox(10);
         titleContainer.setAlignment(Pos.CENTER);
         titleContainer.getChildren().addAll(this.titleContent);
@@ -152,16 +158,14 @@ public class RegisterPage extends Application {
 
         this.comboBox = new ComboBox<>();
         this.comboBox.setValue("Escolha o seu concelho");
-        this.comboBox.getItems().addAll(listContyName);
+        this.comboBox.getItems().addAll(this.listContyName);
 
-        //this.comboBox.setPromptText("Escolha o seu concelho");
-
-        // Click on a item from combobox
-        this.comboBox.setOnAction(e -> System.out.println("User selected: " + comboBox.getValue()));
+        // Ações do click na ComboBox
+        this.comboBox.setOnAction(e -> System.out.println("User selected: " + this.comboBox.getValue()));
 
         VBox mainMenuButtons = new VBox(10);
         mainMenuButtons.setAlignment(Pos.CENTER);
-        mainMenuButtons.getChildren().addAll(containerId, containerLoginUsername, containerLoginPass, comboBox);
+        mainMenuButtons.getChildren().addAll(containerId, containerLoginUsername, containerLoginPass, this.comboBox);
 
         // Container dos butões
         HBox containerButton = new HBox(10);
@@ -176,7 +180,7 @@ public class RegisterPage extends Application {
 
         this.registerPageScene = new Scene(borderPanelayout, LoginMenu.getSceneWidth(), LoginMenu.getSceneHeight());
 
-        registerPageWindow.setScene(registerPageScene);
-        registerPageWindow.show();
+        this.registerPageWindow.setScene(registerPageScene);
+        this.registerPageWindow.show();
     }
 }

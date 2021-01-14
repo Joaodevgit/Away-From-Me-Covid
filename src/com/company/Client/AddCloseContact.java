@@ -39,8 +39,7 @@ public class AddCloseContact extends Application {
     private ComboBox<String> comboBox;
     private Socket socket;
 
-    BufferedReader in;
-    PrintWriter out;
+    private PrintWriter out;
     protected static Client client;
 
     public AddCloseContact(Socket socket, Client client) {
@@ -48,12 +47,18 @@ public class AddCloseContact extends Application {
         this.client = client;
     }
 
+    /**
+     * Método responsável por inicar a interface grafica de "Adicionar contactos"
+     *
+     * @param primaryStage - Container principal do JavaFX
+     */
     @Override
     public void start(Stage primaryStage) {
 
         this.addCloseContactWindow = primaryStage;
 
-        // Method called when the user presses "X" on window
+        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
+        // Utilizador
         this.addCloseContactWindow.setOnCloseRequest(e -> {
             e.consume();
 
@@ -117,7 +122,6 @@ public class AddCloseContact extends Application {
 
         // Input ID Contacto
         this.idContactInput = new TextField();
-        //Socket socket = new Socket("Asus", 2048);
         this.addContactButton.setOnAction(e -> {
             try {
                 if (this.idContactInput.getText() != "") {
@@ -127,12 +131,7 @@ public class AddCloseContact extends Application {
 
                     this.out = new PrintWriter(socket.getOutputStream(), true);
                     this.out.println(this.client.toString());
-//                    this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-//                    if ((closeContact = in.readLine()) != null) {
-//                        //AlertUserBox.window = addCloseContactWindow;
-//                        AlertUserBox.display("Contatos Próximos", closeContact);
-//                    }
                 } else {
                     AlertUserBox.display("Contatos Próximos", "Adicione um contato primeiro!");
                 }
@@ -152,7 +151,7 @@ public class AddCloseContact extends Application {
         this.comboBox.setValue("Escolha as pessoas");
         this.comboBox.getItems().addAll(listUserId);
 
-        // Click on a item from combobox
+        // Ações do click na ComboBox
         this.comboBox.setOnAction(e -> {
             System.out.println("User selected: " + comboBox.getValue());
 
@@ -172,24 +171,23 @@ public class AddCloseContact extends Application {
             this.idContactInput.setText(content);
         });
 
-        // Botão "Regressar ao Menu Principal
+        // Botão "Regressar" ao Menu Principal
         this.returnMenuButton = new Button("Regressar ao menu principal");
-        //Stage newStage = MainMenu.getStage();
         this.returnMenuButton.setOnAction(e -> {
             MenuPage menuPage = null;
+
             try {
                 menuPage = new MenuPage(socket, this.client);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+
             try {
                 menuPage.start(addCloseContactWindow);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            //newStage.setScene(MainMenu.getScene());
         });
-
 
         VBox titlesContainer = new VBox(10);
         titlesContainer.setAlignment(Pos.CENTER);

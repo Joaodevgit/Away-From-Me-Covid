@@ -32,41 +32,35 @@ public class LoginMenu extends Application {
     private static final int SCENE_WIDTH = 600;
     private static final int SCENE_HEIGHT = 650;
     private static final int BROADCAST_PORT = 5000;
-    private static final int NOTIFICATION_WIDTH = 300;
-    private static final int NOTIFICATION_HEIGHT = 100;
 
     /* Stage */
     private static Stage mainMenuWindow;
 
     /* Scenes */
     private static Scene mainMenuScene;
-    private Scene registerMenuScene;
-
-    /* Todas as outras scenes */
-    //public static Scene menuPage = new MenuPage().sceneView();
-    //public static Scene covidTestPage = new CovidTest().sceneView();
-
 
     /**
      * Botões Menu Principal
      **/
-    Button registerAccount;
-    Button loginAccount;
+    private Button registerAccount;
+    private Button loginAccount;
 
     /**
      * Labels Menu Principal
      **/
-    Label titleLabel;
-    Label textUsername;
-    Label textPassword;
+    private Label titleLabel;
+    private Label textUsername;
+    private Label textPassword;
 
     /**
      * Layout Menu Principal
      **/
-    BorderPane borderPanelayout;
+    private BorderPane borderPanelayout;
 
-    TextField inputUsername;
-    TextField inputPassword;
+    private TextField inputUsername;
+    private TextField inputPassword;
+
+    private ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
     public static Stage getStage() {
         return mainMenuWindow;
@@ -84,26 +78,15 @@ public class LoginMenu extends Application {
         return mainMenuScene;
     }
 
-    public static void setScene(Scene scn) {
-        mainMenuScene = scn;
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
-
-    ReadWriteFiles readWriteFiles = new ReadWriteFiles();
 
     @Override
     public void start(Stage primaryStage) {
         mainMenuWindow = primaryStage;
 
         mainMenuWindow.getIcons().add(new Image("https://user-images.githubusercontent.com/44362304/103882959-761f8c80-50d4-11eb-9e3d-6f4f3c0e276c.png"));
-        /**
-         * Scene MenuPage
-         **/
-        //this.menuPage = new Scene(new MenuPage().sceneView(), SCENE_WIDTH, SCENE_HEIGHT);
-        //this.registerMenuScene = new Scene(new RegisterPage().sceneView(), SCENE_WIDTH, SCENE_HEIGHT);
 
         /* Botões */
         this.registerAccount = new Button("Criar uma conta");
@@ -163,14 +146,10 @@ public class LoginMenu extends Application {
                         InetAddress groupBroadcast = InetAddress.getByName("230.0.0.2");
                         clientBroadcastSocket.joinGroup(groupBroadcast);
 
-//                        client.setClientMulticastSocket(clientMulticastSocket);
-//                        client.setClientBroadcastSocket(clientBroadcastsocket);
                         client.setCommand("BOTÃO LOGIN");
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                         out.println(client.toString());
-                        //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        String startThreadNotification;
 
                         Platform.runLater(() -> {
                             try {
@@ -185,11 +164,6 @@ public class LoginMenu extends Application {
                         MenuPage menuPage = new MenuPage(socket, client);
 
                         try {
-                            //if ((startThreadNotification = in.readLine()) != null) {
-                                //AlertUserBox.window = mainMenuWindow;
-                                //AlertUserBox.display("Bem vindo", startThreadNotification);
-                            //}
-
                             menuPage.start(mainMenuWindow);
                         } catch (Exception ex) {
                             ex.printStackTrace();

@@ -23,17 +23,13 @@ public class MenuPage extends Application {
     /**
      * Botões Menu Principal
      **/
-
     private Button addContactSceneButton;
     private Button covidTestSceneButton;
     private Button logoutButton;
-    private Scene addContactScene;
-    //private Scene covidTestePage = MainMenu.covidTestPage;
 
     /**
      * Labels Menu Principal
      **/
-
     private Label titleLabel;
     private Label welcomeMsgLabel;
 
@@ -56,11 +52,17 @@ public class MenuPage extends Application {
         System.out.println(this.client);
     }
 
+    /**
+     * Método responsável por inicar a interface grafica de "Menu Principal"
+     *
+     * @param primaryStage - Container principal do JavaFX
+     */
     @Override
     public void start(Stage primaryStage) {
         this.menuPageWindow = primaryStage;
 
-        // Method called when the user presses "X" on window
+        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
+        // Utilizador
         this.menuPageWindow.setOnCloseRequest(e -> {
             e.consume();
 
@@ -77,9 +79,6 @@ public class MenuPage extends Application {
 
         });
 
-        //this.addContactScene = new Scene(new AddCloseContact().sceneView(), MainMenu.getSceneWidth(), MainMenu.getSceneHeight());
-
-        //Stage newStage = MainMenu.getStage();
         /* Labels Menu Principal */
 
         // Título do menu principal
@@ -93,19 +92,19 @@ public class MenuPage extends Application {
         this.welcomeMsgLabel.setFont(new Font(20));
 
         // Imagem do menu principal
-        //Creating an image
-        //Setting the image view
+        // Cria a imagem view
+        // Definição da imagem view
         this.imageView = new ImageView("https://user-images.githubusercontent.com/44362304/103881998-1bd1fc00-50d3-11eb-82d4-e5f842f3d61f.png");
 
-        //Setting the position of the image
+        // Definição da posição da imagem
         imageView.setX(50);
         imageView.setY(25);
 
-        //setting the fit height and width of the image view
+        // Definição da altura e largura da imagem
         imageView.setFitHeight(455);
         imageView.setFitWidth(500);
 
-        //Setting the preserve ratio of the image view
+        // Definição da proporção da imagem
         imageView.setPreserveRatio(true);
 
 
@@ -124,7 +123,6 @@ public class MenuPage extends Application {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //MainMenu.setScene(addContactScene);
             });
         }
 
@@ -139,7 +137,6 @@ public class MenuPage extends Application {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //MainMenu.getStage().setScene(this.covidTestePage);
         });
 
         // Botão Logout
@@ -154,8 +151,6 @@ public class MenuPage extends Application {
             }
             LoginMenu loginMenu = new LoginMenu();
             loginMenu.start(this.menuPageWindow);
-
-            //MainMenu.getStage().setScene(MainMenu.getScene());
         });
 
 
