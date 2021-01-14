@@ -4,13 +4,13 @@ import com.company.Client.AlertUserBox;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class UDPClientMsgReceiverThread extends Thread{
+public class UDPClientMsgReceiverThread extends Thread {
 
     MulticastSocket multicastSocket;
     private boolean listening = true;
-
 
     public UDPClientMsgReceiverThread(MulticastSocket multicastSocket) {
         super("UDPClientMsgReceiverThread");
@@ -28,12 +28,13 @@ public class UDPClientMsgReceiverThread extends Thread{
 
                 if (datagramPacket != null) {
                     String serverMsgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-                    AlertUserBox.display("Aviso Número Infetados", serverMsgRcvd);
+                    AlertUserBox.display("Alerta Número Infetados", serverMsgRcvd);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         this.multicastSocket.close();
+        this.interrupt();
     }
 }

@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.MulticastSocket;
 import java.net.Socket;
 
 public class MenuPage extends Application {
@@ -47,6 +48,7 @@ public class MenuPage extends Application {
     private Socket socket;
     private PrintWriter out;
     private Client client;
+
 
     public MenuPage(Socket socket, Client name) throws IOException {
         this.socket = socket;

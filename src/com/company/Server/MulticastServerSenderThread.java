@@ -23,7 +23,7 @@ public class MulticastServerSenderThread extends Thread {
     public void run() {
         while (listening) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(9000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -26,7 +26,7 @@ public class BroadcastServerSenderThread extends Thread {
     public void run() {
         while (listening) {
             try {
-                Thread.sleep(16000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -13,15 +13,15 @@
   "Registo": [
     {
       "password": "qweqwe",
-      "isInfected": true,
-      "isNotified": true,
+      "isInfected": false,
+      "isNotified": false,
       "name": "Paulo",
       "county": "Felgueiras",
       "id": 0
     },
     {
       "password": "qweqwe",
-      "isInfected": false,
+      "isInfected": true,
       "isNotified": false,
       "name": "JT",
       "county": "Lousada",
@@ -30,14 +30,14 @@
     {
       "password": "qweqwe",
       "isInfected": false,
-      "isNotified": true,
+      "isNotified": false,
       "name": "Mario",
       "county": "Felgueiras",
       "id": 2
     },
     {
       "password": "qweqwe",
-      "isInfected": true,
+      "isInfected": false,
       "isNotified": false,
       "name": "MAMAM",
       "county": "Lousada",
@@ -45,7 +45,7 @@
     },
     {
       "password": "qweqwe",
-      "isInfected": true,
+      "isInfected": false,
       "isNotified": false,
       "name": "MAMAN",
       "county": "Felgueiras",
@@ -53,7 +53,7 @@
     },
     {
       "password": "qweqwe",
-      "isInfected": true,
+      "isInfected": false,
       "isNotified": false,
       "name": "JT_VALORANT",
       "county": "Lousada",
@@ -61,7 +61,7 @@
     },
     {
       "password": "qweqwe",
-      "isInfected": true,
+      "isInfected": false,
       "isNotified": false,
       "name": "JTTT",
       "county": "Felgueiras",
@@ -84,7 +84,7 @@
     },
     {
       "name": "Felgueiras",
-      "infectedTot": 0,
+      "infectedTot": 1,
       "porta": 4447
     },
     {
@@ -94,7 +94,7 @@
     },
     {
       "name": "Lousada",
-      "infectedTot": 2,
+      "infectedTot": 0,
       "porta": 4449
     },
     {

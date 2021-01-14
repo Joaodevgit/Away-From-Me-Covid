@@ -1,7 +1,5 @@
 package com.company.Models;
 
-import java.net.MulticastSocket;
-
 public class Client {
 
     private int id;
@@ -11,8 +9,7 @@ public class Client {
     private String county;
     private String command;
     private String listContact;
-    private MulticastSocket clientMulticastSocket;
-    private MulticastSocket clientBroadcastSocket;
+
 
     public Client(int id, String name, boolean isInfected, boolean isNotified, String county) {
         this.id = id;
@@ -78,22 +75,6 @@ public class Client {
 
     public void setNotified(boolean notified) {
         isNotified = notified;
-    }
-
-    public MulticastSocket getClientMulticastSocket() {
-        return clientMulticastSocket;
-    }
-
-    public void setClientMulticastSocket(MulticastSocket clientMulticastSocket) {
-        this.clientMulticastSocket = clientMulticastSocket;
-    }
-
-    public MulticastSocket getClientBroadcastSocket() {
-        return clientBroadcastSocket;
-    }
-
-    public void setClientBroadcastSocket(MulticastSocket clientBroadcastSocket) {
-        this.clientBroadcastSocket = clientBroadcastSocket;
     }
 
     @Override

@@ -37,8 +37,9 @@ public class MsgReceiverThread extends Thread {
                     CovidTest.client.setNotified(false);
                 } else if (inputLine.contains("Siga as recomendações da DGS e fique em casa !")) {
                     AlertUserBox.display("Recomendação", inputLine);
-                } else if(inputLine.contains("Esteve em contacto com uma pessoa infetada...")){
-                    AlertUserBox.display("NOTIFY ALL", inputLine);
+                } else if(inputLine.contains("Esteve em contacto com uma pessoa infetada...")
+                        || inputLine.contains("Todos os contactos foram alertados com sucesso!")){
+                    AlertUserBox.display("Contatos Próximos", inputLine);
                     AddCloseContact.client.setListContact("");
                 }else{
                     isLogout = true;

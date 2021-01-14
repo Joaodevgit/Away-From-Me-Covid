@@ -116,7 +116,7 @@ public class LoginMenu extends Application {
             }
         });
 
-        this.loginAccount = new Button("LogIn");
+        this.loginAccount = new Button("Login");
         this.loginAccount.setOnAction(e -> {
             File file = new File("src/com/company/Data/Users.json");
 
@@ -159,12 +159,12 @@ public class LoginMenu extends Application {
                         clientMulticastSocket.joinGroup(groupMulticast);
 
                         // Socket do cliente responsável pelas comunicações UDP (Broadcast) com o servidor
-                        MulticastSocket clientBroacastSocket = new MulticastSocket(BROADCAST_PORT);
+                        MulticastSocket clientBroadcastSocket = new MulticastSocket(BROADCAST_PORT);
                         InetAddress groupBroadcast = InetAddress.getByName("230.0.0.2");
-                        clientBroacastSocket.joinGroup(groupBroadcast);
+                        clientBroadcastSocket.joinGroup(groupBroadcast);
 
-                        client.setClientMulticastSocket(clientMulticastSocket);
-                        client.setClientBroadcastSocket(clientBroacastSocket);
+//                        client.setClientMulticastSocket(clientMulticastSocket);
+//                        client.setClientBroadcastSocket(clientBroadcastsocket);
                         client.setCommand("BOTÃO LOGIN");
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -176,7 +176,7 @@ public class LoginMenu extends Application {
                             try {
                                 new MsgReceiverThread(socket).start();
                                 new UDPClientMsgReceiverThread(clientMulticastSocket).start();
-                                new UDPClientMsgReceiverThread(clientBroacastSocket).start();
+                                new UDPClientMsgReceiverThread(clientBroadcastSocket).start();
                             } catch (IOException ioException) {
                                 ioException.printStackTrace();
                             }
@@ -216,7 +216,7 @@ public class LoginMenu extends Application {
 
         // Título do menu principal
         titleLabel = new Label();
-        titleLabel.setText("LogIn");
+        titleLabel.setText("Login");
         titleLabel.setFont(new Font(30));
 
         this.textUsername = new Label();
