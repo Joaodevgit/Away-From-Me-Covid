@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,6 +21,8 @@ public class AlertUserBox {
     public static void display(String title, String message) {
         Platform.runLater(() -> {
             Stage window = new Stage();
+
+            window.getIcons().add(new Image("https://user-images.githubusercontent.com/44362304/103882959-761f8c80-50d4-11eb-9e3d-6f4f3c0e276c.png%22"));
 
             window.setTitle(title);
             window.setWidth(500);

@@ -40,8 +40,10 @@ public class MsgReceiverThread extends Thread {
                     AlertUserBox.display("Recomendação", inputLine);
                 } else if (inputLine.contains("Esteve em contacto com uma pessoa infetada...")
                         || inputLine.contains("Todos os contactos foram alertados com sucesso!")) {
-                    AlertUserBox.display("Contatos Próximos", inputLine);
+                    AlertUserBox.display("Contactos Próximos", inputLine);
                     AddCloseContact.client.setListContact("");
+                } else if (inputLine.contains("(Nº Utente Saúde Negativo)")) {
+                    AlertUserBox.display("Erro Contactos Próximos", inputLine);
                 } else {
                     isLogout = true;
                 }

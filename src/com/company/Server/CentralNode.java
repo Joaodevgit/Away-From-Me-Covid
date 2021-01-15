@@ -16,7 +16,6 @@ public class CentralNode {
         this.readWriteFiles = new ReadWriteFiles();
     }
 
-
     /**
      * Método responsável por determinar o resultado do teste covid-19 quando o cliente clica em "Fazer Teste"
      *
@@ -29,9 +28,9 @@ public class CentralNode {
         int randNumber = new Random().nextInt(2);
 
         if (randNumber == 0) {
-            result = "O teste do cliente" + clientSocket.getRemoteSocketAddress().toString() + " deu negativo";
+            result = "Caro(a) "+ client.getName() + ", o resultado do seu teste deu negativo";
         } else {
-            result = "O teste do cliente" + clientSocket.getRemoteSocketAddress().toString() + " deu positivo";
+            result = "Caro(a) "+ client.getName() + ", o resultado do seu teste deu positivo";
             this.readWriteFiles.addInfectedCounty(client.getCounty());
         }
 
