@@ -193,8 +193,6 @@ public class ReadWriteFiles {
 
             JSONArray registerlist = (JSONArray) obj.get("Registo");
 
-            System.out.println("TAM: " + registerlist.size());
-
             newRegister.put("id", id);
             newRegister.put("name", username);
             newRegister.put("password", password);

@@ -53,7 +53,7 @@ public class CentralNodeInstructions {
      */
     public synchronized void sendToAll(Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
 
-        if (Pattern.matches("^[0-9]+(;[0-9]+)*$", client.getListContact())) {
+        if (Pattern.matches("^[0-9]{9}(;[0-9]{9})*$", client.getListContact())) {
             String[] listContact = client.getListContact().split(";");
             int idConvInt = Integer.parseInt(listContact[0]);
             boolean found = false;
@@ -95,7 +95,7 @@ public class CentralNodeInstructions {
             for (int i = 0; !found && i < clientsConnected.get().size(); i++) {
                 if (idConvInt == clientsConnected.get().get(i).client.getId()) {
                     found = true;
-                    clientsConnected.get().get(i).out.println("Introdução de contactos inválida (Nº Utente Saúde Negativo)");
+                    clientsConnected.get().get(i).out.println("Introdução de contactos próximos inválida");
                 }
             }
         }

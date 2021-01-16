@@ -102,8 +102,6 @@ public class RegisterPage extends Application {
                 }
 
                 if (conditionRegist) {
-                    System.out.println("RESPEITO !");
-
                     boolean isExist = this.readWriteFiles.userExists(id);
 
                     if (!isExist) {

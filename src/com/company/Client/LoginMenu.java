@@ -169,7 +169,6 @@ public class LoginMenu extends Application {
                             ex.printStackTrace();
                         }
                     } else {
-                        System.out.println();
                         AlertUserBox.display("Login", "Utilizador não existente");
                     }
 
