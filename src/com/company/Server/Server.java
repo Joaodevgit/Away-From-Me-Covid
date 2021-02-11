@@ -3,6 +3,12 @@ package com.company.Server;
 import java.net.*;
 import java.io.*;
 
+/**
+ * Class responsible for
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class Server {
 
     private static SynchronizedArrayList<WorkerThread> clientsConnected = new SynchronizedArrayList<>();

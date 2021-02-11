@@ -3,6 +3,13 @@ package com.company.Server;
 import java.io.IOException;
 import java.net.*;
 
+/**
+ * Class responsible for executing the thread that will send messages by broadcast to users, informing
+ * the total number of infected people in the counties belonging to the sub-region Tâmega and Vale do Sousa
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class BroadcastServerSenderThread extends Thread {
 
     private SynchronizedArrayList<WorkerThread> clientsConnected;
@@ -22,10 +29,6 @@ public class BroadcastServerSenderThread extends Thread {
 
     protected boolean listening = true;
 
-    /**
-     * Method responsible for executing the thread that will send messages by broadcast to users, informing
-     * the total number of infected people in the counties belonging to the sub-region Tâmega and Vale do Sousa
-     */
     @Override
     public void run() {
         while (listening) {

@@ -20,7 +20,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
+/**
+ * Class responsible for managing the actions in "Covid-19 Test" stage
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class CovidTest extends Application {
 
     private Label sceneLabel;

@@ -8,6 +8,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
 
+/**
+ * Class responsible for
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class CentralNode {
 
     ReadWriteFiles readWriteFiles;

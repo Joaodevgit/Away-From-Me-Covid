@@ -9,6 +9,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * Class responsible for executing the thread that will receive the message from the central node and will send it to
+ * the client
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class WorkerThread extends Thread {
 
     private Socket clientSocket;
@@ -29,10 +36,6 @@ public class WorkerThread extends Thread {
         this.gson = new Gson();
     }
 
-    /**
-     * Method responsible for executing the thread that will receive the message from the central node and will send it
-     * to the client
-     */
     public void run() {
         try {
             if (!this.clientsConnected.get().isEmpty()) {

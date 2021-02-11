@@ -1,5 +1,12 @@
 package com.company.Models;
 
+
+/**
+ * Class that will be a model of the client
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class Client {
 
     private int id;

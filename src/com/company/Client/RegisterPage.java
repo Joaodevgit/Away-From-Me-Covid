@@ -17,6 +17,12 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * Class responsible for managing the actions in "Register" stage
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class RegisterPage extends Application {
 
     private Label titleContent;

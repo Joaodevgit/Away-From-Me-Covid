@@ -3,6 +3,13 @@ package com.company.Server;
 import java.io.IOException;
 import java.net.*;
 
+/**
+ * Class responsible for executing the thread that will send multicast messages to clients, informing the
+ * number of infected in their respective county belonging to the Tâmega and Vale do Sousa sub-region
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class MulticastServerSenderThread extends Thread {
 
     protected DatagramSocket datagramSocket;
@@ -19,10 +26,6 @@ public class MulticastServerSenderThread extends Thread {
         this.countyMulticastSockets = new SynchronizedArrayList<>();
     }
 
-    /**
-     * Method responsible for executing the thread that will send multicast messages to clients, informing the
-     * number of infected in their respective county belonging to the Tâmega and Vale do Sousa sub-region
-     */
     @Override
     public void run() {
         while (listening) {

@@ -10,6 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class responsible for building a notification box
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class AlertUserBox {
 
     /**

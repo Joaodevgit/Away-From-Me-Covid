@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 
+/**
+ * Class responsible for executing the thread that will receive the datagramsocket (message) from the server
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class UDPClientMsgReceiverThread extends Thread {
 
     MulticastSocket multicastSocket;
@@ -16,9 +22,6 @@ public class UDPClientMsgReceiverThread extends Thread {
         this.multicastSocket = multicastSocket;
     }
 
-    /**
-     * Method responsible for executing the thread that will receive the datagramsocket (message) from the server
-     */
     @Override
     public void run() {
 

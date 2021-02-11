@@ -5,6 +5,13 @@ import com.company.Models.Client;
 import java.net.Socket;
 import java.util.regex.Pattern;
 
+
+/**
+ * Class responsible for
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class CentralNodeInstructions {
 
     private CentralNode centralNode = new CentralNode();

@@ -19,6 +19,12 @@ import java.io.*;
 import java.net.MulticastSocket;
 import java.net.Socket;
 
+/**
+ * Class responsible for managing the actions in "Main Menu" stage
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class MenuPage extends Application {
 
     /* Main Menu Buttons */

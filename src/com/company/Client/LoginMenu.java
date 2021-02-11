@@ -26,6 +26,12 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
 
+/**
+ * Class responsible for managing the actions in "Login" stage
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class LoginMenu extends Application {
 
     /* Final variables */

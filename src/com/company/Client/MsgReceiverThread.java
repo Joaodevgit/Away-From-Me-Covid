@@ -6,6 +6,12 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * Class responsible for starting a thread that will receive messages from the server
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class MsgReceiverThread extends Thread {
 
     private Socket socket;
@@ -17,9 +23,6 @@ public class MsgReceiverThread extends Thread {
         this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
-    /**
-     * Method responsible for starting a thread that will receive messages from the server
-     */
     public void run() {
         try {
             String inputLine;

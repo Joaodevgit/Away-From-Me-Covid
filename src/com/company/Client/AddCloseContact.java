@@ -24,6 +24,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+/**
+ * Class responsible for managing the actions in "Add Close Contact" stage
+ *
+ * @author João Pereira
+ * @author Paulo da Cunha
+ */
 public class AddCloseContact extends Application {
 
     private Label sceneLabel;
