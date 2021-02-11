@@ -1,9 +1,9 @@
-# Polytechnic of Porto, School of Management and Technology 20/21
+## Polytechnic of Porto, School of Management and Technology 20/21
 <a href="https://www.estg.ipp.pt/"><img src="https://user-images.githubusercontent.com/44362304/94424125-9f4d8a00-0181-11eb-84cb-174d8dbde5ec.png" title="ESTG"></a>
 
 (Click on the above image for more school's details)
 
-# Away-From-Me-Covid
+## Away-From-Me-Covid
 ![Away From Me Covid Logo](https://user-images.githubusercontent.com/44362304/107673289-c4a0e780-6c8d-11eb-887e-5f56287ea2bf.png)
 
 ### School project developed in Java language using sockets for unit course "Distributed Systems"
@@ -23,7 +23,7 @@ For this project was used the population of the sub-region "Tâmega e Vale do So
 - [License](#license)
 
 <a name="project_overview"></a>
-### Project Oveview
+## Project Oveview
 ![imagem](https://user-images.githubusercontent.com/44362304/107673660-19dcf900-6c8e-11eb-9b1e-ffbb5d17f614.png)
 
 **(Before reading and for a better comprehension of the project overview description please take a quick look at this small glossary!)**
@@ -45,7 +45,7 @@ The **CNI** sends the result of the **Central Node** method, to **WorkerThread**
 On the server side there is the **Thread Sender** block, consisting of 2 threads (**BroadcastServerSenderThread** and **MulticastServerSenderThread**) that will be responsible for sending, **temporarily** via **UDP** protocol, datagram packets to the client thread **UDPClientMsgReceiverThread** (thread responsible for receiving the datagram packets with the information relative to the total number of infected and then launch an alert box in the client's **GUI**). 
 
 <a name="project_screenshots"></a>
-### Project Screenshots
+## Project Screenshots
 Some of the project screenshots
 
 | Main Menu | Notification Warning Contact with Close Contact |
@@ -58,19 +58,19 @@ Some of the project screenshots
 
 
 <a name="documentation"></a>
-### Documentation
+## Documentation
 To access project javadoc you need to download to a zip format this project and then go to directory lib/javadoc/index.html
 <p><a href="https://github.com/Joaodevgit/Away-From-Me-Covid/tree/main/documentation"> Project Documentation Directory </a></p>
 
 <a name="project_contributors"></a>
-### Project Contributors
+## Project Contributors
 | João Pereira | Paulo da Cunha |
 | :---: |:---:| 
 | ![João Pereira](https://avatars2.githubusercontent.com/u/44362304?s=200&u=e779f8e4e1d4788360e7478a675df73f219b42b4&v=3)| ![Paulo da Cunha](https://avatars0.githubusercontent.com/u/39674226?s=200&u=5e980e380bf0b9d7a7f821ddcc6fe6112e026ae9&v=4) |
 | <a href="https://github.com/Joaodevgit" target="_blank">`github.com/Joaodevgit`</a> | <a href="https://github.com/Pauvix" target="_blank">`github.com/Pauvix`</a>|
 
 <a name="license"></a>
-### License
+## License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
