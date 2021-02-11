@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 
 /**
- * Class responsible for
+ * Class responsible for receiving all the instructions given from the client interaction with user interface and sending
+ * it to the Central Node class
  *
  * @author João Pereira
  * @author Paulo da Cunha

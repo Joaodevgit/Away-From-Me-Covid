@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Class responsible for managing all the operations of writing and reading from a JSON file
+ * Class responsible for managing all the operations of writing and reading on a JSON file
  *
  * @author João Pereira
  * @author Paulo da Cunha

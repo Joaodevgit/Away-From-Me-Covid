@@ -3,7 +3,7 @@ package com.company.Server;
 import java.util.ArrayList;
 
 /**
- * Class responsible for being a shared object between all threads 
+ * Class responsible for being a shared object
  *
  * @author João Pereira
  * @author Paulo da Cunha

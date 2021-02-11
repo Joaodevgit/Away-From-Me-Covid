@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Random;
 
 /**
- * Class responsible for
+ * Class responsible for executing all the instructions given from the Central Node Instructions class
  *
  * @author João Pereira
  * @author Paulo da Cunha

@@ -4,7 +4,7 @@ import java.net.*;
 import java.io.*;
 
 /**
- * Class responsible for
+ * Class responsible for being an intermediary between the client and the central node via TCP communication
  *
  * @author João Pereira
  * @author Paulo da Cunha

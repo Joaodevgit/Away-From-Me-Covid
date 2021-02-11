@@ -2,7 +2,7 @@ package com.company.Models;
 
 
 /**
- * Class that will be a model of the client
+ * Class that will represent the client object model
  *
  * @author João Pereira
  * @author Paulo da Cunha
