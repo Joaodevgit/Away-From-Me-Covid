@@ -18,6 +18,7 @@ For this project was used the population of the sub-region "Tâmega e Vale do So
 
 - [Project Overview](#project_overview)
 - [Project Screenshots](#project_screenshots)
+- [Usage](#usage)
 - [Documentation](#documentation)
 - [Project Contributors](#project_contributors)
 - [License](#license)
@@ -56,6 +57,14 @@ Some of the project screenshots
 | Notification Number People Infected with Covid-19 in a County | Notification Number People Infected with Covid-19 in a Sub-region |
 | <img src="https://user-images.githubusercontent.com/44362304/107680346-a212cc80-6c95-11eb-9478-509a449053e6.png" width="450" height="450"> | <img src="https://user-images.githubusercontent.com/44362304/107680349-a212cc80-6c95-11eb-9758-52d9a7098196.png" width="450" height="450"> |
 
+<a name="usage"></a>
+## Usage
+
+You must meet the following requirements:
+- Having **JDK8** installed
+- Having an **IDE** installed (Intellij, Eclipse ...)
+
+After that you must run/execute first the Server class (in Server/Server.java) and then the LoginMenu class (Client/LoginMenu.java), otherwise the application won't run as expected.
 
 <a name="documentation"></a>
 ## Documentation
