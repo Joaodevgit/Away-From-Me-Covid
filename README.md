@@ -1,9 +1,9 @@
-## Polytechnic of Porto, School of Management and Technology 20/21
+# Polytechnic of Porto, School of Management and Technology 20/21
 <a href="https://www.estg.ipp.pt/"><img src="https://user-images.githubusercontent.com/44362304/94424125-9f4d8a00-0181-11eb-84cb-174d8dbde5ec.png" title="ESTG"></a>
 
 (Click on the above image for more school's details)
 
-## Away-From-Me-Covid
+# Away-From-Me-Covid
 ![Away From Me Covid Logo](https://user-images.githubusercontent.com/44362304/107673289-c4a0e780-6c8d-11eb-887e-5f56287ea2bf.png)
 
 ### School project developed in Java language using sockets for unit course "Distributed Systems"
@@ -14,7 +14,7 @@ For this project was used the population of the sub-region "Tâmega e Vale do So
 
 <img src="https://user-images.githubusercontent.com/44362304/107681656-3cbfdb00-6c97-11eb-981a-56b3935da286.png" width="300" height="300">
 
-### Table of Contents
+## Table of Contents
 
 - [Project Overview](#project_overview)
 - [Project Screenshots](#project_screenshots)
