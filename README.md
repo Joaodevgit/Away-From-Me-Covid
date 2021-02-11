@@ -10,7 +10,7 @@
 This project is intended to implement a small system similar to the Portuguese app StayAwayCovid (https://stayawaycovid.pt/) which aims to assist the country in tracking COVID-19 .
 The general idea is that the system should be able to alert the population about exposure to the virus, alerting people whenever they have contact with someone infected, receiving and sending some data about that same population.
 
-For this project was used the sub-region "Tâmega e Vale do Sousa" (located in the north of Portugal):
+For this project was used the population of the sub-region "Tâmega e Vale do Sousa" (located in the north of Portugal):
 
 <img src="https://user-images.githubusercontent.com/44362304/107681656-3cbfdb00-6c97-11eb-981a-56b3935da286.png" width="300" height="300">
 
