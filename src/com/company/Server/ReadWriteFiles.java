@@ -21,16 +21,16 @@ public class ReadWriteFiles {
 
 
     /**
-     * Método responsável por escrever para ficheiro as informações do cliente enquanto este usa a aplicação
+     * Method responsible for writing client information to a JSON file while the client is using the application
      *
-     * @param client objeto do cliente (modelo)
+     * @param client client object (model)
      */
     public void writeJSONFile(Client client) {
         try {
             this.jsonParser = new JSONParser();
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray listUsers = (JSONArray) obj.get("Registo");
+            JSONArray listUsers = (JSONArray) obj.get("Registry");
 
             boolean found = false;
             JSONObject user;
@@ -48,7 +48,7 @@ public class ReadWriteFiles {
                 i++;
             }
 
-            JSONArray county = (JSONArray) obj.get("Concelhos");
+            JSONArray county = (JSONArray) obj.get("Counties");
             JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
 
             if (unregisteredUsers == null) {
@@ -58,8 +58,8 @@ public class ReadWriteFiles {
             JSONObject objWrite = new JSONObject();
 
             objWrite.put("UnregisteredUsers", unregisteredUsers);
-            objWrite.put("Registo", listUsers);
-            objWrite.put("Concelhos", county);
+            objWrite.put("Registry", listUsers);
+            objWrite.put("Counties", county);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
@@ -73,10 +73,10 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por verificar se um cliente, existe ou não, dado o seu id no ficheiro JSON
+     * Method responsible for verifying whether a client exists or not, given its id in the JSON file
      *
-     * @param id id do cliente
-     * @return true se o cliente existe, caso contrário retorna false
+     * @param id client's id
+     * @return true if the client exists, otherwise it returns false
      */
     public boolean userExists(int id) {
         boolean exist = false;
@@ -84,7 +84,7 @@ public class ReadWriteFiles {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray listUsers = (JSONArray) obj.get("Registo");
+            JSONArray listUsers = (JSONArray) obj.get("Registry");
 
             int i = 0;
             JSONObject user;
@@ -106,10 +106,10 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por retornar o índice da posição do cliente que ainda não está registado na aplicação
+     * Method responsible for returning the index of the client's position that is not yet registered in the application
      *
-     * @param id id do cliente
-     * @return a posição do cliente se este existir, caso contrário retorna -1
+     * @param id client's id
+     * @return the client's position if it exists, otherwise it returns -1
      */
     public int indexUnregisteredUsers(int id) {
         int position = -1;
@@ -144,9 +144,9 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por remover o cliente do ficheiro JSON, dada a sua posição no array de clientes registados
+     * Method responsible for removing the client from the JSON file, given its position in the array of registered clients
      *
-     * @param position posição do cliente a ser removido
+     * @param position position of the removed client
      */
     public void removeUnregisteredUsers(int position) {
         try {
@@ -155,14 +155,14 @@ public class ReadWriteFiles {
 
             listUsersUnregistered.remove(position);
 
-            JSONArray county = (JSONArray) obj.get("Concelhos");
-            JSONArray unregisteredUsers = (JSONArray) obj.get("Registo");
+            JSONArray county = (JSONArray) obj.get("Counties");
+            JSONArray unregisteredUsers = (JSONArray) obj.get("Registry");
 
             JSONObject objWrite = new JSONObject();
 
             objWrite.put("UnregisteredUsers", listUsersUnregistered);
-            objWrite.put("Registo", unregisteredUsers);
-            objWrite.put("Concelhos", county);
+            objWrite.put("Registry", unregisteredUsers);
+            objWrite.put("Counties", county);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
@@ -177,13 +177,13 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por escrever para ficheiro as informações do cliente quando este se regista
+     * Method responsible for writing client information to a JSON file when the client registers
      *
-     * @param id         id do cliente
-     * @param username   username do cliente
-     * @param password   password do cliente
-     * @param isNotified se já foi notificado ou não (true/false)
-     * @param county     concelho do cliente
+     * @param id         client's id
+     * @param username   client's username
+     * @param password   client's password
+     * @param isNotified whether it has already been notified or not (true / false)
+     * @param county     client's county
      */
     public void writeUserRegister(int id, String username, String password, boolean isNotified, String county) {
         try {
@@ -191,7 +191,7 @@ public class ReadWriteFiles {
 
             JSONObject newRegister = new JSONObject();
 
-            JSONArray registerlist = (JSONArray) obj.get("Registo");
+            JSONArray registerlist = (JSONArray) obj.get("Registry");
 
             newRegister.put("id", id);
             newRegister.put("name", username);
@@ -202,14 +202,14 @@ public class ReadWriteFiles {
 
             registerlist.add(newRegister);
 
-            JSONArray countyList = (JSONArray) obj.get("Concelhos");
+            JSONArray countyList = (JSONArray) obj.get("Counties");
             JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
 
             JSONObject objWrite = new JSONObject();
 
-            objWrite.put("Registo", registerlist);
-            objWrite.put("Concelhos", countyList);
             objWrite.put("UnregisteredUsers", unregisteredUsers);
+            objWrite.put("Registry", registerlist);
+            objWrite.put("Counties", countyList);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
@@ -224,15 +224,15 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por adicionar um contato que ainda não está registado na aplicação
+     * Method responsible for adding a contact that is not yet registered in the application
      *
-     * @param id id do contato não registado
+     * @param id unregistered contact id
      */
     public void updateNotificationContactUser(int id) {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray listUsers = (JSONArray) obj.get("Registo");
+            JSONArray listUsers = (JSONArray) obj.get("Registry");
 
             int i = 0;
             boolean found = false;
@@ -249,14 +249,14 @@ public class ReadWriteFiles {
                 }
             }
 
-            JSONArray county = (JSONArray) obj.get("Concelhos");
+            JSONArray county = (JSONArray) obj.get("Counties");
             JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
 
             JSONObject objWrite = new JSONObject();
 
             objWrite.put("UnregisteredUsers", unregisteredUsers);
-            objWrite.put("Registo", listUsers);
-            objWrite.put("Concelhos", county);
+            objWrite.put("Registry", listUsers);
+            objWrite.put("Counties", county);
 
             FileWriter fileWriter = new FileWriter(file.getPath());
 
@@ -270,10 +270,10 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por escrever para ficheiro os utilizadores que foram adicionados aos contatos próximos e que
-     * ainda não se encontram registados na aplicação
+     * Method responsible for writing to a JSON file users who have been added to nearby contacts and who are not yet
+     * registered in the application
      *
-     * @param id id do cliente não registado
+     * @param id unregistered client id
      */
     public void writeUnregisteredUsers(int id) {
         try {
@@ -299,14 +299,14 @@ public class ReadWriteFiles {
 
                 unregisteredUser.add(unregisteredUsers);
 
-                JSONArray county = (JSONArray) obj.get("Concelhos");
-                JSONArray register = (JSONArray) obj.get("Registo");
+                JSONArray county = (JSONArray) obj.get("Counties");
+                JSONArray register = (JSONArray) obj.get("Registry");
 
                 JSONObject objWrite = new JSONObject();
 
                 objWrite.put("UnregisteredUsers", unregisteredUser);
-                objWrite.put("Registo", register);
-                objWrite.put("Concelhos", county);
+                objWrite.put("Registry", register);
+                objWrite.put("Counties", county);
 
                 FileWriter fileWriter = new FileWriter(file.getPath());
 
@@ -321,9 +321,9 @@ public class ReadWriteFiles {
     }
 
     /**
-     * Método responsável por carregar o spinner, do ficheiro JSON com o nome dos concelhos
+     * Method responsible for loading the spinner, from the JSON file with the name of the counties
      *
-     * @return a lista de opções
+     * @return options list
      */
     public ArrayList<String> spinnerOptions() {
         ArrayList<String> options = new ArrayList<>();
@@ -331,7 +331,7 @@ public class ReadWriteFiles {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray listCounty = (JSONArray) obj.get("Concelhos");
+            JSONArray listCounty = (JSONArray) obj.get("Counties");
 
             JSONObject county;
 
@@ -352,10 +352,11 @@ public class ReadWriteFiles {
 
 
     /**
-     * Método responsável por obter a porta do ip multicast do concelho de um dado cliente, recebendo como parâmetro o objeto cliente
+     * Method responsible for obtaining the multicast ip port of a given client's county, receiving the client object as
+     * a parameter
      *
-     * @param client objeto do cliente (modelo)
-     * @return a porta do cliente
+     * @param client client object (model)
+     * @return client's port
      */
     public int getClientCountyPort(Client client) {
 
@@ -367,14 +368,14 @@ public class ReadWriteFiles {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+                JSONArray listCounties = (JSONArray) obj.get("Counties");
 
                 JSONObject countyObj;
 
                 for (int i = 0; i < listCounties.size(); i++) {
                     countyObj = (JSONObject) listCounties.get(i);
                     if (client.getCounty().equals(countyObj.get("name").toString())) {
-                        return Integer.parseInt(countyObj.get("porta").toString());
+                        return Integer.parseInt(countyObj.get("port").toString());
                     }
                 }
             } catch (ParseException e) {
@@ -390,10 +391,11 @@ public class ReadWriteFiles {
 
 
     /**
-     * Método responsável por obter o nº total de infetados de um dado concelho, recebendo como parâmetro o nome do concelho
+     * Method responsible for obtaining the total number of infected people in a given county, taking the name of the
+     * county as a parameter
      *
-     * @param countyName nome do concelho
-     * @return nº total de infetados do concelho pretendido
+     * @param countyName county's name
+     * @return total number of infected in the given county
      */
     public int getCountyTotalInfected(String countyName) {
 
@@ -405,7 +407,7 @@ public class ReadWriteFiles {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+                JSONArray listCounties = (JSONArray) obj.get("Counties");
 
                 JSONObject countyObj;
 
@@ -428,9 +430,9 @@ public class ReadWriteFiles {
 
 
     /**
-     * Método responsável por obter o nº total de infetados da sub-região do Tâmega e Vale do Sousa
+     * Method responsible for obtaining the total number of infected people in the sub-region of Tâmega and Vale do Sousa
      *
-     * @return nº total de infetados da sub-região do Tâmega e Vale do Sousa
+     * @return total number of infected in the Tâmega and Vale do Sousa sub-region
      */
     public int getSubRegionTotalInfected() {
 
@@ -443,7 +445,7 @@ public class ReadWriteFiles {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+                JSONArray listCounties = (JSONArray) obj.get("Counties");
 
                 JSONObject countyObj;
 
@@ -467,9 +469,9 @@ public class ReadWriteFiles {
 
 
     /**
-     * Método responsável por adicionar mais uma pessoa no total de infectados de um determinado concelho
+     * Method responsible for adding a person to the total number of infected in a given county
      *
-     * @param county nome do concelho
+     * @param county county's name
      */
     public void addInfectedCounty(String county) {
 
@@ -481,7 +483,7 @@ public class ReadWriteFiles {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-                JSONArray listCounties = (JSONArray) obj.get("Concelhos");
+                JSONArray listCounties = (JSONArray) obj.get("Counties");
 
                 JSONObject countyObj;
                 boolean found = false;
@@ -499,13 +501,13 @@ public class ReadWriteFiles {
                 }
 
                 JSONArray unregisteredUsers = (JSONArray) obj.get("UnregisteredUsers");
-                JSONArray register = (JSONArray) obj.get("Registo");
+                JSONArray register = (JSONArray) obj.get("Registry");
 
                 JSONObject objWrite = new JSONObject();
 
                 objWrite.put("UnregisteredUsers", unregisteredUsers);
-                objWrite.put("Registo", register);
-                objWrite.put("Concelhos", listCounties);
+                objWrite.put("Registry", register);
+                objWrite.put("Counties", listCounties);
 
                 FileWriter fileWriter = new FileWriter(file.getPath());
 

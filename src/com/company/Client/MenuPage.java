@@ -20,27 +20,25 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 
 public class MenuPage extends Application {
-    /**
-     * Botões Menu Principal
-     **/
+
+    /* Main Menu Buttons */
     private Button addContactSceneButton;
     private Button covidTestSceneButton;
     private Button logoutButton;
 
-    /**
-     * Labels Menu Principal
-     **/
+    /* Main Menu Labels */
     private Label titleLabel;
     private Label welcomeMsgLabel;
 
-    /**
-     * Imagem Menu Principal
-     */
+    /* Main Menu Image */
     private ImageView imageView;
 
+    /* Main Menu Scene */
     private Scene mainScene;
 
+    /* Main Menu Stage */
     private Stage menuPageWindow;
+
     private Socket socket;
     private PrintWriter out;
     private Client client;
@@ -53,81 +51,81 @@ public class MenuPage extends Application {
     }
 
     /**
-     * Método responsável por inicar a interface grafica de "Menu Principal"
+     * Method responsible for starting the user interface "Main Menu"
      *
-     * @param primaryStage - Container principal do JavaFX
+     * @param primaryStage - Main Container of JavaFX
      */
     @Override
     public void start(Stage primaryStage) {
         this.menuPageWindow = primaryStage;
 
-        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
-        // Utilizador
+        // Method responsible for saving user information, when the user interface window is closed
         this.menuPageWindow.setOnCloseRequest(e -> {
             e.consume();
 
             try {
                 out = new PrintWriter(socket.getOutputStream(), true);
 
-                this.client.setCommand("BOTÃO LOGOUT");
+                this.client.setCommand("LOGOUT BUTTON");
                 out.println(this.client.toString());
 
                 menuPageWindow.close();
+                System.exit(-1);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
 
         });
 
-        /* Labels Menu Principal */
+        /* Main Menu Labels */
 
-        // Título do menu principal
+        // Main Menu Títle
         this.titleLabel = new Label();
         this.titleLabel.setText("MENU");
         this.titleLabel.setFont(new Font(30));
 
-        // Mensagem de boas vindas
+        // Welcome message
         this.welcomeMsgLabel = new Label();
-        this.welcomeMsgLabel.setText("Bem vindo ao Away From Me Covid!");
+        this.welcomeMsgLabel.setText("Welcome to Away From Me Covid!");
         this.welcomeMsgLabel.setFont(new Font(20));
 
-        // Imagem do menu principal
-        // Cria a imagem view
-        // Definição da imagem view
+        // Main Menu Image
+        // Creates the image view
+        // Sets the image view
         this.imageView = new ImageView("https://user-images.githubusercontent.com/44362304/103881998-1bd1fc00-50d3-11eb-82d4-e5f842f3d61f.png");
 
-        // Definição da posição da imagem
+        // Sets the image position
         imageView.setX(50);
         imageView.setY(25);
 
-        // Definição da altura e largura da imagem
+        // Sets the height an width of the image
         imageView.setFitHeight(455);
         imageView.setFitWidth(500);
 
-        // Definição da proporção da imagem
+        // Sets the image proportion
         imageView.setPreserveRatio(true);
 
 
-        /* Botões */
+        /* Buttons */
 
-        // Botão de acesso à scene de adicionar contatos próximos
-        this.addContactSceneButton = new Button("Adicionar contato(s) próximo(s)");
+        // Access button to the scene of adding nearby contacts
+        this.addContactSceneButton = new Button("Add nearby contacts");
 
-        if (!this.client.isInfected()) {
-            this.addContactSceneButton.setDisable(true);
-        } else {
-            this.addContactSceneButton.setOnAction(event -> {
-                AddCloseContact addCloseContact = new AddCloseContact(this.socket, this.client);
-                try {
-                    addCloseContact.start(this.menuPageWindow);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+//        if (!this.client.isInfected()) {
+//            this.addContactSceneButton.setDisable(true);
+//        } else {
+        this.addContactSceneButton.setOnAction(event -> {
+            AddCloseContact addCloseContact = new AddCloseContact(this.socket, this.client);
+            try {
+                addCloseContact.start(this.menuPageWindow);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+//        }
 
-        // Botão de acesso à scene do teste de covid-19
-        this.covidTestSceneButton = new Button("Teste Covid-19");
+        // Access button to the scene of covid-19 test
+        this.covidTestSceneButton = new Button("Covid-19 Test");
 
         this.covidTestSceneButton.setOnAction(event -> {
             CovidTest covidTest = new CovidTest(this.socket, this.client);
@@ -139,12 +137,12 @@ public class MenuPage extends Application {
             }
         });
 
-        // Botão Logout
+        // Logout button
         this.logoutButton = new Button("Logout");
         this.logoutButton.setOnAction(e -> {
             try {
                 out = new PrintWriter(socket.getOutputStream(), true);
-                this.client.setCommand("BOTÃO LOGOUT");
+                this.client.setCommand("LOGOUT BUTTON");
                 out.println(this.client.toString());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -154,26 +152,25 @@ public class MenuPage extends Application {
         });
 
 
-        /* Containers Menu Principal */
+        /* Main Menu Containers */
 
-        // Container do Título
+        // Title Container
         VBox titleBoxContainer = new VBox(10);
         titleBoxContainer.setAlignment(Pos.CENTER);
         titleBoxContainer.getChildren().addAll(this.titleLabel, this.welcomeMsgLabel, this.imageView);
 
-        // Container dos botões centrais
+        // Central Buttons Container
         VBox mainMenuButtons = new VBox(50);
         mainMenuButtons.setAlignment(Pos.CENTER);
         mainMenuButtons.getChildren().addAll(this.addContactSceneButton, this.covidTestSceneButton, titleBoxContainer);
 
-        // Container do botão logout
+        // Logout Button Container
         HBox bottonMenuButtons = new HBox(20);
         bottonMenuButtons.setAlignment(Pos.BOTTOM_RIGHT);
         bottonMenuButtons.setPadding(new Insets(30, 30, 30, 30));
         bottonMenuButtons.getChildren().add(this.logoutButton);
 
-
-        // Border Pane Layout/**
+        // Border Pane Layout
         BorderPane borderPanelayout = new BorderPane();
         borderPanelayout.setCenter(mainMenuButtons);
         borderPanelayout.setBottom(bottonMenuButtons);

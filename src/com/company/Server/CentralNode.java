@@ -17,20 +17,19 @@ public class CentralNode {
     }
 
     /**
-     * Método responsável por determinar o resultado do teste covid-19 quando o cliente clica em "Fazer Teste"
-     *
-     * @param clientSocket socket associado ao cliente
-     * @param client       objeto do cliente (modelo)
-     * @return uma string a dizer se o teste à covid-19 do cliente deu positivo ou negativo
+     * Method responsible for determining the result of the covid-19 test when the client clicks "Take Test"
+     * @param clientSocket client associated socket
+     * @param client       client object (model)
+     * @return a string to say whether the client's covid-19 test was positive or negative
      */
     public String testCovid(Socket clientSocket, Client client) {
         String result;
         int randNumber = new Random().nextInt(2);
 
         if (randNumber == 0) {
-            result = "Caro(a) "+ client.getName() + ", o resultado do seu teste deu negativo";
+            result = "Dear "+ client.getName() + ", your covid-19 test result is negative";
         } else {
-            result = "Caro(a) "+ client.getName() + ", o resultado do seu teste deu positivo";
+            result = "Dear "+ client.getName() + ", your covid-19 test result is positive";
             this.readWriteFiles.addInfectedCounty(client.getCounty());
         }
 
@@ -38,11 +37,10 @@ public class CentralNode {
     }
 
     /**
-     * Método responsável por guardar as informações do cliente
-     *
-     * @param client           objeto do cliente (modelo)
-     * @param clientsConnected array de clientes atualmente conetados na aplicação
-     * @return mensagem : Siga as recomendações da DGS e fique em casa !
+     * Method responsible for saving client informations
+     * @param client           client object (model)
+     * @param clientsConnected array of clients currently connected to the application
+     * @return message : Follow the recommendations of your government and stay at home!
      */
     public String saveUserInfo(Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
 
@@ -60,15 +58,14 @@ public class CentralNode {
 
         this.readWriteFiles.writeJSONFile(client);
 
-        return "Siga as recomendações da DGS e fique em casa !";
+        return "Follow the recommendations of your local government and stay at home!";
     }
 
     /**
-     * Método responsável por atualizar a lista de portas dos grupos de multicast dos clientes
-     *
-     * @param clientsConnected array de clientes atualmente conetados na aplicação
-     * @param multicastGroups  array de multicastsockets dos clientes
-     * @return array de multicastsockets dos clientes atualizado
+     * Method responsible for updating the port list of client multicast groups
+     * @param clientsConnected array of clients currently connected to the application
+     * @param multicastGroups  client multicastsocket array
+     * @return updated array of multicastsockets clients
      */
     public SynchronizedArrayList<MulticastSocket> updateMulticastGroups(SynchronizedArrayList<WorkerThread> clientsConnected,
                                                                         SynchronizedArrayList<MulticastSocket> multicastGroups) {
@@ -91,10 +88,9 @@ public class CentralNode {
 
 
     /**
-     * Método responsável por verificar se uma dada porta já existe (ou não) nos grupos de multicast
-     *
-     * @param client          objeto do cliente (modelo)
-     * @param multicastGroups array de multicastsockets dos clientes
+     * Method responsible for verifying whether a given port already exists (or not) in multicast groups
+     * @param client          client object (model)
+     * @param multicastGroups client multicastsocket array
      * @return true se a porta do multicastsocket existe, caso contrário retorna false
      */
     public boolean isMulticastGroupPortExists(Client client, SynchronizedArrayList<MulticastSocket> multicastGroups) {

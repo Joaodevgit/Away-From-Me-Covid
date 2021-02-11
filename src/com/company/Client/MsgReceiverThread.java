@@ -18,7 +18,7 @@ public class MsgReceiverThread extends Thread {
     }
 
     /**
-     * Método responsável por iniciar a Thread de receber as mensagens do Servidor
+     * Method responsible for starting a thread that will receive messages from the server
      */
     public void run() {
         try {
@@ -26,24 +26,24 @@ public class MsgReceiverThread extends Thread {
             boolean isLogout = false;
 
             while ((inputLine = in.readLine()) != null && !isLogout) {
-                if (inputLine.contains("Bem vindo") || inputLine.contains("infetada")) {
-                    AlertUserBox.display("Bem vindo", inputLine);
-                } else if (inputLine.contains("negativo")) {
-                    AlertUserBox.display("Resultado Teste Covid", inputLine);
+                if (inputLine.contains("Welcome") || inputLine.contains("infected")) {
+                    AlertUserBox.display("Welcome", inputLine);
+                } else if (inputLine.contains("negative")) {
+                    AlertUserBox.display("Covid-19 Test Result", inputLine);
                     CovidTest.client.setNotified(false);
-                } else if (inputLine.contains("positivo")) {
-                    AlertUserBox.display("Resultado Teste Covid", inputLine);
+                } else if (inputLine.contains("positive")) {
+                    AlertUserBox.display("Covid-19 Test Result", inputLine);
                     CovidTest.covidTestButton.setDisable(true);
                     CovidTest.client.setInfected(true);
                     CovidTest.client.setNotified(false);
-                } else if (inputLine.contains("Siga as recomendações da DGS e fique em casa !")) {
-                    AlertUserBox.display("Recomendação", inputLine);
-                } else if (inputLine.contains("Esteve em contacto com uma pessoa infetada...")
-                        || inputLine.contains("Todos os contactos foram alertados com sucesso!")) {
-                    AlertUserBox.display("Contactos Próximos", inputLine);
+                } else if (inputLine.contains("Follow the recommendations of your local government and stay at home!")) {
+                    AlertUserBox.display("Recommendation", inputLine);
+                } else if (inputLine.contains("You have been in contact with an infected person.")
+                        || inputLine.contains("All contacts have been successfully alerted!")) {
+                    AlertUserBox.display("Nearby Contacts", inputLine);
                     AddCloseContact.client.setListContact("");
-                } else if (inputLine.contains("(Nº Utente Saúde Negativo)")) {
-                    AlertUserBox.display("Erro Contactos Próximos", inputLine);
+                } else if (inputLine.contains("(Negative Health User no.)")) {
+                    AlertUserBox.display("Error Nearby Contacts", inputLine);
                 } else {
                     isLogout = true;
                 }

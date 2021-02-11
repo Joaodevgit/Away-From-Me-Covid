@@ -23,22 +23,22 @@ public class BroadcastServerSenderThread extends Thread {
     protected boolean listening = true;
 
     /**
-     * Método responsável por executar a thread que irá tratar de enviar as mensagens por broadcast aos clientes, a
-     * informar o nº de infetados total nos concelhos pertencentes à sub-região Tâmega e Vale do Sousa
+     * Method responsible for executing the thread that will send messages by broadcast to users, informing
+     * the total number of infected people in the counties belonging to the sub-region Tâmega and Vale do Sousa
      */
     @Override
     public void run() {
         while (listening) {
-            // Intervalo de tempo para a notificação ser lançada (1 min em 1 min)
+            // Time interval for the notification to be launched (1 min in 1 min)
             try {
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if (!this.clientsConnected.get().isEmpty()) {
-                System.out.println("Servidor broadcast a ouvir...");
+                System.out.println("Broadcast Server listening...");
                 try {
-                    String serverMsg = "O nº total de infetados na Sub-região do Tâmega e Vale do Sousa é: " +
+                    String serverMsg = "The total number of infected in the Sub-region of Tâmega and Vale do Sousa is: " +
                             this.readWriteFiles.getSubRegionTotalInfected();
 
                     byte[] buf = serverMsg.getBytes();

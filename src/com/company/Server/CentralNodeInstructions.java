@@ -12,30 +12,30 @@ public class CentralNodeInstructions {
 
 
     /**
-     * Método responsável por receber uma determinada ação (em string) do cliente na aplicação
+     * Method responsible for receiving a given action (in string) from the client in the application
      *
-     * @param clientSocket     socket associado ao cliente
-     * @param client           objeto do cliente (modelo)
-     * @param clientsConnected array de clientes atualmente conetados na aplicação
-     * @return a mensagem resultante do clique do cliente
+     * @param clientSocket     client associated socket
+     * @param client           client object (model)
+     * @param clientsConnected array of clients currently connected to the application
+     * @return the message resulting from the client’s click action
      */
     public String setInstruction(Socket clientSocket, Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
         String msg = null;
 
         switch (client.getCommand()) {
-            case "BOTÃO LOGIN":
+            case "LOGIN BUTTON":
                 if (client.isNotified()) {
-                    msg = "Esteve em contacto com uma pessoa infetada...É necessário que faça o teste";
+                    msg = "You were in contact with an infected person ... You need to take the covid-19 test";
                 } else {
-                    msg = "Bem vindo " + client.getName();
+                    msg = "Welcome " + client.getName();
                 }
                 break;
 
-            case "BOTÃO LOGOUT":
+            case "LOGOUT BUTTON":
                 msg = this.centralNode.saveUserInfo(client, clientsConnected);
                 break;
 
-            case "BOTÃO COVID":
+            case "COVID TEST BUTTON":
                 msg = this.centralNode.testCovid(clientSocket, client);
                 break;
         }
@@ -44,12 +44,12 @@ public class CentralNodeInstructions {
     }
 
     /**
-     * Método responsável por enviar ao cliente que adicionou os contatos próximos a mensagem: "Todos os contactos foram
-     * alertados com sucesso!" e responsável por enviar aos contatos próximos que foram adicionados a mensagem:" Esteve
-     * em contacto com uma pessoa infetada! É necessario fazer o teste!"
+     * Method responsible for sending to the client, who added the nearby contacts, the following message: "All contacts have been
+     * successfully alerted!" and is also responsible for sending to the nearby contacts ,that have been added, the following message:
+     * "You have been in contact with an infected person! It is necessary to take the test!"
      *
-     * @param client           objeto do cliente (modelo)
-     * @param clientsConnected array de clientes atualmente conetados na aplicação
+     * @param client           client object (model)
+     * @param clientsConnected array of clients currently connected to the application
      */
     public synchronized void sendToAll(Client client, SynchronizedArrayList<WorkerThread> clientsConnected) {
 
@@ -61,25 +61,26 @@ public class CentralNodeInstructions {
             for (int i = 0; !found && i < clientsConnected.get().size(); i++) {
                 if (idConvInt == clientsConnected.get().get(i).client.getId()) {
                     found = true;
-                    clientsConnected.get().get(i).out.println("Todos os contactos foram alertados com sucesso!");
+                    clientsConnected.get().get(i).out.println("All contacts have been successfully alerted!");
                 }
             }
 
             for (int i = 1; i < listContact.length; i++) {
                 found = false;
                 idConvInt = Integer.parseInt(listContact[i]);
-                System.out.println("ID CONTACT: " + idConvInt);
+                //System.out.println("ID CONTACT: " + idConvInt);
 
                 for (int j = 0; !found && j < clientsConnected.get().size(); j++) {
-                    // Caso que o Utilizador esteja conectado
+                    // If the user is online
                     if (idConvInt == clientsConnected.get().get(j).client.getId()) {
                         found = true;
-                        clientsConnected.get().get(i).out.println("Esteve em contacto com uma pessoa infetada! É necessario fazer o teste!");
+                        clientsConnected.get().get(i).out.println("You have been in contact with an infected person. " +
+                                "It is necessary to take the covid-19 test!");
                     }
                 }
-                // Caso que o Utilizador não esteja conectado
+                // If the user is offline
                 if (!found) {
-                    // Se existir um registo do Utilizador
+                    // If the user is registered in the application
                     if (this.readWriteFiles.userExists(idConvInt)) {
                         this.readWriteFiles.updateNotificationContactUser(idConvInt);
                     } else {
@@ -95,7 +96,7 @@ public class CentralNodeInstructions {
             for (int i = 0; !found && i < clientsConnected.get().size(); i++) {
                 if (idConvInt == clientsConnected.get().get(i).client.getId()) {
                     found = true;
-                    clientsConnected.get().get(i).out.println("Introdução de contactos próximos inválida");
+                    clientsConnected.get().get(i).out.println("Invalid nearby contacts entry");
                 }
             }
         }

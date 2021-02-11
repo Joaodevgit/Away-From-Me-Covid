@@ -30,8 +30,8 @@ public class WorkerThread extends Thread {
     }
 
     /**
-     * Método responsável por executar a thread que irá tratar de receber a mensagem do nó central e de a enviar para o
-     * cliente
+     * Method responsible for executing the thread that will receive the message from the central node and will send it
+     * to the client
      */
     public void run() {
         try {
@@ -40,16 +40,16 @@ public class WorkerThread extends Thread {
 
                 while ((inputLine = in.readLine()) != null) {
                     System.out.println("inputLine: " + inputLine);
-                    System.out.println("Resposta do cliente " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
+                    System.out.println("Client's response " + clientSocket.getRemoteSocketAddress().toString() + ": " + inputLine);
 
                     this.client = this.gson.fromJson(inputLine, Client.class);
 
-                    // Verifica se vai notificar a todos os clientes ou executa certos comandos devido a ação do botão
+                    // Checks whether to notify all clients or execute certain commands due to button action
                     if (!client.getListContact().equals("")) {
                         this.centralNodeInstructions.sendToAll(client, this.clientsConnected);
                     } else {
                         String msg = this.centralNodeInstructions.setInstruction(clientSocket, client, this.clientsConnected);
-                        System.out.println("Resposta do nó central: " + msg);
+                        System.out.println("Central Node response: " + msg);
                         out.println(msg);
                     }
 

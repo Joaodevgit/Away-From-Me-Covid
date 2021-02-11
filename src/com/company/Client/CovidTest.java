@@ -25,7 +25,6 @@ public class CovidTest extends Application {
 
     private Label sceneLabel;
     private Label descLabel;
-    private Label testResultLabel;
     protected static Button covidTestButton;
     private Button returnMenuButton;
     private Scene covidTestScene;
@@ -41,16 +40,15 @@ public class CovidTest extends Application {
     }
 
     /**
-     * Método responsável por inicar a interface grafica de "Teste ao Covid"
+     * Method responsible for starting the user interface "Covid Test"
      *
-     * @param primaryStage - Container principal do JavaFX
+     * @param primaryStage - Main Container of JavaFX
      */
     @Override
     public void start(Stage primaryStage) {
         this.covidTestWindow = primaryStage;
 
-        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
-        // Utilizador
+        // Method responsible for saving user information, when the user interface window is closed
         this.covidTestWindow.setOnCloseRequest(e -> {
             e.consume();
 
@@ -61,35 +59,31 @@ public class CovidTest extends Application {
                 out.println(this.client.toString());
 
                 covidTestWindow.close();
+                System.exit(-1);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
 
         });
 
-        // Título da Scene
+        // Scene Title
         this.sceneLabel = new Label();
-        this.sceneLabel.setText("TESTE COVID-19");
+        this.sceneLabel.setText("COVID-19 TEST");
         this.sceneLabel.setFont(new Font(30));
 
-        // Descrição
+        // Description
         this.descLabel = new Label();
-        this.descLabel.setText("Clique no botão abaixo para fazer o teste:");
+        this.descLabel.setText("Click the button below to do the test:");
         this.descLabel.setFont(new Font(20));
 
-        // Resultado Teste Covid
-        this.testResultLabel = new Label();
-        this.testResultLabel.setText("Clique no botão abaixo para fazer o teste:");
-        this.testResultLabel.setFont(new Font(15));
-
-        // Botão "Fazer Teste"
-        this.covidTestButton = new Button("Fazer Teste");
+        // Button "Take Test"
+        this.covidTestButton = new Button("Take Test");
 
         if (!this.client.isInfected()) {
             this.covidTestButton.setOnAction(e -> {
                 try {
                     out = new PrintWriter(socket.getOutputStream(), true);
-                    this.client.setCommand("BOTÃO COVID");
+                    this.client.setCommand("COVID TEST BUTTON");
                     out.println(this.client.toString());
                 } catch (UnknownHostException ex) {
                     System.out.println("Unknown Host.");
@@ -102,8 +96,8 @@ public class CovidTest extends Application {
             this.covidTestButton.setDisable(true);
         }
 
-        // Botão "Regressar ao Menu Principal
-        this.returnMenuButton = new Button("Regressar ao menu principal");
+        // Button "Return to Main Menu"
+        this.returnMenuButton = new Button("Return to Main Menu");
 
         this.returnMenuButton.setOnAction(e -> {
             MenuPage menuPage = null;
@@ -126,7 +120,7 @@ public class CovidTest extends Application {
         VBox contentContainer = new VBox(20);
         contentContainer.setAlignment(Pos.CENTER);
         contentContainer.setPadding(new Insets(0, 40, 40, 40));
-        contentContainer.getChildren().addAll(this.covidTestButton, this.testResultLabel, this.returnMenuButton);
+        contentContainer.getChildren().addAll(this.covidTestButton, this.returnMenuButton);
 
         BorderPane borderPanelayout = new BorderPane();
         borderPanelayout.setCenter(contentContainer);

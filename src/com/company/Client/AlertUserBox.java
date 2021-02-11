@@ -13,10 +13,9 @@ import javafx.stage.Stage;
 public class AlertUserBox {
 
     /**
-     * Método responsável por inicar a interface grafica da notificação de todos os eventos do Servidor
-     *
-     * @param title   Titulo da notificação
-     * @param message Conteudo da mensagem na Notificação
+     * Method responsible for starting the notification of all server events
+     * @param title   notification title
+     * @param message notification content message
      */
     public static void display(String title, String message) {
         Platform.runLater(() -> {
@@ -31,7 +30,7 @@ public class AlertUserBox {
             Label label = new Label();
             label.setText(message);
 
-            Button closeButton = new Button("Fechar");
+            Button closeButton = new Button("Close");
             closeButton.setOnAction(e -> window.close());
 
             VBox layout = new VBox(10);

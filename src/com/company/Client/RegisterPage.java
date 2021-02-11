@@ -39,9 +39,9 @@ public class RegisterPage extends Application {
     private ReadWriteFiles readWriteFiles;
 
     /**
-     * Método responsável por inicar a interface grafica de "Registar Conta"
+     * Method responsible for starting the user interface "Account Registry "
      *
-     * @param primaryStage - Container principal do JavaFX
+     * @param primaryStage - Main Container of JavaFX
      */
     @Override
     public void start(Stage primaryStage) {
@@ -49,32 +49,32 @@ public class RegisterPage extends Application {
 
         this.readWriteFiles = new ReadWriteFiles();
 
-        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
-        // Utilizador
+        // Method responsible for saving user information, when the user interface window is closed
         this.registerPageWindow.setOnCloseRequest(e -> {
             e.consume();
 
-            AlertUserBox.display("Recomendação", "Siga as recomendações da DGS e fique em casa !");
+            AlertUserBox.display("Recommendation", "Follow the recommendations of your government and stay at home!");
 
             this.registerPageWindow.close();
         });
 
-        // Titulo da Scene
+        // Scene Title
         this.titleContent = new Label();
-        this.titleContent.setText("Registar Conta");
+        this.titleContent.setText("Register Account");
         this.titleContent.setFont(new Font(30));
 
-        // Formulario do registo
+        // Registry Form
         this.textUsername = new Label();
         this.textUsername.setText("Username");
         this.textUsername.setFont(new Font(15));
+
 
         this.textPassword = new Label();
         this.textPassword.setText("Password");
         this.textPassword.setFont(new Font(15));
 
         this.textId = new Label();
-        this.textId.setText("Nº Utente Saude");
+        this.textId.setText("Health User no.");
         this.textId.setFont(new Font(13));
 
         this.inputUsername = new TextField();
@@ -83,8 +83,8 @@ public class RegisterPage extends Application {
 
         this.listContyName = this.readWriteFiles.spinnerOptions();
 
-        // Botões
-        this.register = new Button("Criar Conta");
+        // Buttons
+        this.register = new Button("Create Account");
         Stage mainMenuPage = LoginMenu.getStage();
         this.register.setOnAction(e -> {
             try {
@@ -96,8 +96,9 @@ public class RegisterPage extends Application {
 
                 boolean conditionRegist = false;
 
-                //id >= 100000000 && id <= 999999999 Muito trabalho para testar
-                if ((id >= 100000000 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5 && contentCounty != "Escolha o seu concelho") {
+                // ID must be between 100000000 and 999999999
+                if ((id >= 100000000 && id <= 999999999) && contentUsername != "" && contentPassword.length() > 5
+                        && contentCounty != "Choose your county") {
                     conditionRegist = true;
                 }
 
@@ -111,7 +112,7 @@ public class RegisterPage extends Application {
                         this.inputUsername.setText("");
                         this.inputPass.setText("");
 
-                        //Caso que a conta não existe, verifica se o Utilizador não se encontra na lista dos não registado
+                        // If the account does not exist, verifies if the user is not in the list of unregistered users
                         if (checkUserUnregisterIndex != -1) {
                             this.readWriteFiles.removeUnregisteredUsers(checkUserUnregisterIndex);
                             this.readWriteFiles.writeUserRegister(id, contentUsername, contentPassword, true, contentCounty);
@@ -121,22 +122,22 @@ public class RegisterPage extends Application {
 
                         mainMenuPage.setScene(LoginMenu.getScene());
                     } else {
-                        AlertUserBox.display("Registo", "Conta já existente");
+                        AlertUserBox.display("Registry", "Existing account");
                     }
 
                 } else {
-                    AlertUserBox.display("Registo", "Não respeita as condições para se registar");
+                    AlertUserBox.display("Registry", "Don't respect the conditions to register");
                 }
 
             } catch (NumberFormatException ex) {
-                AlertUserBox.display("Registo", "Nº Utente de Saúde inválido. Introduza só números");
+                AlertUserBox.display("Registry", "Invalid Health User no.. Please insert only numbers");
             }
         });
 
-        this.backMenu = new Button("Voltar");
+        this.backMenu = new Button("Return");
         this.backMenu.setOnAction(e -> mainMenuPage.setScene(LoginMenu.getScene()));
 
-        // Container do titulo
+        // Title Container
         VBox titleContainer = new VBox(10);
         titleContainer.setAlignment(Pos.CENTER);
         titleContainer.getChildren().addAll(this.titleContent);
@@ -145,7 +146,7 @@ public class RegisterPage extends Application {
         containerId.setAlignment(Pos.CENTER);
         containerId.getChildren().addAll(this.textId, this.inputId);
 
-        // Container do preenchimento do login
+        // Login Container
         HBox containerLoginUsername = new HBox(10);
         containerLoginUsername.setAlignment(Pos.CENTER);
         containerLoginUsername.getChildren().addAll(this.textUsername, this.inputUsername);
@@ -155,7 +156,7 @@ public class RegisterPage extends Application {
         containerLoginPass.getChildren().addAll(this.textPassword, this.inputPass);
 
         this.comboBox = new ComboBox<>();
-        this.comboBox.setValue("Escolha o seu concelho");
+        this.comboBox.setValue("Choose your county");
         this.comboBox.getItems().addAll(this.listContyName);
 
         // Ações do click na ComboBox
@@ -165,7 +166,7 @@ public class RegisterPage extends Application {
         mainMenuButtons.setAlignment(Pos.CENTER);
         mainMenuButtons.getChildren().addAll(containerId, containerLoginUsername, containerLoginPass, this.comboBox);
 
-        // Container dos butões
+        // Buttons Container
         HBox containerButton = new HBox(10);
         containerButton.setAlignment(Pos.CENTER);
         containerButton.setPadding(new Insets(0, 40, 40, 40));

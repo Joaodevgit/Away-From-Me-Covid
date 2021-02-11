@@ -20,20 +20,20 @@ public class MulticastServerSenderThread extends Thread {
     }
 
     /**
-     * Método responsável por executar a thread que irá tratar de enviar as mensagens por multicast aos clientes, a
-     * informar o nº de infetados do seu respetivo concelho pertencente à sub-região Tâmega e Vale do Sousa
+     * Method responsible for executing the thread that will send multicast messages to clients, informing the
+     * number of infected in their respective county belonging to the Tâmega and Vale do Sousa sub-region
      */
     @Override
     public void run() {
         while (listening) {
-            // Intervalo de tempo para a notificação ser lançada (30s em 30s)
+            // Time interval for the notification to be launched (30 sec in 30 sec)
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if (!this.clientsConnected.get().isEmpty()) {
-                System.out.println("Servidor multicast a ouvir...");
+                System.out.println("Multicast Server listening...");
                 try {
                     InetAddress group = InetAddress.getByName("230.0.0.1");
                     byte[] buf = new byte[1024];
@@ -48,12 +48,13 @@ public class MulticastServerSenderThread extends Thread {
                             if (clientPort == clientPorts.get().get(i).getLocalPort()) {
                                 if (datagramPacket != null) {
                                     String serverMsg;
-                                    int infectedCountyNo = this.readWriteFiles.getCountyTotalInfected(this.clientsConnected.get().get(j).client.getCounty());
+                                    int infectedCountyNo = this.readWriteFiles.
+                                            getCountyTotalInfected(this.clientsConnected.get().get(j).client.getCounty());
                                     if (infectedCountyNo != 0) {
-                                        serverMsg = "O nº de infetados no concelho " + this.clientsConnected.get().get(j).client.getCounty() +
-                                                " é: " + infectedCountyNo;
+                                        serverMsg = "The number of people infected in " + this.clientsConnected.get().get(j).client.getCounty() +
+                                                " is: " + infectedCountyNo;
                                     } else {
-                                        serverMsg = "O concelho " + this.clientsConnected.get().get(j).client.getCounty() + " não tem infetados";
+                                        serverMsg = "Your County " + this.clientsConnected.get().get(j).client.getCounty() + " has no infected people";
                                     }
                                     buf = serverMsg.getBytes();
                                     datagramPacket = new DatagramPacket(buf, buf.length, group, clientPorts.get().get(i).getLocalPort());

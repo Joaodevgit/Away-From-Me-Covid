@@ -20,16 +20,16 @@ public class Server {
             System.exit(-1);
         }
 
-        // Thread do server multicast
+        // Server Multicast Thread
         new MulticastServerSenderThread(clientsConnected).start();
-        // Thread do server broadcast
+        // Broadcast Server Thread
         new BroadcastServerSenderThread(clientsConnected).start();
 
 
         while (listening) {
-            System.out.println("[SERVER] Aguardando por uma conexão do cliente...");
+            System.out.println("[SERVER] Waiting for a client connection...");
             Socket client = serverSocket.accept();
-            System.out.println("[SERVER] Cliente " + client.getRemoteSocketAddress().toString() + " conectou-se!");
+            System.out.println("[SERVER] Client " + client.getRemoteSocketAddress().toString() + " has connected!");
 
             WorkerThread clientThread = new WorkerThread(client, clientsConnected);
             clientsConnected.add(clientThread);

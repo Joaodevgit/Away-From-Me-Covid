@@ -17,7 +17,7 @@ public class UDPClientMsgReceiverThread extends Thread {
     }
 
     /**
-     * Método responsável por executar a thread que irá tratar de receber os datagramsocket (mensagem) da parte do servidor
+     * Method responsible for executing the thread that will receive the datagramsocket (message) from the server
      */
     @Override
     public void run() {
@@ -30,7 +30,7 @@ public class UDPClientMsgReceiverThread extends Thread {
 
                 if (datagramPacket != null) {
                     String serverMsgRcvd = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-                    AlertUserBox.display("Alerta Número Infetados", serverMsgRcvd);
+                    AlertUserBox.display("Alert Number Infected", serverMsgRcvd);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

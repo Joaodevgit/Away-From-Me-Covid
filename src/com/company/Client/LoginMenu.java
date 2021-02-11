@@ -28,8 +28,8 @@ import java.net.Socket;
 
 public class LoginMenu extends Application {
 
-    /* Variáveis Constantes */
-    private static final int SCENE_WIDTH = 600;
+    /* Final variables */
+    private static final int SCENE_WIDTH = 700;
     private static final int SCENE_HEIGHT = 650;
     private static final int BROADCAST_PORT = 5000;
 
@@ -39,24 +39,19 @@ public class LoginMenu extends Application {
     /* Scenes */
     private static Scene mainMenuScene;
 
-    /**
-     * Botões Menu Principal
-     **/
+    /* Main Menu Buttons */
     private Button registerAccount;
     private Button loginAccount;
 
-    /**
-     * Labels Menu Principal
-     **/
+    /* Main Menu Labels */
     private Label titleLabel;
     private Label textUsername;
     private Label textPassword;
 
-    /**
-     * Layout Menu Principal
-     **/
+    /* Main Menu Layout */
     private BorderPane borderPanelayout;
 
+    /* Main Menu Text Fields */
     private TextField inputUsername;
     private TextField inputPassword;
 
@@ -88,8 +83,8 @@ public class LoginMenu extends Application {
 
         mainMenuWindow.getIcons().add(new Image("https://user-images.githubusercontent.com/44362304/103882959-761f8c80-50d4-11eb-9e3d-6f4f3c0e276c.png"));
 
-        /* Botões */
-        this.registerAccount = new Button("Criar uma conta");
+        /* Buttons */
+        this.registerAccount = new Button("Create an account");
         this.registerAccount.setOnAction(e -> {
             RegisterPage registerPage = new RegisterPage();
             try {
@@ -109,7 +104,7 @@ public class LoginMenu extends Application {
                     JSONParser jsonParser = new JSONParser();
                     JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-                    JSONArray listUsers = (JSONArray) obj.get("Registo");
+                    JSONArray listUsers = (JSONArray) obj.get("Registry");
 
                     boolean found = false;
                     JSONObject user = null;
@@ -133,20 +128,20 @@ public class LoginMenu extends Application {
                                 Boolean.parseBoolean(user.get("isNotified").toString()),
                                 user.get("county").toString());
 
-                        // Socket do cliente responsável pelas comunicações TCP com o servidor
+                        // Client socket responsible for TCP communications with the server
                         Socket socket = new Socket("localhost", 2048);
 
-                        // Socket do cliente responsável pelas comunicações UDP (Multicast) com o servidor
+                        // Client socket responsible for UDP (Multicast) communications with the server
                         MulticastSocket clientMulticastSocket = new MulticastSocket(this.readWriteFiles.getClientCountyPort(client));
                         InetAddress groupMulticast = InetAddress.getByName("230.0.0.1");
                         clientMulticastSocket.joinGroup(groupMulticast);
 
-                        // Socket do cliente responsável pelas comunicações UDP (Broadcast) com o servidor
+                        // Client socket responsible for UDP (Broadcast) communications with the server
                         MulticastSocket clientBroadcastSocket = new MulticastSocket(BROADCAST_PORT);
                         InetAddress groupBroadcast = InetAddress.getByName("230.0.0.2");
                         clientBroadcastSocket.joinGroup(groupBroadcast);
 
-                        client.setCommand("BOTÃO LOGIN");
+                        client.setCommand("LOGIN BUTTON");
 
                         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                         out.println(client.toString());
@@ -169,7 +164,7 @@ public class LoginMenu extends Application {
                             ex.printStackTrace();
                         }
                     } else {
-                        AlertUserBox.display("Login", "Utilizador não existente");
+                        AlertUserBox.display("Login", "User does not exist");
                     }
 
                 } catch (ParseException parseException) {
@@ -180,14 +175,14 @@ public class LoginMenu extends Application {
                     ioException.printStackTrace();
                 }
             } else {
-                // Caso que o ficheiro não existe
-                System.out.println("O Ficheiro não existe");
+                // In case of file not existing
+                System.out.println("The file does not exist");
             }
         });
 
-        /* Labels Menu Principal */
+        /* Main Menu Labels */
 
-        // Título do menu principal
+        // Main Menu Title
         titleLabel = new Label();
         titleLabel.setText("Login");
         titleLabel.setFont(new Font(30));
@@ -200,37 +195,39 @@ public class LoginMenu extends Application {
         this.textPassword.setText("Password");
         this.textPassword.setFont(new Font(15));
 
-        /* InputForm do Login */
+        /* Login InputForm */
         this.inputUsername = new TextField();
         this.inputPassword = new TextField();
 
-        /* Containers Menu Principal */
+        /* Main Menu Containers */
 
-        // Container do preenchimento do login
+        // Login Container (Username)
         HBox containerLoginUsername = new HBox(10);
         containerLoginUsername.setAlignment(Pos.CENTER);
         containerLoginUsername.getChildren().addAll(this.textUsername, this.inputUsername);
 
+        // Login Container (Password)
         HBox containerLoginPass = new HBox(10);
         containerLoginPass.setAlignment(Pos.CENTER);
         containerLoginPass.getChildren().addAll(this.textPassword, this.inputPassword);
 
-        // Container do Título
+        // Title Container
         VBox titleBoxContainer = new VBox(10);
         titleBoxContainer.setAlignment(Pos.CENTER);
         titleBoxContainer.getChildren().addAll(titleLabel);
 
-        // Container dos botões centrais
+        // Central Buttons Container
         VBox mainMenuButtons = new VBox(50);
         mainMenuButtons.setAlignment(Pos.CENTER);
-        mainMenuButtons.getChildren().addAll(containerLoginUsername, containerLoginPass, this.loginAccount, this.registerAccount, titleBoxContainer);
+        mainMenuButtons.getChildren().addAll(containerLoginUsername, containerLoginPass, this.loginAccount,
+                this.registerAccount, titleBoxContainer);
 
         // Border Pane Layout
         borderPanelayout = new BorderPane();
         borderPanelayout.setCenter(mainMenuButtons);
         borderPanelayout.setTop(titleBoxContainer);
 
-        // Scene Menu Principal
+        // Main Menu Scene
         mainMenuScene = new Scene(borderPanelayout, SCENE_WIDTH, SCENE_HEIGHT);
         mainMenuWindow.setScene(mainMenuScene);
         mainMenuWindow.setTitle("Away From Me Covid");

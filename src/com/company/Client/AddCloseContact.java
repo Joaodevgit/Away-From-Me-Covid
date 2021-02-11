@@ -48,17 +48,16 @@ public class AddCloseContact extends Application {
     }
 
     /**
-     * Método responsável por inicar a interface grafica de "Adicionar contactos"
+     * Method responsible for starting the user interface "Add contacts"
      *
-     * @param primaryStage - Container principal do JavaFX
+     * @param primaryStage - Main Container of JavaFX
      */
     @Override
     public void start(Stage primaryStage) {
 
         this.addCloseContactWindow = primaryStage;
 
-        // Método responsável por quando o evento de fechar a janela da interface grafica guarda a informação do
-        // Utilizador
+        // Method responsible for saving user information, when the user interface window is closed
         this.addCloseContactWindow.setOnCloseRequest(e -> {
             e.consume();
 
@@ -69,6 +68,7 @@ public class AddCloseContact extends Application {
                 out.println(this.client.toString());
 
                 addCloseContactWindow.close();
+                System.exit(-1);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -81,7 +81,7 @@ public class AddCloseContact extends Application {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(new FileReader(file.getPath()));
 
-            JSONArray listCounty = (JSONArray) obj.get("Registo");
+            JSONArray listCounty = (JSONArray) obj.get("Registry");
 
             this.listUserId = new ArrayList<>();
             JSONObject county;
@@ -102,38 +102,38 @@ public class AddCloseContact extends Application {
             e.printStackTrace();
         }
 
-        // Título da Scene
+        // Scene Title
         this.sceneLabel = new Label();
-        this.sceneLabel.setText("CONTACTOS PRÓXIMOS");
+        this.sceneLabel.setText("NEARBY CONTACTS");
         this.sceneLabel.setFont(new Font(30));
 
-        // Descrição
+        // Description
         this.titleLabel = new Label();
-        this.titleLabel.setText("Se esteve em contato com alguém, adicione aqui o id: ");
+        this.titleLabel.setText("If you were in contact with someone, add the person Health User no. here:");
         this.titleLabel.setFont(new Font(20));
 
-        // Resumo
+        // Summary
         this.descLabel = new Label();
-        this.descLabel.setText("Se pretender adicionar vários contatos, separe os id's por \";\".");
+        this.descLabel.setText("If you want to add multiple contacts, separate the it by \";\".");
         this.descLabel.setFont(new Font(17));
 
-        // Botão Adicionar Contacto
-        this.addContactButton = new Button("Adicionar");
+        // Button add contact
+        this.addContactButton = new Button("Add");
 
-        // Input ID Contacto
+        // Input Contact ID
         this.idContactInput = new TextField();
         this.addContactButton.setOnAction(e -> {
             try {
                 if (this.idContactInput.getText() != "") {
 
-                    this.client.setCommand("ADICIONAR CONTACTOS");
+                    this.client.setCommand("ADD CONTACTS");
                     this.client.setListContact(this.client.getId() + ";" + this.idContactInput.getText());
 
                     this.out = new PrintWriter(socket.getOutputStream(), true);
                     this.out.println(this.client.toString());
 
                 } else {
-                    AlertUserBox.display("Contatos Próximos", "Adicione um contato primeiro!");
+                    AlertUserBox.display("Nearby Contacts", "Add a contact first!");
                 }
             } catch (UnknownHostException ex) {
                 System.out.println("Unknown Host.");
@@ -144,18 +144,18 @@ public class AddCloseContact extends Application {
         });
 
         this.contact = new Label();
-        this.contact.setText("Contactos: ");
+        this.contact.setText("Contacts: ");
 
-        // ComboBox de Pessoas registado
+        // ComboBox of the registered users
         this.comboBox = new ComboBox<>();
-        this.comboBox.setValue("Escolha as pessoas");
+        this.comboBox.setValue("Identify the users");
         this.comboBox.getItems().addAll(listUserId);
 
-        // Ações do click na ComboBox
+        // Click actions on comboBox
         this.comboBox.setOnAction(e -> {
-            System.out.println("User selected: " + comboBox.getValue());
+            // System.out.println("User selected: " + comboBox.getValue());
 
-            System.out.println(this.comboBox.getSelectionModel().getSelectedItem());
+            // System.out.println(this.comboBox.getSelectionModel().getSelectedItem());
 
             String idPerson = String.valueOf(this.comboBox.getSelectionModel().getSelectedItem());
 
@@ -171,8 +171,8 @@ public class AddCloseContact extends Application {
             this.idContactInput.setText(content);
         });
 
-        // Botão "Regressar" ao Menu Principal
-        this.returnMenuButton = new Button("Regressar ao menu principal");
+        // Button "Return to Main Menu"
+        this.returnMenuButton = new Button("Return to Main Menu");
         this.returnMenuButton.setOnAction(e -> {
             MenuPage menuPage = null;
 
