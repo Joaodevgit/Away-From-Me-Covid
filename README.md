@@ -76,7 +76,7 @@ To access project javadoc you need to download to a zip format this project and 
 | João Pereira | Paulo da Cunha |
 | :---: |:---:| 
 | ![João Pereira](https://avatars2.githubusercontent.com/u/44362304?s=200&u=e779f8e4e1d4788360e7478a675df73f219b42b4&v=3)| ![Paulo da Cunha](https://avatars0.githubusercontent.com/u/39674226?s=200&u=5e980e380bf0b9d7a7f821ddcc6fe6112e026ae9&v=4) |
-| <a href="https://github.com/Joaodevgit" target="_blank">`github.com/Joaodevgit`</a> | <a href="https://github.com/Pauvix" target="_blank">`github.com/Pauvix`</a>|
+| <a href="https://github.com/Joaodevgit" target="_blank">`github.com/Joaodevgit`</a> | <a href="https://github.com/PauloDevGit" target="_blank">`github.com/PauloDevGit`</a>|
 
 <a name="license"></a>
 ## License
